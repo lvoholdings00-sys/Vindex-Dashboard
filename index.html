@@ -4,16 +4,26 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LVO Vindex · Dashboard</title>
-  <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <!--
+  ============================================================
+  IMPORTANT: Replace the Clerk publishable key below.
+  Your current key appears truncated. Get the full key from:
+  https://dashboard.clerk.com → Your App → API Keys
+  It should look like: pk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  ============================================================
+  -->
   <script
-    async crossorigin="anonymous"
-    data-clerk-publishable-key="pk_live_Y2xlcmsudmluZGV4Lnd"
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_live_Y2xlcmsudmluZGV4LndlYXJlbHZvLmNvbSQ"
     src="https://clerk.vindex.wearelvo.com/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
     type="text/javascript"
   ></script>
+
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     :root{
@@ -32,17 +42,25 @@
     body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.028;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 
-    /* LOAD */
+    /* LOAD SCREEN */
     #loadScreen{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity .6s ease}
     #loadScreen.out{opacity:0;pointer-events:none}
     .ls-rule{width:1px;height:80px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);animation:lsPulse 1.8s ease-in-out infinite}
     @keyframes lsPulse{0%,100%{opacity:.3}50%{opacity:1}}
     .ls-mark{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.6em;color:var(--gold);text-transform:uppercase}
     .ls-name{font-family:'Cinzel',serif;font-size:2.8rem;font-weight:900;letter-spacing:.25em;color:var(--chrome);line-height:1}
-    .ls-sub{font-family:'Cormorant+SC',serif;font-size:.48rem;letter-spacing:.5em;color:var(--dim2);text-transform:uppercase}
+    .ls-sub{font-family:'Cormorant SC',serif;font-size:.48rem;letter-spacing:.5em;color:var(--dim2);text-transform:uppercase}
+    .ls-status{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;min-height:1em}
     .ls-bar{width:200px;height:1px;background:var(--border);overflow:hidden;position:relative}
     .ls-bar-fill{position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:lsBar 1.4s ease-in-out infinite}
     @keyframes lsBar{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+
+    /* ERROR SCREEN */
+    #errorScreen{position:fixed;inset:0;z-index:8999;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;padding:2rem;text-align:center}
+    #errorScreen.show{display:flex}
+    .err-title{font-family:'Cinzel',serif;font-size:1.2rem;letter-spacing:.2em;color:var(--red-hi)}
+    .err-msg{font-size:.95rem;font-style:italic;color:var(--dim2);max-width:480px;line-height:1.8}
+    .err-detail{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.25em;color:var(--dim);border:.5px solid var(--border);padding:.8rem 1.2rem;max-width:480px;word-break:break-all}
 
     /* TOPBAR */
     #topbar{height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 1.8rem;background:var(--bg);border-bottom:.5px solid var(--border);position:relative;z-index:100}
@@ -62,10 +80,8 @@
     #sidebar{width:var(--sidebar);flex-shrink:0;display:flex;flex-direction:column;background:var(--bg2);border-right:.5px solid var(--border);overflow-y:auto}
     #sidebar::-webkit-scrollbar{width:2px}
     #sidebar::-webkit-scrollbar-thumb{background:var(--border)}
-
     .sb-section{padding:1.4rem 1rem .4rem}
     .sb-label{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.45em;color:var(--dim);text-transform:uppercase;margin-bottom:.7rem;padding-left:.3rem}
-
     .nav-item{display:flex;align-items:center;gap:.7rem;padding:.68rem .9rem;cursor:pointer;border-left:2px solid transparent;transition:all .2s;margin-bottom:1px;position:relative}
     .nav-item:hover{background:var(--gold-glow);border-left-color:rgba(200,169,110,.3)}
     .nav-item.active{background:var(--gold-glow);border-left-color:var(--gold)}
@@ -75,7 +91,6 @@
     .nav-item:hover .nav-lbl{color:var(--chrome)}
     .nav-item.active .nav-lbl{color:var(--gold)}
     .nav-badge{margin-left:auto;font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.12em;color:var(--gold);background:rgba(200,169,110,.1);border:.5px solid var(--border);padding:.12rem .38rem}
-
     .sb-foot{margin-top:auto;padding:1rem;border-top:.5px solid var(--border)}
     .sb-back{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.25em;color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .2s;display:block;padding:.4rem 0}
     .sb-back:hover{color:var(--gold)}
@@ -109,11 +124,9 @@
     .sc:hover::after{transform:scaleX(1)}
     .sc-lbl{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.4em;color:var(--dim);text-transform:uppercase;margin-bottom:.4rem}
     .sc-val{font-family:'Cinzel',serif;font-size:.82rem;font-weight:600;letter-spacing:.1em;color:var(--chrome)}
-    .sc-sub{font-size:.78rem;font-style:italic;color:var(--dim);margin-top:.15rem}
 
-    /* GRID LAYOUTS */
+    /* GRIDS */
     .g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
-    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);margin-bottom:1.2rem}
     .g-full{margin-bottom:1.2rem}
 
     /* CARD */
@@ -142,15 +155,13 @@
     .deal-note{margin-top:.6rem;font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.6;border-top:.5px solid var(--border);padding-top:.55rem}
     .empty{font-size:.88rem;font-style:italic;color:var(--dim);padding:1.2rem 0;text-align:center}
 
-    /* FIN TABLE */
+    /* FINANCIALS TABLE */
     .ft{width:100%;border-collapse:collapse}
     .ft th{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;padding:.65rem 1rem;border-bottom:.5px solid var(--border);text-align:left;font-weight:400}
     .ft td{padding:.85rem 1rem;border-bottom:.5px solid rgba(200,169,110,.05);font-size:.84rem;font-style:italic;color:var(--chrome)}
     .ft tr:last-child td{border-bottom:none}
     .ft tr:hover td{background:var(--gold-glow)}
     .ft-lbl{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;font-style:normal;display:block;margin-bottom:.18rem}
-
-    /* FIN SUMMARY */
     .fin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1.2rem}
     .fgc{background:var(--bg2);padding:1.1rem 1.3rem}
     .fg-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.35rem}
@@ -187,6 +198,11 @@
     .pin-row input{accent-color:var(--gold)}
     .pin-row span{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.22em;color:var(--dim);text-transform:uppercase}
 
+    /* FILTER BAR */
+    .fbar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+    .fb{background:transparent;border:.5px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.22em;padding:.42rem .75rem;cursor:pointer;text-transform:uppercase;transition:all .2s}
+    .fb:hover,.fb.active{border-color:var(--gold);color:var(--gold)}
+
     /* BUTTONS */
     .btn{background:transparent;border:.5px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;padding:.7rem 1.2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s}
     .btn:hover{background:var(--gold);color:var(--bg)}
@@ -195,11 +211,6 @@
     .btn.sm{font-size:.38rem;padding:.5rem .85rem}
     .btn:disabled{opacity:.38;cursor:not-allowed}
     .btn-row{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
-
-    /* FILTER BAR */
-    .fbar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
-    .fb{background:transparent;border:.5px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.22em;padding:.42rem .75rem;cursor:pointer;text-transform:uppercase;transition:all .2s}
-    .fb:hover,.fb.active{border-color:var(--gold);color:var(--gold)}
 
     /* INFO GRID */
     .ig{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1.2rem}
@@ -217,31 +228,28 @@
     .adm-badge{display:inline-flex;align-items:center;gap:.5rem;border:.5px solid rgba(200,169,110,.35);padding:.28rem .7rem;margin-bottom:1rem}
     .adm-badge span{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.28em;color:var(--gold);text-transform:uppercase}
 
-    /* ADMIN TABLE */
-    .adm-row{display:grid;grid-template-columns:1fr 150px 100px;gap:.8rem;align-items:center;padding:.95rem 0;border-bottom:.5px solid var(--border)}
-    .adm-row:last-child{border-bottom:none}
-    .adm-name{font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.14em;color:var(--chrome)}
-    .adm-meta{font-size:.78rem;font-style:italic;color:var(--dim);margin-top:.15rem}
-    .tier-sel{background:transparent;border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.42rem .65rem;cursor:pointer;outline:none;width:100%}
-    .tier-sel option{background:#0a0a0a}
-
-    /* ACTIVITY */
-    .act-list{max-height:260px;overflow-y:auto}
-    .act-list::-webkit-scrollbar{width:2px}
-    .act-list::-webkit-scrollbar-thumb{background:var(--border)}
-    .act-item{display:flex;gap:1rem;padding:.75rem 0;border-bottom:.5px solid var(--border)}
-    .act-item:last-child{border-bottom:none}
-    .act-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.3rem}
-    .act-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.18em;color:var(--dim);margin-bottom:.12rem}
-    .act-txt{font-size:.82rem;font-style:italic;color:var(--chrome);line-height:1.5}
-
     /* LOCKED */
     .locked-notice{background:var(--bg2);border:.5px solid var(--border);padding:2.5rem;text-align:center}
     .ln-text{font-family:'Cinzel',serif;font-size:.45rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;line-height:1.9}
     .ln-text span{color:var(--red-hi)}
 
-    /* REFRESH */
+    /* ACTIVITY */
+    .act-list{max-height:260px;overflow-y:auto;padding:0 1.4rem}
+    .act-list::-webkit-scrollbar{width:2px}
+    .act-list::-webkit-scrollbar-thumb{background:var(--border)}
+    .act-item{display:flex;gap:1rem;padding:.75rem 0;border-bottom:.5px solid var(--border)}
+    .act-item:last-child{border-bottom:none}
+    .act-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.35rem}
+    .act-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.18em;color:var(--dim);margin-bottom:.12rem}
+    .act-txt{font-size:.82rem;font-style:italic;color:var(--chrome);line-height:1.5}
+
+    /* REFRESH LABEL */
     #refreshLabel{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+
+    /* SUPABASE STATUS */
+    .sb-status{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;padding:.3rem 0;display:flex;align-items:center;gap:.4rem}
+    .sb-status.ok{color:var(--gold)}
+    .sb-status.err{color:var(--red-hi)}
 
     /* TOAST */
     #toasts{position:fixed;bottom:1.5rem;right:1.5rem;z-index:400;display:flex;flex-direction:column;gap:.4rem}
@@ -252,7 +260,7 @@
     @media(max-width:900px){
       :root{--sidebar:190px}
       .stat-bar{grid-template-columns:1fr 1fr}
-      .g2,.g3{grid-template-columns:1fr}
+      .g2{grid-template-columns:1fr}
       .fin-grid{grid-template-columns:1fr 1fr}
     }
     @media(max-width:640px){
@@ -261,20 +269,32 @@
       #main{padding:1.4rem}
       .stat-bar{grid-template-columns:1fr 1fr}
       .ig{grid-template-columns:1fr}
-      .adm-row{grid-template-columns:1fr}
     }
   </style>
 </head>
 <body>
 
+<!-- LOAD SCREEN -->
 <div id="loadScreen">
   <div class="ls-rule"></div>
   <div class="ls-mark">LVO Holdings · Division 01</div>
   <div class="ls-name">VINDEX</div>
   <div class="ls-sub">Real Estate · Acquisition · Development</div>
+  <div class="ls-status" id="loadStatus">Initializing…</div>
   <div class="ls-bar"><div class="ls-bar-fill"></div></div>
 </div>
 
+<!-- ERROR SCREEN -->
+<div id="errorScreen">
+  <div class="ls-rule"></div>
+  <div class="err-title">Authentication Error</div>
+  <div class="err-msg" id="errMsg">Unable to initialize the Clerk authentication service. Please verify your publishable key and Clerk domain configuration.</div>
+  <div class="err-detail" id="errDetail"></div>
+  <button class="btn" onclick="window.location.reload()">↺ Retry</button>
+  <a class="btn ghost" href="https://vindex.wearelvo.com" style="text-decoration:none;display:inline-flex;align-items:center;padding:.7rem 1.2rem">← Return to site</a>
+</div>
+
+<!-- TOPBAR -->
 <div id="topbar" style="display:none">
   <div class="tb-left">
     <span class="tb-mark">LVO Vindex</span>
@@ -288,6 +308,7 @@
   </div>
 </div>
 
+<!-- SHELL -->
 <div id="shell" style="display:none">
   <nav id="sidebar">
     <div class="sb-section">
@@ -295,7 +316,7 @@
       <div class="nav-item active" data-p="overview" onclick="goTo('overview')"><span class="nav-ico">◈</span><span class="nav-lbl">Overview</span></div>
       <div class="nav-item" data-p="deals" onclick="goTo('deals')"><span class="nav-ico">◇</span><span class="nav-lbl">Deals</span><span class="nav-badge" id="dealsBadge" style="display:none">0</span></div>
       <div class="nav-item" data-p="financials" onclick="goTo('financials')"><span class="nav-ico">◉</span><span class="nav-lbl">Financials</span></div>
-      <div class="nav-item" data-p="announcements" onclick="goTo('announcements')"><span class="nav-ico">▣</span><span class="nav-lbl">Announcements</span><span class="nav-badge" id="annBadge" style="display:none">—</span></div>
+      <div class="nav-item" data-p="announcements" onclick="goTo('announcements')"><span class="nav-ico">▣</span><span class="nav-lbl">Announcements</span><span class="nav-badge" id="annBadge" style="display:none">★</span></div>
     </div>
     <div class="sb-section">
       <div class="sb-label">Account</div>
@@ -305,6 +326,7 @@
     <div class="sb-foot">
       <a class="sb-back" href="https://vindex.wearelvo.com">← vindex.wearelvo.com</a>
       <div class="live-pip"><div class="pip"></div><span class="pip-txt" id="refreshLabel">Live</span></div>
+      <div class="sb-status" id="sbStatus">● Connecting…</div>
     </div>
   </nav>
 
@@ -316,43 +338,71 @@
         <div class="ph-left">
           <div class="ph-eyebrow">LVO Vindex · Real Estate</div>
           <div class="ph-title" id="ovTitle">Dashboard</div>
-          <div class="ph-sub" id="ovSub">Every property is a position.</div>
+          <div class="ph-sub">Every property is a position.</div>
         </div>
         <div class="ph-rule"></div>
       </div>
       <div class="stat-bar">
         <div class="sc"><div class="sc-lbl">Standing</div><div class="sc-val" id="sTier">—</div></div>
         <div class="sc"><div class="sc-lbl">Active Deals</div><div class="sc-val" id="sDeals">—</div></div>
-        <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val" id="sDiv">Vindex</div></div>
+        <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val">Vindex</div></div>
         <div class="sc"><div class="sc-lbl">Member Since</div><div class="sc-val" id="sJoined">—</div></div>
       </div>
       <div class="g2">
-        <div class="card"><div class="ch"><span class="ct">Recent Deals</span><span class="cm" id="ovDealCount">—</span></div><div id="ovDeals"><div class="empty">Loading…</div></div></div>
-        <div class="card"><div class="ch"><span class="ct">Announcements</span><span class="cm" id="ovAnnTime">—</span></div><div id="ovAnn"><div class="empty">Loading…</div></div></div>
+        <div class="card">
+          <div class="ch"><span class="ct">Recent Deals</span><span class="cm" id="ovDealCount">—</span></div>
+          <div id="ovDeals"><div class="empty">Loading…</div></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="ct">Announcements</span><span class="cm" id="ovAnnTime">—</span></div>
+          <div id="ovAnn"><div class="empty">Loading…</div></div>
+        </div>
       </div>
-      <div class="card g-full"><div class="ch"><span class="ct">Recent Activity</span></div><div class="cb act-list" id="actList"><div class="empty">No activity yet.</div></div></div>
+      <div class="card g-full">
+        <div class="ch"><span class="ct">Recent Activity</span></div>
+        <div class="act-list" id="actList"><div class="empty">No activity yet.</div></div>
+      </div>
     </div>
 
     <!-- DEALS -->
     <div class="panel" id="p-deals">
-      <div class="ph"><div class="ph-left"><div class="ph-eyebrow">Deal Flow</div><div class="ph-title">Active Deals</div><div class="ph-sub">All deals assigned to your Vindex account.</div></div><div class="ph-rule"></div></div>
-      <div id="dealsLocked" class="locked-notice" style="display:none"><p class="ln-text">Deal Flow <span>Restricted</span><br/>Unlocked at Tier III and above</p></div>
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-eyebrow">Deal Flow</div>
+          <div class="ph-title">Active Deals</div>
+          <div class="ph-sub">All deals assigned to your Vindex account.</div>
+        </div>
+        <div class="ph-rule"></div>
+      </div>
+      <div id="dealsLocked" class="locked-notice" style="display:none">
+        <p class="ln-text">Deal Flow <span>Restricted</span><br/>Unlocked at Tier III and above</p>
+      </div>
       <div id="dealsContent"></div>
     </div>
 
     <!-- FINANCIALS -->
     <div class="panel" id="p-financials">
-      <div class="ph"><div class="ph-left"><div class="ph-eyebrow">Capital</div><div class="ph-title">Financials</div><div class="ph-sub">Account-level positions and capital summary.</div></div><div class="ph-rule"></div></div>
-      <div id="finLocked" class="locked-notice" style="display:none"><p class="ln-text">Financial Data <span>Restricted</span><br/>Unlocked at Tier III and above</p></div>
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-eyebrow">Capital</div>
+          <div class="ph-title">Financials</div>
+          <div class="ph-sub">Account-level positions and capital summary.</div>
+        </div>
+        <div class="ph-rule"></div>
+      </div>
+      <div id="finLocked" class="locked-notice" style="display:none">
+        <p class="ln-text">Financial Data <span>Restricted</span><br/>Unlocked at Tier III and above</p>
+      </div>
       <div id="finContent">
         <div class="fin-grid">
           <div class="fgc"><div class="fg-lbl">Capital Deployed</div><div class="fg-val" id="finCap">—</div></div>
           <div class="fgc"><div class="fg-lbl">Equity Positions</div><div class="fg-val" id="finEq">—</div></div>
           <div class="fgc"><div class="fg-lbl">Active Deals</div><div class="fg-val" id="finDls">—</div></div>
         </div>
-        <div class="card"><div class="ch"><span class="ct">Deal Positions</span><span class="cm">April 2026</span></div>
-          <table class="ft" style="width:100%"><thead><tr><th>Deal</th><th>Position</th><th>Division</th><th>Status</th><th>Capital</th></tr></thead>
-          <tbody id="finTbody"><tr><td colspan="5"><div class="empty">No data.</div></td></tr></tbody></table>
+        <div class="card">
+          <div class="ch"><span class="ct">Deal Positions</span><span class="cm" id="finMonth">—</span></div>
+          <table class="ft"><thead><tr><th>Deal</th><th>Position</th><th>Division</th><th>Status</th><th>Capital</th></tr></thead>
+          <tbody id="finTbody"><tr><td colspan="5"><div class="empty">Loading…</div></td></tr></tbody></table>
         </div>
       </div>
     </div>
@@ -360,35 +410,31 @@
     <!-- ANNOUNCEMENTS -->
     <div class="panel" id="p-announcements">
       <div class="ph">
-        <div class="ph-left"><div class="ph-eyebrow">Communications</div><div class="ph-title">Announcements</div><div class="ph-sub">Refreshes every 15 minutes automatically.</div></div>
+        <div class="ph-left">
+          <div class="ph-eyebrow">Communications · Discord → Make → Supabase</div>
+          <div class="ph-title">Announcements</div>
+          <div class="ph-sub">Posted from Discord. Refreshes every 15 minutes.</div>
+        </div>
         <div class="ph-rule"></div>
         <div class="btn-row">
-          <button class="btn sm" id="adminPostBtn" style="display:none" onclick="toggleCompose()">+ Post</button>
           <button class="btn sm ghost" onclick="fetchAnn(true)">↺ Refresh</button>
         </div>
       </div>
-      <div class="compose-wrap" id="composeWrap">
-        <div class="cr">
-          <div><label class="cl">Title</label><input class="ci" id="annTitle" placeholder="Announcement title…"/></div>
-          <div><label class="cl">Division</label>
-            <select class="cs" id="annDiv"><option value="All">All Divisions</option><option value="Vindex">Vindex</option><option value="Operations">Operations</option><option value="Alliance">Alliance</option><option value="Holdings">Holdings</option></select>
-          </div>
-        </div>
-        <div class="cf"><label class="cl">Message</label><textarea class="cta" id="annBody" placeholder="Write your announcement…"></textarea></div>
-        <div class="pin-row"><input type="checkbox" id="annPin"/><span>Pin to top</span></div>
-        <div class="btn-row"><button class="btn" id="annSubmit" onclick="postAnn()">Post Announcement →</button><button class="btn ghost" onclick="toggleCompose()">Cancel</button></div>
-      </div>
+
       <div class="fbar">
-        <button class="fb active" id="fb-all" onclick="filterAnn('all',this)">All</button>
-        <button class="fb" id="fb-pinned" onclick="filterAnn('pinned',this)">Pinned</button>
-        <button class="fb" id="fb-div" onclick="filterAnn('div',this)">Vindex Only</button>
+        <button class="fb active" onclick="filterAnn('all',this)">All</button>
+        <button class="fb" onclick="filterAnn('pinned',this)">Pinned</button>
+        <button class="fb" onclick="filterAnn('div',this)">Vindex Only</button>
       </div>
       <div id="annList" class="card"><div class="empty" style="padding:1.5rem">Loading…</div></div>
     </div>
 
     <!-- ACCOUNT -->
     <div class="panel" id="p-account">
-      <div class="ph"><div class="ph-left"><div class="ph-eyebrow">Profile</div><div class="ph-title">My Account</div></div><div class="ph-rule"></div></div>
+      <div class="ph">
+        <div class="ph-left"><div class="ph-eyebrow">Profile</div><div class="ph-title">My Account</div></div>
+        <div class="ph-rule"></div>
+      </div>
       <div id="admBadgeWrap" style="display:none"><div class="adm-badge"><span>⬡ LVO Administration · Executive Access</span></div></div>
       <div class="tier-band">
         <div><div class="tb-tier-lbl">Current Standing</div><div class="tb-tier-val" id="acTier">—</div></div>
@@ -407,15 +453,24 @@
 
     <!-- ADMIN -->
     <div class="panel" id="p-admin">
-      <div class="ph"><div class="ph-left"><div class="ph-eyebrow" style="color:var(--gold)">Executive</div><div class="ph-title">Admin Panel</div></div><div class="ph-rule"></div></div>
-      <div class="stat-bar" style="margin-bottom:1.5rem">
-        <div class="sc"><div class="sc-lbl">Total Members</div><div class="sc-val" id="admTotal">—</div></div>
-        <div class="sc"><div class="sc-lbl">New This Month</div><div class="sc-val" id="admNew">—</div></div>
-        <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val">Vindex</div></div>
-        <div class="sc"><div class="sc-lbl">Version</div><div class="sc-val">2.1 · 2026</div></div>
+      <div class="ph">
+        <div class="ph-left"><div class="ph-eyebrow" style="color:var(--gold)">Executive</div><div class="ph-title">Admin Panel</div></div>
+        <div class="ph-rule"></div>
       </div>
-      <div class="card" style="margin-bottom:1.2rem"><div class="ch"><span class="ct">Member Tier Management</span></div><div class="cb" id="admList"><div class="empty">Loading…</div></div></div>
-      <div class="card"><div class="ch"><span class="ct">Activity Log</span></div><div class="cb act-list" id="admFeed"><div class="empty">No activity.</div></div></div>
+      <div style="background:var(--bg2);border:.5px solid var(--border);padding:1.4rem;margin-bottom:1.2rem;font-size:.85rem;font-style:italic;color:var(--dim2);line-height:1.75">
+        <strong style="font-style:normal;color:var(--gold);font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.25em">NOTE · </strong>
+        To update a member's tier, set it directly on their Clerk user via
+        <code style="color:var(--chrome);font-size:.8rem">publicMetadata.tier</code> (integer 1–4).
+        Use the Clerk Dashboard or your backend API. Tier changes take effect on next sign-in.
+      </div>
+      <div class="card" style="margin-bottom:1.2rem">
+        <div class="ch"><span class="ct">Your Metadata (Debug)</span></div>
+        <div class="cb"><pre id="metaDebug" style="font-size:.75rem;color:var(--dim2);white-space:pre-wrap;word-break:break-all;line-height:1.7">—</pre></div>
+      </div>
+      <div class="card">
+        <div class="ch"><span class="ct">Activity Log</span></div>
+        <div class="act-list" id="admFeed"><div class="empty">No activity.</div></div>
+      </div>
     </div>
 
   </main>
@@ -424,216 +479,522 @@
 <div id="toasts"></div>
 
 <script>
-const SB_URL='https://pumteihkiaftgwbexaid.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bXRlaWhraWFmdGd3YmV4YWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NjAyMjYsImV4cCI6MjA5MzEzNjIyNn0.6JqNyNH_BBs-CsvAT41L_7Ku8G4CN_ymb9fXVYJEvf4';
-const SB_H={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json'};
-const TIER_LABELS={1:'Tier I — Principal',2:'Tier II — Associate',3:'Tier III — Partner',4:'Tier IV — Member'};
-const LS_MEM='lvo_vindex_members',LS_ACT='lvo_vindex_activity';
+/* ============================================================
+   CONFIG
+============================================================ */
+const SB_URL = 'https://pumteihkiaftgwbexaid.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bXRlaWhraWFmdGd3YmV4YWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NjAyMjYsImV4cCI6MjA5MzEzNjIyNn0.6JqNyNH_BBs-CsvAT41L_7Ku8G4CN_ymb9fXVYJEvf4';
+const SB_H = {
+  'apikey': SB_KEY,
+  'Authorization': `Bearer ${SB_KEY}`,
+  'Content-Type': 'application/json'
+};
 
-function ls(k,fb='{}'){try{return JSON.parse(localStorage.getItem(k)||fb)}catch(e){return JSON.parse(fb)}}
-function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
-function getMeta(uid){return ls(LS_MEM)[uid]||null}
-function setMeta(uid,d){const m=ls(LS_MEM);m[uid]=d;lsSet(LS_MEM,m)}
-function getAct(){return ls(LS_ACT,'[]')}
-function logAct(uid,name,action,isAdmin=false){const f=getAct();f.unshift({uid,name,action,isAdmin,time:new Date().toISOString()});lsSet(LS_ACT,f.slice(0,100))}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function toast(msg,err=false){const z=document.getElementById('toasts');const el=document.createElement('div');el.className='tst'+(err?' err':'');el.textContent=msg;z.appendChild(el);setTimeout(()=>el.remove(),3200)}
+// Tier labels — pulled from Clerk publicMetadata.tier (integer 1–4)
+// Store on user: { tier: 1, role: "Partner", active_deals: [...] }
+const TIER_LABELS = {
+  1: 'Tier I — Principal',
+  2: 'Tier II — Associate',
+  3: 'Tier III — Partner',
+  4: 'Tier IV — Member'
+};
 
-function goTo(id){
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.p===id));
-  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='p-'+id));
-  if(id==='announcements')clearAnnBadge();
+/* ============================================================
+   STATE
+============================================================ */
+let _U = null; // current user state
+let _ann = []; // announcements cache
+let _annFilter = 'all';
+let _annTimer = null;
+let _annSec = 900;
+let _activity = []; // session activity log
+
+/* ============================================================
+   UTILITIES
+============================================================ */
+function esc(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/* POPULATE */
-function populateDash(user){
-  const uid=user.id,name=user.fullName||user.firstName||'Member';
-  const email=user.primaryEmailAddress?.emailAddress||'—';
-  const role=user.publicMetadata?.role||'member';
-  const isAdmin=role==='admin';
-  const joined=user.createdAt?new Date(user.createdAt).toLocaleDateString('en-US',{month:'long',year:'numeric'}):'—';
-  const meta=getMeta(uid)||{};
-  const tier=meta.tier||4;
+function toast(msg, err = false) {
+  const z = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'tst' + (err ? ' err' : '');
+  el.textContent = msg;
+  z.appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
 
-  window._U={uid,name,email,isAdmin,tier,role:meta.role||'—',joined};
-  window._clerkUserName=name;
+function setLoad(msg) {
+  const el = document.getElementById('loadStatus');
+  if (el) el.textContent = msg;
+}
 
-  document.getElementById('tbName').textContent=name;
-  document.getElementById('tbTier').textContent=TIER_LABELS[tier]||TIER_LABELS[4];
-  document.getElementById('ovTitle').textContent=`Welcome, ${name.split(' ')[0]}`;
-  document.getElementById('sTier').textContent=TIER_LABELS[tier]||TIER_LABELS[4];
-  document.getElementById('sDiv').textContent='Vindex';
-  document.getElementById('sJoined').textContent=joined;
-  document.getElementById('acTier').textContent=TIER_LABELS[tier]||TIER_LABELS[4];
-  document.getElementById('acName').textContent=name;
-  document.getElementById('acEmail').textContent=email;
-  document.getElementById('acRole').textContent=meta.role||'—';
-  document.getElementById('acJoined').textContent=joined;
-  document.getElementById('admBadgeWrap').style.display=isAdmin?'block':'none';
-  document.getElementById('adminNav').style.display=isAdmin?'flex':'none';
-  document.getElementById('adminPostBtn').style.display=isAdmin?'inline-flex':'none';
+function showError(msg, detail = '') {
+  document.getElementById('loadScreen').classList.add('out');
+  setTimeout(() => {
+    const ls = document.getElementById('loadScreen');
+    if (ls) ls.remove();
+  }, 700);
+  const es = document.getElementById('errorScreen');
+  document.getElementById('errMsg').textContent = msg;
+  document.getElementById('errDetail').textContent = detail;
+  es.classList.add('show');
+}
 
-  renderDeals(user,tier,isAdmin);
-  renderFin(user,tier,isAdmin);
-  if(isAdmin)renderAdmin();
-  logAct(uid,name,`Signed in to LVO Vindex dashboard`,isAdmin);
+function setSbStatus(ok, msg) {
+  const el = document.getElementById('sbStatus');
+  el.className = 'sb-status ' + (ok ? 'ok' : 'err');
+  el.textContent = (ok ? '● ' : '○ ') + msg;
+}
+
+function logAct(action) {
+  _activity.unshift({ action, time: new Date().toISOString() });
+  _activity = _activity.slice(0, 50);
   renderAct();
 }
 
-function renderDeals(user,tier,isAdmin){
-  const deals=Array.isArray(user.publicMetadata?.active_deals)?user.publicMetadata.active_deals:[];
-  const canSee=isAdmin||tier<=3;
-  document.getElementById('sDeals').textContent=canSee?deals.length:'—';
-  document.getElementById('ovDealCount').textContent=canSee?`${deals.length} deal${deals.length!==1?'s':''}`:'Restricted';
-  if(deals.length>0){const b=document.getElementById('dealsBadge');b.style.display='block';b.textContent=deals.length;}
-  const ovEl=document.getElementById('ovDeals');
-  if(!canSee){ovEl.innerHTML='<div class="empty">Unlocked at Tier III+</div>';return;}
-  if(!deals.length){ovEl.innerHTML='<div class="empty">No deals assigned.</div>';document.getElementById('dealsContent').innerHTML='<div class="empty" style="padding:1.5rem">No deals assigned.</div>';return;}
-  const html=deals.map(d=>dealHTML(d,isAdmin,tier)).join('');
-  ovEl.innerHTML=deals.slice(0,2).map(d=>dealHTML(d,isAdmin,tier)).join('');
-  document.getElementById('dealsLocked').style.display='none';
-  document.getElementById('dealsContent').innerHTML=`<div class="card">${html}</div>`;
-}
-function dealHTML(d,isAdmin,tier){
-  const sc=(d.status||'active').toLowerCase();
-  return `<div class="deal"><div class="deal-hd"><span class="deal-name">${esc(d.name||'Unnamed')}</span><span class="deal-st ${sc}">${esc(d.status||'Active')}</span></div><div class="deal-meta"><div><div class="dm-lbl">Division</div><div class="dm-val">${esc(d.division||'—')}</div></div><div><div class="dm-lbl">Position</div><div class="dm-val">${esc(d.position||'—')}</div></div><div><div class="dm-lbl">Date</div><div class="dm-val">${esc(d.date||'—')}</div></div>${(isAdmin||tier<=1)?`<div><div class="dm-lbl">Capital</div><div class="dm-val">${esc(d.capital||'—')}</div></div>`:''}</div>${d.note?`<div class="deal-note">${esc(d.note)}</div>`:''}</div>`;
+/* ============================================================
+   NAVIGATION
+============================================================ */
+function goTo(id) {
+  document.querySelectorAll('.nav-item').forEach(n =>
+    n.classList.toggle('active', n.dataset.p === id)
+  );
+  document.querySelectorAll('.panel').forEach(p =>
+    p.classList.toggle('active', p.id === 'p-' + id)
+  );
+  if (id === 'announcements') clearAnnBadge();
+  if (id === 'admin') renderAdminDebug();
 }
 
-function renderFin(user,tier,isAdmin){
-  const canSee=isAdmin||tier<=3;
-  document.getElementById('finLocked').style.display=canSee?'none':'block';
-  document.getElementById('finContent').style.display=canSee?'block':'none';
-  if(!canSee)return;
-  const deals=Array.isArray(user.publicMetadata?.active_deals)?user.publicMetadata.active_deals:[];
-  document.getElementById('finCap').textContent=isAdmin?'Full Access':deals.length?'Deal-Level':'—';
-  document.getElementById('finEq').textContent=isAdmin?'Full Access':deals.length?'Assigned Only':'—';
-  document.getElementById('finDls').textContent=deals.length;
-  const tb=document.getElementById('finTbody');
-  if(!deals.length){tb.innerHTML='<tr><td colspan="5"><div class="empty">No data.</div></td></tr>';return;}
-  tb.innerHTML=deals.map(d=>`<tr><td><span class="ft-lbl">Deal</span>${esc(d.name||'—')}</td><td><span class="ft-lbl">Position</span>${esc(d.position||'—')}</td><td><span class="ft-lbl">Division</span>${esc(d.division||'—')}</td><td><span class="deal-st ${(d.status||'active').toLowerCase()}" style="display:inline-block">${esc(d.status||'Active')}</span></td><td>${(isAdmin||tier<=1)?esc(d.capital||'—'):'—'}</td></tr>`).join('');
+/* ============================================================
+   POPULATE DASHBOARD
+   Reads from Clerk user.publicMetadata:
+   {
+     tier: 1-4,           // access tier (default 4)
+     role: "Partner",     // display role string
+     active_deals: [      // array of deal objects
+       {
+         name: "Deal Name",
+         status: "active|pending|closed",
+         division: "Vindex",
+         position: "LP",
+         date: "Q1 2026",
+         capital: "$500,000",   // shown only to tier 1 or admin
+         note: "Optional note"
+       }
+     ]
+   }
+============================================================ */
+function populateDash(user) {
+  const meta = user.publicMetadata || {};
+  const name = user.fullName || user.firstName || 'Member';
+  const email = user.primaryEmailAddress?.emailAddress || '—';
+  const isAdmin = meta.role === 'admin' || user.organizationMemberships?.some?.(m => m.role === 'admin');
+  const tier = parseInt(meta.tier) || 4;
+  const role = meta.role || '—';
+  const joined = user.createdAt
+    ? new Date(user.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    : '—';
+  const deals = Array.isArray(meta.active_deals) ? meta.active_deals : [];
+
+  _U = { uid: user.id, name, email, isAdmin, tier, role, joined };
+  window._clerkUserName = name;
+
+  // Topbar
+  document.getElementById('tbName').textContent = name;
+  document.getElementById('tbTier').textContent = TIER_LABELS[tier] || TIER_LABELS[4];
+
+  // Overview stats
+  document.getElementById('ovTitle').textContent = `Welcome, ${name.split(' ')[0]}`;
+  document.getElementById('sTier').textContent = TIER_LABELS[tier] || TIER_LABELS[4];
+  document.getElementById('sJoined').textContent = joined;
+
+  // Account panel
+  document.getElementById('acTier').textContent = TIER_LABELS[tier] || TIER_LABELS[4];
+  document.getElementById('acName').textContent = name;
+  document.getElementById('acEmail').textContent = email;
+  document.getElementById('acRole').textContent = role !== 'admin' ? role : 'Administrator';
+  document.getElementById('acJoined').textContent = joined;
+
+  // Admin visibility
+  document.getElementById('admBadgeWrap').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('adminNav').style.display = isAdmin ? 'flex' : 'none';
+
+  // Financial month label
+  document.getElementById('finMonth').textContent = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  renderDeals(deals, tier, isAdmin);
+  renderFin(deals, tier, isAdmin);
+
+  logAct(`Signed in · ${name}`);
 }
 
-/* ANNOUNCEMENTS */
-let _ann=[],_annFilter='all',_annTimer,_annSec=900;
+/* ============================================================
+   DEALS — reads from publicMetadata.active_deals[]
+============================================================ */
+function renderDeals(deals, tier, isAdmin) {
+  const canSee = isAdmin || tier <= 3;
 
-async function fetchAnn(manual=false){
-  _annSec=900;
-  try{
-    const res=await fetch(`${SB_URL}/rest/v1/lvo_announcements?select=*&order=pinned.desc,created_at.desc`,{headers:SB_H});
-    if(!res.ok)throw new Error(res.status);
-    _ann=await res.json();
-    renderAnnList();renderOvAnn();
-    const t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-    document.getElementById('ovAnnTime').textContent=`Updated ${t}`;
-    if(manual)toast('Announcements refreshed');
+  document.getElementById('sDeals').textContent = canSee ? deals.length : '—';
+  document.getElementById('ovDealCount').textContent = canSee
+    ? `${deals.length} deal${deals.length !== 1 ? 's' : ''}`
+    : 'Restricted';
+
+  // Badge
+  if (deals.length > 0 && canSee) {
+    const b = document.getElementById('dealsBadge');
+    b.style.display = 'block';
+    b.textContent = deals.length;
+  }
+
+  const ovEl = document.getElementById('ovDeals');
+
+  if (!canSee) {
+    ovEl.innerHTML = '<div class="empty">Unlocked at Tier III+</div>';
+    document.getElementById('dealsLocked').style.display = 'block';
+    document.getElementById('dealsContent').innerHTML = '';
+    return;
+  }
+
+  document.getElementById('dealsLocked').style.display = 'none';
+
+  if (!deals.length) {
+    ovEl.innerHTML = '<div class="empty">No deals assigned.</div>';
+    document.getElementById('dealsContent').innerHTML =
+      '<div class="empty" style="padding:1.5rem">No deals have been assigned to your account yet.</div>';
+    return;
+  }
+
+  ovEl.innerHTML = deals.slice(0, 2).map(d => dealHTML(d, isAdmin, tier)).join('');
+  document.getElementById('dealsContent').innerHTML =
+    `<div class="card">${deals.map(d => dealHTML(d, isAdmin, tier)).join('')}</div>`;
+}
+
+function dealHTML(d, isAdmin, tier) {
+  const sc = (d.status || 'active').toLowerCase();
+  const showCapital = isAdmin || tier <= 1;
+  return `
+    <div class="deal">
+      <div class="deal-hd">
+        <span class="deal-name">${esc(d.name || 'Unnamed')}</span>
+        <span class="deal-st ${sc}">${esc(d.status || 'Active')}</span>
+      </div>
+      <div class="deal-meta">
+        <div><div class="dm-lbl">Division</div><div class="dm-val">${esc(d.division || '—')}</div></div>
+        <div><div class="dm-lbl">Position</div><div class="dm-val">${esc(d.position || '—')}</div></div>
+        <div><div class="dm-lbl">Date</div><div class="dm-val">${esc(d.date || '—')}</div></div>
+        ${showCapital && d.capital ? `<div><div class="dm-lbl">Capital</div><div class="dm-val">${esc(d.capital)}</div></div>` : ''}
+      </div>
+      ${d.note ? `<div class="deal-note">${esc(d.note)}</div>` : ''}
+    </div>`;
+}
+
+/* ============================================================
+   FINANCIALS
+============================================================ */
+function renderFin(deals, tier, isAdmin) {
+  const canSee = isAdmin || tier <= 3;
+  document.getElementById('finLocked').style.display = canSee ? 'none' : 'block';
+  document.getElementById('finContent').style.display = canSee ? 'block' : 'none';
+  if (!canSee) return;
+
+  const showCapital = isAdmin || tier <= 1;
+  document.getElementById('finCap').textContent = showCapital ? (deals.length ? 'See deal rows' : '—') : 'Restricted';
+  document.getElementById('finEq').textContent = deals.length || '—';
+  document.getElementById('finDls').textContent = deals.filter(d => (d.status || '').toLowerCase() === 'active').length || deals.length || '—';
+
+  const tb = document.getElementById('finTbody');
+  if (!deals.length) {
+    tb.innerHTML = '<tr><td colspan="5"><div class="empty">No deal positions on file.</div></td></tr>';
+    return;
+  }
+  tb.innerHTML = deals.map(d => {
+    const sc = (d.status || 'active').toLowerCase();
+    return `<tr>
+      <td><span class="ft-lbl">Deal</span>${esc(d.name || '—')}</td>
+      <td><span class="ft-lbl">Position</span>${esc(d.position || '—')}</td>
+      <td><span class="ft-lbl">Division</span>${esc(d.division || '—')}</td>
+      <td><span class="deal-st ${sc}" style="display:inline-block">${esc(d.status || 'Active')}</span></td>
+      <td>${showCapital ? esc(d.capital || '—') : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ============================================================
+   ANNOUNCEMENTS — from Supabase table: lvo_announcements
+   Expected columns: id, title, body, division, author, pinned, created_at
+   
+   To create the table in Supabase SQL editor:
+   
+   create table lvo_announcements (
+     id uuid default gen_random_uuid() primary key,
+     title text not null,
+     body text,
+     division text default 'All',
+     author text default 'LVO Administration',
+     pinned boolean default false,
+     created_at timestamptz default now()
+   );
+   alter table lvo_announcements enable row level security;
+   create policy "Public read" on lvo_announcements for select using (true);
+   create policy "Auth insert" on lvo_announcements for insert with check (true);
+============================================================ */
+async function fetchAnn(manual = false) {
+  _annSec = 900;
+  try {
+    const res = await fetch(
+      `${SB_URL}/rest/v1/lvo_announcements?select=*&order=pinned.desc,created_at.desc`,
+      { headers: SB_H }
+    );
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(`${res.status}: ${txt}`);
+    }
+    _ann = await res.json();
+    renderAnnList();
+    renderOvAnn();
     updateAnnBadge();
-  }catch(e){console.error(e);if(manual)toast('Refresh failed',true);}
+    setSbStatus(true, 'Supabase OK');
+    const t = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    document.getElementById('ovAnnTime').textContent = `Updated ${t}`;
+    if (manual) toast('Announcements refreshed');
+  } catch (e) {
+    console.error('Supabase error:', e);
+    setSbStatus(false, 'Supabase error');
+    const msg = e.message || '';
+    // Table doesn't exist yet
+    if (msg.includes('42P01') || msg.includes('does not exist') || msg.includes('404')) {
+      document.getElementById('annList').innerHTML =
+        `<div class="empty" style="padding:2rem;line-height:2">
+          Table <code style="color:var(--chrome)">lvo_announcements</code> not found.<br/>
+          Create it in your Supabase SQL editor — see the comment in the HTML source.
+        </div>`;
+      document.getElementById('ovAnn').innerHTML = '<div class="empty">Table not set up yet.</div>';
+    } else if (manual) {
+      toast('Refresh failed — check console', true);
+    }
+  }
 }
-function renderOvAnn(){
-  const el=document.getElementById('ovAnn');
-  const items=_ann.slice(0,3);
-  if(!items.length){el.innerHTML='<div class="empty">No announcements.</div>';return;}
-  el.innerHTML=items.map(a=>`<div style="padding:.75rem 1.4rem;border-bottom:.5px solid var(--border)">${a.pinned?'<span class="ann-pin-badge">★ </span>':''}<div style="font-family:\'Cinzel\',serif;font-size:.54rem;letter-spacing:.1em;color:var(--chrome);margin-bottom:.25rem">${esc(a.title||'')}</div><div style="font-size:.8rem;font-style:italic;color:var(--dim2)">${esc((a.body||'').slice(0,90))}${(a.body||'').length>90?'…':''}</div></div>`).join('');
-  const last=el.querySelector('div:last-child');if(last)last.style.borderBottom='none';
+
+function renderOvAnn() {
+  const el = document.getElementById('ovAnn');
+  const items = _ann.slice(0, 3);
+  if (!items.length) {
+    el.innerHTML = '<div class="empty">No announcements yet.</div>';
+    return;
+  }
+  el.innerHTML = items.map(a => `
+    <div style="padding:.75rem 1.4rem;border-bottom:.5px solid var(--border)">
+      ${a.pinned ? '<span class="ann-pin-badge">★ </span>' : ''}
+      <div style="font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.1em;color:var(--chrome);margin-bottom:.25rem">${esc(a.title || '')}</div>
+      <div style="font-size:.8rem;font-style:italic;color:var(--dim2)">${esc((a.body || '').slice(0, 90))}${(a.body || '').length > 90 ? '…' : ''}</div>
+    </div>`).join('');
+  const last = el.querySelector('div:last-child');
+  if (last) last.style.borderBottom = 'none';
 }
-function renderAnnList(){
-  const el=document.getElementById('annList');
-  let data=_ann;
-  if(_annFilter==='pinned')data=data.filter(a=>a.pinned);
-  if(_annFilter==='div')data=data.filter(a=>!a.division||a.division==='All'||a.division==='Vindex');
-  if(!data.length){el.innerHTML='<div class="empty" style="padding:1.5rem">No announcements found.</div>';return;}
-  el.innerHTML=data.map(a=>`<div class="ann${a.pinned?' pinned':''}"><div class="ann-hd"><div>${a.pinned?'<span class="ann-pin-badge">★ Pinned · </span>':''}<span class="ann-title">${esc(a.title||'')}</span></div><span class="ann-div">${esc(a.division||'All')}</span></div><div class="ann-body">${esc(a.body||'')}</div><div class="ann-ft"><span class="ann-author">${esc(a.author||'LVO Administration')}</span><span class="ann-time">${new Date(a.created_at).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</span></div></div>`).join('');
+
+function renderAnnList() {
+  const el = document.getElementById('annList');
+  let data = [..._ann];
+  if (_annFilter === 'pinned') data = data.filter(a => a.pinned);
+  if (_annFilter === 'div') data = data.filter(a => !a.division || a.division === 'All' || a.division === 'Vindex');
+  if (!data.length) {
+    el.innerHTML = '<div class="empty" style="padding:1.5rem">No announcements found.</div>';
+    return;
+  }
+  el.innerHTML = data.map(a => `
+    <div class="ann${a.pinned ? ' pinned' : ''}">
+      <div class="ann-hd">
+        <div>${a.pinned ? '<span class="ann-pin-badge">★ Pinned · </span>' : ''}<span class="ann-title">${esc(a.title || '')}</span></div>
+        <span class="ann-div">${esc(a.division || 'All')}</span>
+      </div>
+      <div class="ann-body">${esc(a.body || '')}</div>
+      <div class="ann-ft">
+        <span class="ann-author">${esc(a.author || 'LVO Administration')}</span>
+        <span class="ann-time">${new Date(a.created_at).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</span>
+      </div>
+    </div>`).join('');
 }
-function filterAnn(type,btn){
-  _annFilter=type;
-  document.querySelectorAll('.fb').forEach(b=>{b.classList.remove('active')});
+
+function filterAnn(type, btn) {
+  _annFilter = type;
+  document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderAnnList();
 }
-function updateAnnBadge(){const b=document.getElementById('annBadge');const p=_ann.filter(a=>a.pinned).length;if(p>0){b.style.display='block';b.textContent='★';}}
-function clearAnnBadge(){document.getElementById('annBadge').style.display='none';}
-function startCountdown(){
+
+function updateAnnBadge() {
+  const b = document.getElementById('annBadge');
+  const p = _ann.filter(a => a.pinned).length;
+  b.style.display = p > 0 ? 'block' : 'none';
+}
+
+function clearAnnBadge() {
+  document.getElementById('annBadge').style.display = 'none';
+}
+
+function startCountdown() {
   clearInterval(_annTimer);
-  _annTimer=setInterval(()=>{
+  _annTimer = setInterval(() => {
     _annSec--;
-    const m=Math.floor(_annSec/60),s=_annSec%60;
-    document.getElementById('refreshLabel').textContent=`${m}:${String(s).padStart(2,'0')}`;
-    if(_annSec<=0)fetchAnn();
-  },1000);
-}
-function toggleCompose(){document.getElementById('composeWrap').classList.toggle('open')}
-async function postAnn(){
-  const title=document.getElementById('annTitle').value.trim();
-  const body=document.getElementById('annBody').value.trim();
-  const div=document.getElementById('annDiv').value;
-  const pinned=document.getElementById('annPin').checked;
-  const author=window._clerkUserName||'LVO Administration';
-  if(!title||!body){toast('Title and message required.',true);return;}
-  const btn=document.getElementById('annSubmit');btn.disabled=true;
-  try{
-    const res=await fetch(`${SB_URL}/rest/v1/lvo_announcements`,{method:'POST',headers:{...SB_H,'Prefer':'return=minimal'},body:JSON.stringify({title,body,division:div,author,pinned})});
-    if(!res.ok)throw new Error(res.status);
-    document.getElementById('annTitle').value='';document.getElementById('annBody').value='';document.getElementById('annPin').checked=false;
-    document.getElementById('composeWrap').classList.remove('open');
-    toast('Announcement posted.');logAct(window._U.uid,author,`Posted announcement: ${title}`,true);
-    await fetchAnn();
-  }catch(e){toast('Failed to post. Check Supabase.',true);}
-  finally{btn.disabled=false;}
+    const m = Math.floor(_annSec / 60);
+    const s = _annSec % 60;
+    document.getElementById('refreshLabel').textContent = `${m}:${String(s).padStart(2, '0')}`;
+    if (_annSec <= 0) fetchAnn();
+  }, 1000);
 }
 
-/* ACTIVITY */
-function renderAct(){
-  const feed=getAct().filter(a=>a.uid===window._U?.uid);
-  const el=document.getElementById('actList');
-  if(!feed.length){el.innerHTML='<div class="empty">No activity yet.</div>';return;}
-  el.innerHTML=feed.slice(0,10).map(a=>`<div class="act-item"><div class="act-dot"></div><div><div class="act-time">${new Date(a.time).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</div><div class="act-txt">${esc(a.action)}</div></div></div>`).join('');
+/* ============================================================
+   ACTIVITY
+============================================================ */
+function renderAct() {
+  const el = document.getElementById('actList');
+  if (!_activity.length) {
+    el.innerHTML = '<div class="empty">No activity yet.</div>';
+    return;
+  }
+  el.innerHTML = _activity.slice(0, 10).map(a => `
+    <div class="act-item">
+      <div class="act-dot"></div>
+      <div>
+        <div class="act-time">${new Date(a.time).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</div>
+        <div class="act-txt">${esc(a.action)}</div>
+      </div>
+    </div>`).join('');
+
+  // Also update admin feed if visible
+  const af = document.getElementById('admFeed');
+  af.innerHTML = el.innerHTML || '<div class="empty">No activity.</div>';
 }
 
-/* ADMIN */
-function renderAdmin(){
-  const all=ls(LS_MEM);const ids=Object.keys(all);const now=new Date();
-  const nm=ids.filter(id=>{const m=all[id];if(!m.joinedRaw)return false;const d=new Date(m.joinedRaw);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).length;
-  document.getElementById('admTotal').textContent=ids.length||'1';
-  document.getElementById('admNew').textContent=nm||'—';
-  const el=document.getElementById('admList');
-  el.innerHTML=!ids.length?'<div class="empty">No members.</div>':ids.map(id=>{const m=all[id];const tv=m.tier||4;const sn=(m.name||'Member').replace(/'/g,"\\'");return`<div class="adm-row" id="ar-${id}"><div><div class="adm-name">${esc(m.name||'Unknown')}</div><div class="adm-meta">${esc(m.email||'')} · ${esc(m.role||'—')}</div></div><select class="tier-sel" id="ts-${id}"><option value="1" ${tv==1?'selected':''}>Tier I</option><option value="2" ${tv==2?'selected':''}>Tier II</option><option value="3" ${tv==3?'selected':''}>Tier III</option><option value="4" ${tv==4?'selected':''}>Tier IV</option></select><button class="btn sm" onclick="updateTier('${id}','${sn}')">Save</button></div>`;}).join('');
-  const f=getAct();const fe=document.getElementById('admFeed');
-  if(!f.length)return;
-  fe.innerHTML=f.slice(0,20).map(a=>`<div class="act-item"><div class="act-dot"></div><div><div class="act-time">${new Date(a.time).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})} · ${esc(a.name)}</div><div class="act-txt">${esc(a.action)}</div></div></div>`).join('');
-}
-function updateTier(uid,name){
-  const sel=document.getElementById('ts-'+uid);if(!sel)return;
-  const t=parseInt(sel.value);const m=getMeta(uid)||{};m.tier=t;setMeta(uid,m);
-  logAct(window._U.uid,window._clerkUserName,`Updated ${name}'s tier to ${TIER_LABELS[t]}`,true);
-  toast(`${name} → ${TIER_LABELS[t]}`);
-  const btn=document.querySelector(`#ar-${uid} .btn`);if(btn){btn.textContent='Saved ✓';setTimeout(()=>btn.textContent='Save',2000);}
-  renderAct();
+/* ============================================================
+   ADMIN DEBUG
+============================================================ */
+function renderAdminDebug() {
+  if (!_U?.isAdmin) return;
+  // Show raw publicMetadata so admin can verify what's on the user
+  const dbg = document.getElementById('metaDebug');
+  if (dbg && window._rawMeta) {
+    dbg.textContent = JSON.stringify(window._rawMeta, null, 2);
+  }
 }
 
-/* CLERK APPEARANCE */
-const APPEARANCE={
-  variables:{colorBackground:'#050505',colorText:'#F0EEEC',colorPrimary:'#C8A96E',colorInputBackground:'transparent',colorInputText:'#F0EEEC',borderRadius:'0px',fontFamily:"'Cormorant Garamond',Georgia,serif"},
-  elements:{card:{background:'transparent',border:'.5px solid rgba(200,169,110,.25)',boxShadow:'none',borderRadius:'0'},headerTitle:{fontFamily:"'Cinzel',serif",letterSpacing:'.2em',color:'#C8C8D0'},formFieldLabel:{color:'#888880',fontFamily:"'Cinzel',serif",letterSpacing:'.12em',fontSize:'.7rem'},formFieldInput:{background:'transparent',border:'.5px solid rgba(200,169,110,.3)',borderRadius:'0',color:'#F0EEEC'},formButtonPrimary:{background:'transparent',border:'.5px solid #C8A96E',borderRadius:'0',color:'#C8A96E',fontFamily:"'Cinzel',serif",letterSpacing:'.3em',textTransform:'uppercase',boxShadow:'none'},footerActionLink:{color:'#C8A96E'},avatarBox:{border:'.5px solid rgba(200,169,110,.35)',borderRadius:'0'}}
+/* ============================================================
+   CLERK APPEARANCE
+============================================================ */
+const APPEARANCE = {
+  variables: {
+    colorBackground: '#050505',
+    colorText: '#F0EEEC',
+    colorPrimary: '#C8A96E',
+    colorInputBackground: 'transparent',
+    colorInputText: '#F0EEEC',
+    borderRadius: '0px',
+    fontFamily: "'Cormorant Garamond',Georgia,serif"
+  },
+  elements: {
+    card: { background: 'transparent', border: '.5px solid rgba(200,169,110,.25)', boxShadow: 'none', borderRadius: '0' },
+    headerTitle: { fontFamily: "'Cinzel',serif", letterSpacing: '.2em', color: '#C8C8D0' },
+    formFieldLabel: { color: '#888880', fontFamily: "'Cinzel',serif", letterSpacing: '.12em', fontSize: '.7rem' },
+    formFieldInput: { background: 'transparent', border: '.5px solid rgba(200,169,110,.3)', borderRadius: '0', color: '#F0EEEC' },
+    formButtonPrimary: { background: 'transparent', border: '.5px solid #C8A96E', borderRadius: '0', color: '#C8A96E', fontFamily: "'Cinzel',serif", letterSpacing: '.3em', textTransform: 'uppercase', boxShadow: 'none' },
+    footerActionLink: { color: '#C8A96E' },
+    avatarBox: { border: '.5px solid rgba(200,169,110,.35)', borderRadius: '0' }
+  }
 };
 
-window.addEventListener('load',async()=>{
-  await Clerk.load();
-  async function showDash(user){
-    try{await user.reload();}catch(e){}
-    let meta=getMeta(user.id);
-    if(!meta){meta={name:user.fullName||user.firstName||'Member',email:user.primaryEmailAddress?.emailAddress||'',tier:4,division:'Vindex',role:null,joinedRaw:user.createdAt};setMeta(user.id,meta);}
-    Clerk.mountUserButton(document.getElementById('clerkBtn'),{appearance:APPEARANCE});
-    Clerk.mountUserProfile(document.getElementById('clerkProfile'),{appearance:APPEARANCE});
+/* ============================================================
+   MAIN INIT
+============================================================ */
+window.addEventListener('load', async () => {
+  setLoad('Loading Clerk…');
+
+  // Wait for Clerk to be available on the window
+  let attempts = 0;
+  while (typeof Clerk === 'undefined' && attempts < 30) {
+    await new Promise(r => setTimeout(r, 200));
+    attempts++;
+  }
+
+  if (typeof Clerk === 'undefined') {
+    showError(
+      'Clerk failed to load. This is usually caused by a truncated or invalid publishable key.',
+      'Check: data-clerk-publishable-key in the <script> tag. Full keys look like pk_live_XXXX... (80+ chars)'
+    );
+    return;
+  }
+
+  try {
+    setLoad('Authenticating…');
+    await Clerk.load();
+  } catch (e) {
+    showError(
+      'Clerk initialization failed. Your publishable key may be truncated or the Clerk domain may be misconfigured.',
+      e.message || String(e)
+    );
+    return;
+  }
+
+  async function showDash(user) {
+    setLoad('Loading your profile…');
+    try { await user.reload(); } catch (e) { /* non-fatal */ }
+
+    // Store raw metadata for debug
+    window._rawMeta = user.publicMetadata || {};
+
+    setLoad('Connecting to Supabase…');
+
+    // Mount Clerk UI components
+    try {
+      Clerk.mountUserButton(document.getElementById('clerkBtn'), { appearance: APPEARANCE });
+      Clerk.mountUserProfile(document.getElementById('clerkProfile'), { appearance: APPEARANCE });
+    } catch (e) {
+      console.warn('Clerk UI mount partial error:', e);
+    }
+
     populateDash(user);
+
+    // Show the shell
+    document.getElementById('topbar').style.display = 'flex';
+    document.getElementById('shell').style.display = 'flex';
+    const ls = document.getElementById('loadScreen');
+    ls.classList.add('out');
+    setTimeout(() => ls.remove(), 700);
+
+    // Fetch announcements after shell is shown
     await fetchAnn();
     startCountdown();
-    document.getElementById('topbar').style.display='flex';
-    document.getElementById('shell').style.display='flex';
-    const ls_=document.getElementById('loadScreen');ls_.classList.add('out');setTimeout(()=>ls_.remove(),700);
+
+    logAct(`Dashboard loaded · ${new Date().toLocaleTimeString()}`);
   }
-  if(Clerk.user){await showDash(Clerk.user);}
-  else{setTimeout(async()=>{if(Clerk.user)await showDash(Clerk.user);else window.location.href='https://vindex.wearelvo.com';},1200);}
-  Clerk.addListener(async({user})=>{if(user)await showDash(user);else window.location.href='https://vindex.wearelvo.com';});
+
+  if (Clerk.user) {
+    await showDash(Clerk.user);
+  } else {
+    // Give Clerk a moment to settle session state
+    setLoad('Checking session…');
+    await new Promise(r => setTimeout(r, 1000));
+    if (Clerk.user) {
+      await showDash(Clerk.user);
+    } else {
+      // Not signed in — redirect to main site
+      setLoad('Redirecting…');
+      setTimeout(() => {
+        window.location.href = 'https://vindex.wearelvo.com';
+      }, 800);
+    }
+  }
+
+  // Listen for auth changes (sign-out, etc.)
+  Clerk.addListener(async ({ user }) => {
+    if (user) {
+      await showDash(user);
+    } else {
+      window.location.href = 'https://vindex.wearelvo.com';
+    }
+  });
 });
 </script>
 </body>
