@@ -8,7 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;500&display=swap" rel="stylesheet"/>
 
-
+  <!--
+  ============================================================
+  IMPORTANT: Replace the Clerk publishable key below.
+  Your current key appears truncated. Get the full key from:
+  https://dashboard.clerk.com → Your App → API Keys
+  It should look like: pk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  ============================================================
+  -->
   <script
     async
     crossorigin="anonymous"
@@ -111,7 +118,7 @@
 
     /* STAT BAR */
     .stat-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:2rem}
-    .sc{background:var(--bg2);padding:1.2rem 1.4rem;position:relative;overflow:hidden;transition:background .25s}
+    .sc{background:var(--bg2);padding:1.2rem 1.4rem;position:relative;overflow:hidden;transition:background .25s;will-change:background;transform:translateZ(0)}
     .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s}
     .sc:hover{background:var(--gold-glow)}
     .sc:hover::after{transform:scaleX(1)}
@@ -123,7 +130,7 @@
     .g-full{margin-bottom:1.2rem}
 
     /* CARD */
-    .card{background:var(--bg2);border:.5px solid var(--border);position:relative;overflow:hidden}
+    .card{background:var(--bg2);border:.5px solid var(--border);position:relative}
     .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
     .ch{padding:1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;justify-content:space-between;align-items:center}
     .ct{font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;color:var(--gold);text-transform:uppercase}
@@ -131,11 +138,11 @@
     .cb{padding:1.2rem 1.4rem}
 
     /* DEAL ITEM */
-    .deal{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s}
+    .deal{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s;will-change:background;transform:translateZ(0)}
     .deal:last-child{border-bottom:none}
-    .deal::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transition:transform .25s;transform-origin:bottom}
+    .deal::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);opacity:0;transition:opacity .2s}
     .deal:hover{background:var(--gold-glow)}
-    .deal:hover::before{transform:scaleY(1)}
+    .deal:hover::before{opacity:1}
     .deal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;gap:.8rem}
     .deal-name{font-family:'Cinzel',serif;font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--chrome)}
     .deal-st{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.18em;padding:.18rem .5rem;text-transform:uppercase}
@@ -161,7 +168,7 @@
     .fg-val{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;color:var(--chrome)}
 
     /* ANNOUNCEMENTS */
-    .ann{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);transition:background .2s;position:relative}
+    .ann{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);transition:background .2s;position:relative;will-change:background;transform:translateZ(0)}
     .ann:last-child{border-bottom:none}
     .ann:hover{background:var(--gold-glow)}
     .ann.pinned{border-left:2px solid var(--gold);background:rgba(200,169,110,.03)}
@@ -431,7 +438,7 @@
       <div id="admBadgeWrap" style="display:none"><div class="adm-badge"><span>⬡ LVO Administration · Executive Access</span></div></div>
       <div class="tier-band">
         <div><div class="tb-tier-lbl">Current Standing</div><div class="tb-tier-val" id="acTier">—</div></div>
-        <div class="tb-note">Tier advancement is reviewed by LVO Holdings administration.</div>
+        <div class="tb-note" id="tierNote" style="display:none">Tier advancement is reviewed and updated by LVO Holdings administration.</div>
       </div>
       <div class="ig">
         <div class="ic"><div class="ic-lbl">Full Name</div><div class="ic-val" id="acName">—</div></div>
@@ -441,7 +448,7 @@
         <div class="ic"><div class="ic-lbl">Member Since</div><div class="ic-val" id="acJoined">—</div></div>
         <div class="ic"><div class="ic-lbl">Portal</div><div class="ic-val">Vindex Dashboard v2.1</div></div>
       </div>
-      <div class="card"><div class="ch"><span class="ct">Manage Account</span></div><div class="cb" id="clerkProfile"></div></div>
+      <div class="card" id="clerkProfileCard" style="overflow:visible"><div class="ch"><span class="ct">Manage Account</span></div><div class="cb" id="clerkProfile" style="overflow:visible"></div></div>
     </div>
 
     <!-- ADMIN -->
@@ -450,15 +457,21 @@
         <div class="ph-left"><div class="ph-eyebrow" style="color:var(--gold)">Executive</div><div class="ph-title">Admin Panel</div></div>
         <div class="ph-rule"></div>
       </div>
-      <div style="background:var(--bg2);border:.5px solid var(--border);padding:1.4rem;margin-bottom:1.2rem;font-size:.85rem;font-style:italic;color:var(--dim2);line-height:1.75">
-        <strong style="font-style:normal;color:var(--gold);font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.25em">NOTE · </strong>
-        To update a member's tier, set it directly on their Clerk user via
-        <code style="color:var(--chrome);font-size:.8rem">publicMetadata.tier</code> (integer 1–4).
-        Use the Clerk Dashboard or your backend API. Tier changes take effect on next sign-in.
+      <div class="stat-bar" style="margin-bottom:1.5rem">
+        <div class="sc"><div class="sc-lbl">Total Members</div><div class="sc-val" id="admTotal">—</div></div>
+        <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val">Vindex</div></div>
+        <div class="sc"><div class="sc-lbl">Your Standing</div><div class="sc-val" id="admMyTier">—</div></div>
+        <div class="sc"><div class="sc-lbl">Version</div><div class="sc-val">2.1 · 2026</div></div>
       </div>
       <div class="card" style="margin-bottom:1.2rem">
-        <div class="ch"><span class="ct">Your Metadata (Debug)</span></div>
-        <div class="cb"><pre id="metaDebug" style="font-size:.75rem;color:var(--dim2);white-space:pre-wrap;word-break:break-all;line-height:1.7">—</pre></div>
+        <div class="ch"><span class="ct">Member Tier Management</span><span class="cm">Changes apply on next sign-in</span></div>
+        <div class="cb">
+          <div style="margin-bottom:1rem;display:flex;gap:.8rem;flex-wrap:wrap;align-items:center">
+            <input class="ci" id="memberSearch" placeholder="Search by name or email…" style="max-width:280px" oninput="filterMembers()"/>
+            <span style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase" id="memberCount"></span>
+          </div>
+          <div id="admList"><div class="empty">Loading members…</div></div>
+        </div>
       </div>
       <div class="card">
         <div class="ch"><span class="ct">Activity Log</span></div>
@@ -558,7 +571,7 @@ function goTo(id) {
     p.classList.toggle('active', p.id === 'p-' + id)
   );
   if (id === 'announcements') clearAnnBadge();
-  if (id === 'admin') renderAdminDebug();
+  if (id === 'admin') renderAdminPanel();
 }
 
 /* ============================================================
@@ -614,6 +627,14 @@ function populateDash(user) {
   // Admin visibility
   document.getElementById('admBadgeWrap').style.display = isAdmin ? 'block' : 'none';
   document.getElementById('adminNav').style.display = isAdmin ? 'flex' : 'none';
+
+  // Tier note: only show for tier 3 and below (not for tier 1 principals or admins)
+  const tierNote = document.getElementById('tierNote');
+  if (tierNote) tierNote.style.display = (!isAdmin && tier >= 3) ? 'block' : 'none';
+
+  // Admin stat bar
+  const admMyTier = document.getElementById('admMyTier');
+  if (admMyTier) admMyTier.textContent = TIER_LABELS[tier] || TIER_LABELS[4];
 
   // Financial month label
   document.getElementById('finMonth').textContent = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -863,15 +884,156 @@ function renderAct() {
 }
 
 /* ============================================================
-   ADMIN DEBUG
+   ADMIN — TIER MANAGEMENT
+   Requires Clerk Backend API via a proxy/serverless function.
+   
+   HOW IT WORKS:
+   Since Clerk's frontend SDK doesn't allow updating OTHER users'
+   publicMetadata (only the current user), you need a tiny backend
+   endpoint. Options:
+     - A Vercel/Netlify serverless function
+     - A Make/Zapier webhook
+     - Your own Express/Next.js API route
+   
+   The endpoint should accept POST { userId, tier } and call:
+     PATCH https://api.clerk.com/v1/users/{userId}
+     Authorization: Bearer YOUR_CLERK_SECRET_KEY
+     { "public_metadata": { "tier": tier } }
+   
+   Set TIER_UPDATE_ENDPOINT below to your endpoint URL.
+   Leave empty to show "coming soon" state.
 ============================================================ */
-function renderAdminDebug() {
-  if (!_U?.isAdmin) return;
-  // Show raw publicMetadata so admin can verify what's on the user
-  const dbg = document.getElementById('metaDebug');
-  if (dbg && window._rawMeta) {
-    dbg.textContent = JSON.stringify(window._rawMeta, null, 2);
+const TIER_UPDATE_ENDPOINT = ''; // e.g. 'https://your-site.com/api/set-tier'
+
+let _members = []; // cached member list from Supabase lvo_members table
+
+async function renderAdminPanel() {
+  if (!_U?.isAdmin && _U?.tier !== 1) return;
+
+  const el = document.getElementById('admList');
+  const totalEl = document.getElementById('admTotal');
+
+  // Try to load members from Supabase lvo_vindex_members table
+  // This table should be populated by your Make/Clerk webhook
+  // Columns: clerk_id, name, email, tier, role, joined_at
+  el.innerHTML = '<div class="empty">Loading members…</div>';
+
+  try {
+    const res = await fetch(
+      `${SB_URL}/rest/v1/lvo_vindex_members?select=*&order=joined_at.desc`,
+      { headers: SB_H }
+    );
+    if (!res.ok) throw new Error(res.status);
+    _members = await res.json();
+  } catch (e) {
+    // Fallback: show only current user if table doesn't exist
+    _members = [{
+      clerk_id: _U.uid,
+      name: _U.name,
+      email: _U.email,
+      tier: _U.tier,
+      role: _U.role,
+      joined_at: new Date().toISOString()
+    }];
+    console.warn('lvo_vindex_members table not found, showing fallback:', e);
   }
+
+  if (totalEl) totalEl.textContent = _members.length;
+  renderMemberList(_members);
+}
+
+function filterMembers() {
+  const q = document.getElementById('memberSearch')?.value?.toLowerCase() || '';
+  const filtered = q
+    ? _members.filter(m => (m.name || '').toLowerCase().includes(q) || (m.email || '').toLowerCase().includes(q))
+    : _members;
+  renderMemberList(filtered);
+}
+
+function renderMemberList(list) {
+  const el = document.getElementById('admList');
+  const countEl = document.getElementById('memberCount');
+  if (countEl) countEl.textContent = `${list.length} member${list.length !== 1 ? 's' : ''}`;
+
+  if (!list.length) {
+    el.innerHTML = '<div class="empty">No members found.</div>';
+    return;
+  }
+
+  el.innerHTML = list.map(m => {
+    const tv = parseInt(m.tier) || 4;
+    const safeName = esc(m.name || 'Unknown');
+    const safeId = m.clerk_id || '';
+    return `
+    <div class="adm-row" id="ar-${safeId}" style="display:grid;grid-template-columns:1fr 160px 90px;gap:.8rem;align-items:center;padding:.95rem 0;border-bottom:.5px solid var(--border)">
+      <div>
+        <div style="font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.14em;color:var(--chrome)">${safeName}</div>
+        <div style="font-size:.78rem;font-style:italic;color:var(--dim);margin-top:.15rem">${esc(m.email || '')} · ${esc(m.role || '—')}</div>
+      </div>
+      <select id="ts-${safeId}" style="background:transparent;border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.42rem .65rem;cursor:pointer;outline:none;width:100%" ${safeId === _U.uid ? 'disabled title="Cannot change your own tier"' : ''}>
+        <option value="1" ${tv===1?'selected':''}>Tier I — Principal</option>
+        <option value="2" ${tv===2?'selected':''}>Tier II — Associate</option>
+        <option value="3" ${tv===3?'selected':''}>Tier III — Partner</option>
+        <option value="4" ${tv===4?'selected':''}>Tier IV — Member</option>
+      </select>
+      <button class="btn sm" onclick="saveTier('${safeId}','${safeName}')" ${safeId === _U.uid ? 'disabled' : ''}>Save</button>
+    </div>`;
+  }).join('');
+
+  // Remove last border
+  const rows = el.querySelectorAll('.adm-row');
+  if (rows.length) rows[rows.length - 1].style.borderBottom = 'none';
+}
+
+async function saveTier(clerkId, memberName) {
+  if (!clerkId) { toast('Missing Clerk user ID', true); return; }
+  const sel = document.getElementById('ts-' + clerkId);
+  if (!sel) return;
+  const newTier = parseInt(sel.value);
+  const btn = document.querySelector(`#ar-${clerkId} .btn`);
+
+  if (!TIER_UPDATE_ENDPOINT) {
+    // No endpoint configured — update Supabase only (as a record)
+    toast('No backend endpoint set. Update tier in Clerk Dashboard directly.', true);
+    return;
+  }
+
+  if (btn) { btn.disabled = true; btn.textContent = '…'; }
+
+  try {
+    const res = await fetch(TIER_UPDATE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: clerkId, tier: newTier })
+    });
+    if (!res.ok) throw new Error(await res.text());
+
+    // Also update in Supabase lvo_vindex_members if it exists
+    try {
+      await fetch(`${SB_URL}/rest/v1/lvo_vindex_members?clerk_id=eq.${clerkId}`, {
+        method: 'PATCH',
+        headers: { ...SB_H, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ tier: newTier })
+      });
+    } catch(e) { /* non-fatal */ }
+
+    // Update local cache
+    const m = _members.find(x => x.clerk_id === clerkId);
+    if (m) m.tier = newTier;
+
+    toast(`${memberName} → ${TIER_LABELS[newTier]}`);
+    logAct(`Updated ${memberName}'s tier to ${TIER_LABELS[newTier]}`);
+    if (btn) { btn.textContent = 'Saved ✓'; setTimeout(() => { btn.textContent = 'Save'; btn.disabled = false; }, 2000); }
+  } catch (e) {
+    console.error(e);
+    toast('Update failed — check your endpoint', true);
+    if (btn) { btn.disabled = false; btn.textContent = 'Save'; }
+  }
+}
+
+function renderAdminDebug() {
+  if (!_U?.isAdmin && _U?.tier !== 1) return;
+  renderAdminPanel();
 }
 
 /* ============================================================
