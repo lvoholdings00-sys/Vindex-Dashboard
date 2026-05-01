@@ -788,7 +788,7 @@ function renderOvAnn() {
 function renderAnnList() {
   const el = document.getElementById('annList');
   let data = [..._ann];
-  if (_annFilter === 'pinned') data = data.filter(a => a.pinned);
+  if (_annFilter === 'pinned') data = data.filter(a => a.pinned && (a.division === 'Vindex' || a.division === 'All'));
   if (_annFilter === 'all') data = data.filter(a => a.division === 'All' || a.division === 'Vindex');
   if (_annFilter === 'div') data = data.filter(a => a.division === 'Vindex');
   if (!data.length) {
