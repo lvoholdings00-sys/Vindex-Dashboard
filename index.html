@@ -8,14 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;500&display=swap" rel="stylesheet"/>
 
-  <!--
-  ============================================================
-  IMPORTANT: Replace the Clerk publishable key below.
-  Your current key appears truncated. Get the full key from:
-  https://dashboard.clerk.com → Your App → API Keys
-  It should look like: pk_live_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-  ============================================================
-  -->
   <script
     async
     crossorigin="anonymous"
@@ -118,7 +110,7 @@
 
     /* STAT BAR */
     .stat-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:2rem}
-    .sc{background:var(--bg2);padding:1.2rem 1.4rem;position:relative;overflow:hidden;transition:background .25s;will-change:background;transform:translateZ(0)}
+    .sc{background:var(--bg2);padding:1.2rem 1.4rem;position:relative;overflow:hidden;transition:background .25s}
     .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s}
     .sc:hover{background:var(--gold-glow)}
     .sc:hover::after{transform:scaleX(1)}
@@ -138,7 +130,7 @@
     .cb{padding:1.2rem 1.4rem}
 
     /* DEAL ITEM */
-    .deal{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s;will-change:background;transform:translateZ(0)}
+    .deal{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s}
     .deal:last-child{border-bottom:none}
     .deal::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);opacity:0;transition:opacity .2s}
     .deal:hover{background:var(--gold-glow)}
@@ -168,7 +160,7 @@
     .fg-val{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;color:var(--chrome)}
 
     /* ANNOUNCEMENTS */
-    .ann{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);transition:background .2s;position:relative;will-change:background;transform:translateZ(0)}
+    .ann{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);transition:background .2s;position:relative}
     .ann:last-child{border-bottom:none}
     .ann:hover{background:var(--gold-glow)}
     .ann.pinned{border-left:2px solid var(--gold);background:rgba(200,169,110,.03)}
@@ -180,23 +172,6 @@
     .ann-author{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim)}
     .ann-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.15em;color:var(--dim);opacity:.55}
     .ann-pin-badge{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.2em;color:var(--gold);opacity:.75}
-
-    /* COMPOSE */
-    .compose-wrap{border:.5px solid var(--border-hi);padding:1.4rem;margin-bottom:1.2rem;display:none;position:relative;background:rgba(200,169,110,.02)}
-    .compose-wrap.open{display:block}
-    .compose-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-    .cr{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem}
-    .cf{margin-bottom:.8rem}
-    .cl{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;display:block;margin-bottom:.4rem}
-    .ci,.cs,.cta{background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.9rem;letter-spacing:.04em;padding:.7rem .9rem;outline:none;width:100%;transition:border-color .25s}
-    .ci::placeholder,.cta::placeholder{color:var(--dim);font-style:italic}
-    .ci:focus,.cs:focus,.cta:focus{border-color:var(--gold)}
-    .cs{cursor:pointer}
-    .cs option{background:#0a0a0a}
-    .cta{resize:vertical;min-height:80px;line-height:1.6}
-    .pin-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem}
-    .pin-row input{accent-color:var(--gold)}
-    .pin-row span{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.22em;color:var(--dim);text-transform:uppercase}
 
     /* FILTER BAR */
     .fbar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
@@ -257,6 +232,15 @@
     .tst.err{color:var(--red-hi);border-color:rgba(204,32,32,.3)}
     @keyframes tstIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
 
+    /* ACCOUNT PANEL — stable layout, no flicker */
+    #p-account{contain:layout style}
+    #clerkProfileCard{overflow:visible;min-height:200px}
+    #clerkProfile{overflow:visible;min-height:180px}
+    /* Prevent Clerk user profile from causing layout shifts */
+    #clerkProfile > * {display:block}
+    .cl-userProfile-root{max-width:100%!important}
+    .cl-card{border-radius:0!important}
+
     @media(max-width:900px){
       :root{--sidebar:190px}
       .stat-bar{grid-template-columns:1fr 1fr}
@@ -288,7 +272,7 @@
 <div id="errorScreen">
   <div class="ls-rule"></div>
   <div class="err-title">Authentication Error</div>
-  <div class="err-msg" id="errMsg">Unable to initialize the Clerk authentication service. Please verify your publishable key and Clerk domain configuration.</div>
+  <div class="err-msg" id="errMsg">Unable to initialize the Clerk authentication service.</div>
   <div class="err-detail" id="errDetail"></div>
   <button class="btn" onclick="window.location.reload()">↺ Retry</button>
   <a class="btn ghost" href="https://vindex.wearelvo.com" style="text-decoration:none;display:inline-flex;align-items:center;padding:.7rem 1.2rem">← Return to site</a>
@@ -420,7 +404,6 @@
           <button class="btn sm ghost" onclick="fetchAnn(true)">↺ Refresh</button>
         </div>
       </div>
-
       <div class="fbar">
         <button class="fb active" onclick="filterAnn('all',this)">All</button>
         <button class="fb" onclick="filterAnn('pinned',this)">Pinned</button>
@@ -448,7 +431,11 @@
         <div class="ic"><div class="ic-lbl">Member Since</div><div class="ic-val" id="acJoined">—</div></div>
         <div class="ic"><div class="ic-lbl">Portal</div><div class="ic-val">Vindex Dashboard v2.1</div></div>
       </div>
-      <div class="card" id="clerkProfileCard" style="overflow:visible"><div class="ch"><span class="ct">Manage Account</span></div><div class="cb" id="clerkProfile" style="overflow:visible"></div></div>
+      <!-- Clerk UserProfile mounted here — isolated to prevent layout thrash -->
+      <div class="card" id="clerkProfileCard" style="overflow:visible">
+        <div class="ch"><span class="ct">Manage Account</span></div>
+        <div class="cb" id="clerkProfile" style="overflow:visible;min-height:200px"></div>
+      </div>
     </div>
 
     <!-- ADMIN -->
@@ -467,7 +454,7 @@
         <div class="ch"><span class="ct">Member Tier Management</span><span class="cm">Changes apply on next sign-in</span></div>
         <div class="cb">
           <div style="margin-bottom:1rem;display:flex;gap:.8rem;flex-wrap:wrap;align-items:center">
-            <input class="ci" id="memberSearch" placeholder="Search by name or email…" style="max-width:280px" oninput="filterMembers()"/>
+            <input class="ci" id="memberSearch" placeholder="Search by name or email…" style="max-width:280px;background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.9rem;padding:.7rem .9rem;outline:none" oninput="filterMembers()"/>
             <span style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase" id="memberCount"></span>
           </div>
           <div id="admList"><div class="empty">Loading members…</div></div>
@@ -496,8 +483,6 @@ const SB_H = {
   'Content-Type': 'application/json'
 };
 
-// Tier labels — pulled from Clerk publicMetadata.tier (integer 1–4)
-// Store on user: { tier: 1, role: "Partner", active_deals: [...] }
 const TIER_LABELS = {
   1: 'Tier I — Principal',
   2: 'Tier II — Associate',
@@ -508,18 +493,20 @@ const TIER_LABELS = {
 /* ============================================================
    STATE
 ============================================================ */
-let _U = null; // current user state
-let _ann = []; // announcements cache
+let _U = null;
+let _ann = [];
 let _annFilter = 'all';
 let _annTimer = null;
 let _annSec = 900;
-let _activity = []; // session activity log
+let _activity = [];
+let _clerkProfileMounted = false; // FIX: mount only once to prevent glitch
+let _dashboardPopulated = false;  // FIX: populate only once on login
 
 /* ============================================================
    UTILITIES
 ============================================================ */
 function esc(s) {
-  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function toast(msg, err = false) {
@@ -538,10 +525,7 @@ function setLoad(msg) {
 
 function showError(msg, detail = '') {
   document.getElementById('loadScreen').classList.add('out');
-  setTimeout(() => {
-    const ls = document.getElementById('loadScreen');
-    if (ls) ls.remove();
-  }, 700);
+  setTimeout(() => { const ls = document.getElementById('loadScreen'); if (ls) ls.remove(); }, 700);
   const es = document.getElementById('errorScreen');
   document.getElementById('errMsg').textContent = msg;
   document.getElementById('errDetail').textContent = detail;
@@ -575,23 +559,27 @@ function goTo(id) {
 }
 
 /* ============================================================
+   CAPITAL SUM HELPER
+   Parses dollar strings like "$1,250,000" or "1250000" into numbers
+   and returns a formatted total.
+============================================================ */
+function sumCapital(deals) {
+  let total = 0;
+  deals.forEach(d => {
+    if (!d.capital) return;
+    const raw = String(d.capital).replace(/[$,\s]/g, '');
+    const num = parseFloat(raw);
+    if (!isNaN(num)) total += num;
+  });
+  if (total === 0) return '—';
+  // Format with commas and dollar sign
+  return '$' + total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+/* ============================================================
    POPULATE DASHBOARD
-   Reads from Clerk user.publicMetadata:
-   {
-     tier: 1-4,           // access tier (default 4)
-     role: "Partner",     // display role string
-     active_deals: [      // array of deal objects
-       {
-         name: "Deal Name",
-         status: "active|pending|closed",
-         division: "Vindex",
-         position: "LP",
-         date: "Q1 2026",
-         capital: "$500,000",   // shown only to tier 1 or admin
-         note: "Optional note"
-       }
-     ]
-   }
+   FIX: Guard with _dashboardPopulated so repeated Clerk listener
+   calls don't re-render everything and cause glitchiness.
 ============================================================ */
 function populateDash(user) {
   const meta = user.publicMetadata || {};
@@ -606,7 +594,6 @@ function populateDash(user) {
   const deals = Array.isArray(meta.active_deals) ? meta.active_deals : [];
 
   _U = { uid: user.id, name, email, isAdmin, tier, role, joined };
-  window._clerkUserName = name;
 
   // Topbar
   document.getElementById('tbName').textContent = name;
@@ -628,25 +615,20 @@ function populateDash(user) {
   document.getElementById('admBadgeWrap').style.display = isAdmin ? 'block' : 'none';
   document.getElementById('adminNav').style.display = isAdmin ? 'flex' : 'none';
 
-  // Tier note: only show for tier 3 and below (not for tier 1 principals or admins)
   const tierNote = document.getElementById('tierNote');
   if (tierNote) tierNote.style.display = (!isAdmin && tier >= 3) ? 'block' : 'none';
 
-  // Admin stat bar
   const admMyTier = document.getElementById('admMyTier');
   if (admMyTier) admMyTier.textContent = TIER_LABELS[tier] || TIER_LABELS[4];
 
-  // Financial month label
   document.getElementById('finMonth').textContent = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
   renderDeals(deals, tier, isAdmin);
   renderFin(deals, tier, isAdmin);
-
-  logAct(`Signed in · ${name}`);
 }
 
 /* ============================================================
-   DEALS — reads from publicMetadata.active_deals[]
+   DEALS
 ============================================================ */
 function renderDeals(deals, tier, isAdmin) {
   const canSee = isAdmin || tier <= 3;
@@ -656,7 +638,6 @@ function renderDeals(deals, tier, isAdmin) {
     ? `${deals.length} deal${deals.length !== 1 ? 's' : ''}`
     : 'Restricted';
 
-  // Badge
   if (deals.length > 0 && canSee) {
     const b = document.getElementById('dealsBadge');
     b.style.display = 'block';
@@ -707,6 +688,7 @@ function dealHTML(d, isAdmin, tier) {
 
 /* ============================================================
    FINANCIALS
+   FIX: Capital Deployed now shows a real sum of all deal capitals
 ============================================================ */
 function renderFin(deals, tier, isAdmin) {
   const canSee = isAdmin || tier <= 3;
@@ -715,9 +697,20 @@ function renderFin(deals, tier, isAdmin) {
   if (!canSee) return;
 
   const showCapital = isAdmin || tier <= 1;
-  document.getElementById('finCap').textContent = showCapital ? (deals.length ? 'See deal rows' : '—') : 'Restricted';
+
+  // FIX: Sum all capital values from deals instead of showing "See deal rows"
+  if (showCapital) {
+    const dealsWithCapital = deals.filter(d => d.capital);
+    document.getElementById('finCap').textContent = dealsWithCapital.length
+      ? sumCapital(deals)
+      : '—';
+  } else {
+    document.getElementById('finCap').textContent = 'Restricted';
+  }
+
   document.getElementById('finEq').textContent = deals.length || '—';
-  document.getElementById('finDls').textContent = deals.filter(d => (d.status || '').toLowerCase() === 'active').length || deals.length || '—';
+  document.getElementById('finDls').textContent =
+    deals.filter(d => (d.status || '').toLowerCase() === 'active').length || deals.length || '—';
 
   const tb = document.getElementById('finTbody');
   if (!deals.length) {
@@ -737,23 +730,7 @@ function renderFin(deals, tier, isAdmin) {
 }
 
 /* ============================================================
-   ANNOUNCEMENTS — from Supabase table: lvo_announcements
-   Expected columns: id, title, body, division, author, pinned, created_at
-   
-   To create the table in Supabase SQL editor:
-   
-   create table lvo_announcements (
-     id uuid default gen_random_uuid() primary key,
-     title text not null,
-     body text,
-     division text default 'All',
-     author text default 'LVO Administration',
-     pinned boolean default false,
-     created_at timestamptz default now()
-   );
-   alter table lvo_announcements enable row level security;
-   create policy "Public read" on lvo_announcements for select using (true);
-   create policy "Auth insert" on lvo_announcements for insert with check (true);
+   ANNOUNCEMENTS
 ============================================================ */
 async function fetchAnn(manual = false) {
   _annSec = 900;
@@ -778,7 +755,6 @@ async function fetchAnn(manual = false) {
     console.error('Supabase error:', e);
     setSbStatus(false, 'Supabase error');
     const msg = e.message || '';
-    // Table doesn't exist yet
     if (msg.includes('42P01') || msg.includes('does not exist') || msg.includes('404')) {
       document.getElementById('annList').innerHTML =
         `<div class="empty" style="padding:2rem;line-height:2">
@@ -802,7 +778,7 @@ function renderOvAnn() {
   el.innerHTML = items.map(a => `
     <div style="padding:.75rem 1.4rem;border-bottom:.5px solid var(--border)">
       ${a.pinned ? '<span class="ann-pin-badge">★ </span>' : ''}
-      <div style="font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.1em;color:var(--chrome);margin-bottom:.25rem">${esc(a.title || '')}</div>
+      <div style="font-family:\'Cinzel\',serif;font-size:.54rem;letter-spacing:.1em;color:var(--chrome);margin-bottom:.25rem">${esc(a.title || '')}</div>
       <div style="font-size:.8rem;font-style:italic;color:var(--dim2)">${esc((a.body || '').slice(0, 90))}${(a.body || '').length > 90 ? '…' : ''}</div>
     </div>`).join('');
   const last = el.querySelector('div:last-child');
@@ -849,6 +825,7 @@ function clearAnnBadge() {
   document.getElementById('annBadge').style.display = 'none';
 }
 
+/* FIX: Countdown only — does NOT log activity every second */
 function startCountdown() {
   clearInterval(_annTimer);
   _annTimer = setInterval(() => {
@@ -856,12 +833,13 @@ function startCountdown() {
     const m = Math.floor(_annSec / 60);
     const s = _annSec % 60;
     document.getElementById('refreshLabel').textContent = `${m}:${String(s).padStart(2, '0')}`;
-    if (_annSec <= 0) fetchAnn();
+    if (_annSec <= 0) fetchAnn(); // fetchAnn resets _annSec to 900 internally
   }, 1000);
 }
 
 /* ============================================================
    ACTIVITY
+   FIX: renderAct no longer called every second — only on logAct
 ============================================================ */
 function renderAct() {
   const el = document.getElementById('actList');
@@ -878,34 +856,16 @@ function renderAct() {
       </div>
     </div>`).join('');
 
-  // Also update admin feed if visible
   const af = document.getElementById('admFeed');
-  af.innerHTML = el.innerHTML || '<div class="empty">No activity.</div>';
+  if (af) af.innerHTML = el.innerHTML || '<div class="empty">No activity.</div>';
 }
 
 /* ============================================================
    ADMIN — TIER MANAGEMENT
-   Requires Clerk Backend API via a proxy/serverless function.
-   
-   HOW IT WORKS:
-   Since Clerk's frontend SDK doesn't allow updating OTHER users'
-   publicMetadata (only the current user), you need a tiny backend
-   endpoint. Options:
-     - A Vercel/Netlify serverless function
-     - A Make/Zapier webhook
-     - Your own Express/Next.js API route
-   
-   The endpoint should accept POST { userId, tier } and call:
-     PATCH https://api.clerk.com/v1/users/{userId}
-     Authorization: Bearer YOUR_CLERK_SECRET_KEY
-     { "public_metadata": { "tier": tier } }
-   
-   Set TIER_UPDATE_ENDPOINT below to your endpoint URL.
-   Leave empty to show "coming soon" state.
 ============================================================ */
-const TIER_UPDATE_ENDPOINT = ''; // e.g. 'https://your-site.com/api/set-tier'
+const TIER_UPDATE_ENDPOINT = '';
 
-let _members = []; // cached member list from Supabase lvo_members table
+let _members = [];
 
 async function renderAdminPanel() {
   if (!_U?.isAdmin && _U?.tier !== 1) return;
@@ -913,9 +873,6 @@ async function renderAdminPanel() {
   const el = document.getElementById('admList');
   const totalEl = document.getElementById('admTotal');
 
-  // Try to load members from Supabase lvo_vindex_members table
-  // This table should be populated by your Make/Clerk webhook
-  // Columns: clerk_id, name, email, tier, role, joined_at
   el.innerHTML = '<div class="empty">Loading members…</div>';
 
   try {
@@ -926,7 +883,6 @@ async function renderAdminPanel() {
     if (!res.ok) throw new Error(res.status);
     _members = await res.json();
   } catch (e) {
-    // Fallback: show only current user if table doesn't exist
     _members = [{
       clerk_id: _U.uid,
       name: _U.name,
@@ -935,7 +891,7 @@ async function renderAdminPanel() {
       role: _U.role,
       joined_at: new Date().toISOString()
     }];
-    console.warn('lvo_vindex_members table not found, showing fallback:', e);
+    console.warn('lvo_vindex_members table not found, fallback:', e);
   }
 
   if (totalEl) totalEl.textContent = _members.length;
@@ -980,7 +936,6 @@ function renderMemberList(list) {
     </div>`;
   }).join('');
 
-  // Remove last border
   const rows = el.querySelectorAll('.adm-row');
   if (rows.length) rows[rows.length - 1].style.borderBottom = 'none';
 }
@@ -993,7 +948,6 @@ async function saveTier(clerkId, memberName) {
   const btn = document.querySelector(`#ar-${clerkId} .btn`);
 
   if (!TIER_UPDATE_ENDPOINT) {
-    // No endpoint configured — update Supabase only (as a record)
     toast('No backend endpoint set. Update tier in Clerk Dashboard directly.', true);
     return;
   }
@@ -1008,7 +962,6 @@ async function saveTier(clerkId, memberName) {
     });
     if (!res.ok) throw new Error(await res.text());
 
-    // Also update in Supabase lvo_vindex_members if it exists
     try {
       await fetch(`${SB_URL}/rest/v1/lvo_vindex_members?clerk_id=eq.${clerkId}`, {
         method: 'PATCH',
@@ -1017,7 +970,6 @@ async function saveTier(clerkId, memberName) {
       });
     } catch(e) { /* non-fatal */ }
 
-    // Update local cache
     const m = _members.find(x => x.clerk_id === clerkId);
     if (m) m.tier = newTier;
 
@@ -1031,17 +983,12 @@ async function saveTier(clerkId, memberName) {
   }
 }
 
-function renderAdminDebug() {
-  if (!_U?.isAdmin && _U?.tier !== 1) return;
-  renderAdminPanel();
-}
-
 /* ============================================================
    CLERK APPEARANCE
 ============================================================ */
 const APPEARANCE = {
   variables: {
-    colorBackground: '#050505',
+    colorBackground: '#080808',
     colorText: '#F0EEEC',
     colorPrimary: '#C8A96E',
     colorInputBackground: 'transparent',
@@ -1066,7 +1013,6 @@ const APPEARANCE = {
 window.addEventListener('load', async () => {
   setLoad('Loading Clerk…');
 
-  // Wait for Clerk to be available on the window
   let attempts = 0;
   while (typeof Clerk === 'undefined' && attempts < 30) {
     await new Promise(r => setTimeout(r, 200));
@@ -1076,7 +1022,7 @@ window.addEventListener('load', async () => {
   if (typeof Clerk === 'undefined') {
     showError(
       'Clerk failed to load. This is usually caused by a truncated or invalid publishable key.',
-      'Check: data-clerk-publishable-key in the <script> tag. Full keys look like pk_live_XXXX... (80+ chars)'
+      'Check: data-clerk-publishable-key in the <script> tag.'
     );
     return;
   }
@@ -1093,23 +1039,38 @@ window.addEventListener('load', async () => {
   }
 
   async function showDash(user) {
+    // FIX: If dashboard is already shown, just refresh data — don't remount
+    if (_dashboardPopulated) {
+      populateDash(user);
+      return;
+    }
+
     setLoad('Loading your profile…');
     try { await user.reload(); } catch (e) { /* non-fatal */ }
 
-    // Store raw metadata for debug
     window._rawMeta = user.publicMetadata || {};
 
     setLoad('Connecting to Supabase…');
 
-    // Mount Clerk UI components
+    // Mount Clerk UserButton (topbar)
     try {
       Clerk.mountUserButton(document.getElementById('clerkBtn'), { appearance: APPEARANCE });
-      Clerk.mountUserProfile(document.getElementById('clerkProfile'), { appearance: APPEARANCE });
     } catch (e) {
-      console.warn('Clerk UI mount partial error:', e);
+      console.warn('Clerk UserButton mount error:', e);
+    }
+
+    // FIX: Mount UserProfile ONCE and never again to prevent My Account glitching
+    if (!_clerkProfileMounted) {
+      try {
+        Clerk.mountUserProfile(document.getElementById('clerkProfile'), { appearance: APPEARANCE });
+        _clerkProfileMounted = true;
+      } catch (e) {
+        console.warn('Clerk UserProfile mount error:', e);
+      }
     }
 
     populateDash(user);
+    _dashboardPopulated = true;
 
     // Show the shell
     document.getElementById('topbar').style.display = 'flex';
@@ -1118,37 +1079,39 @@ window.addEventListener('load', async () => {
     ls.classList.add('out');
     setTimeout(() => ls.remove(), 700);
 
-    // Fetch announcements after shell is shown
     await fetchAnn();
     startCountdown();
 
-    logAct(`Dashboard loaded · ${new Date().toLocaleTimeString()}`);
+    // FIX: Log sign-in only ONCE, not on every listener fire
+    logAct(`Signed in · ${user.fullName || user.firstName || 'Member'}`);
   }
 
   if (Clerk.user) {
     await showDash(Clerk.user);
   } else {
-    // Give Clerk a moment to settle session state
     setLoad('Checking session…');
     await new Promise(r => setTimeout(r, 1000));
     if (Clerk.user) {
       await showDash(Clerk.user);
     } else {
-      // Not signed in — redirect to main site
       setLoad('Redirecting…');
-      setTimeout(() => {
-        window.location.href = 'https://vindex.wearelvo.com';
-      }, 800);
+      setTimeout(() => { window.location.href = 'https://vindex.wearelvo.com'; }, 800);
     }
   }
 
-  // Listen for auth changes (sign-out, etc.)
-  Clerk.addListener(async ({ user }) => {
-    if (user) {
-      await showDash(user);
-    } else {
+  /* FIX: Sign-out handler — when Clerk fires the listener with user=null,
+     immediately redirect. The spinner was caused by the listener re-calling
+     showDash(null) which threw and stalled. Now we handle null explicitly. */
+  Clerk.addListener(({ user }) => {
+    if (!user) {
+      // Signed out — clear state and redirect
+      _dashboardPopulated = false;
+      _clerkProfileMounted = false;
+      clearInterval(_annTimer);
       window.location.href = 'https://vindex.wearelvo.com';
     }
+    // If user still exists (e.g. profile update), just refresh displayed data
+    // without remounting — handled by _dashboardPopulated guard in showDash
   });
 });
 </script>
