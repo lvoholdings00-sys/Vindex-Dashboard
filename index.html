@@ -240,6 +240,10 @@
     #clerkProfile > * {display:block}
     .cl-userProfile-root{max-width:100%!important}
     .cl-card{border-radius:0!important}
+    .cl-avatarBox{border-radius:50%!important;overflow:hidden!important}
+    .cl-avatar{border-radius:50%!important}
+    .cl-userButtonAvatarBox{border-radius:50%!important;overflow:hidden!important}
+    .cl-userButtonAvatar{border-radius:50%!important}
 
     @media(max-width:900px){
       :root{--sidebar:190px}
@@ -1004,7 +1008,7 @@ const APPEARANCE = {
     formFieldInput: { background: 'transparent', border: '.5px solid rgba(200,169,110,.3)', borderRadius: '0', color: '#F0EEEC' },
     formButtonPrimary: { background: 'transparent', border: '.5px solid #C8A96E', borderRadius: '0', color: '#C8A96E', fontFamily: "'Cinzel',serif", letterSpacing: '.3em', textTransform: 'uppercase', boxShadow: 'none' },
     footerActionLink: { color: '#C8A96E' },
-    avatarBox: { border: '.5px solid rgba(200,169,110,.35)', borderRadius: '0' },
+    avatarBox: { border: '.5px solid rgba(200,169,110,.35)', borderRadius: '50%' },
     userButtonPopoverCard: { background: '#080808', border: '.5px solid rgba(200,169,110,.25)', boxShadow: '0 8px 32px rgba(0,0,0,.8)' },
     userButtonPopoverActionButton: { color: '#F0EEEC' },
     userButtonPopoverActionButtonText: { color: '#F0EEEC' },
