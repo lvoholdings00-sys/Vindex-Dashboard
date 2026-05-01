@@ -770,7 +770,7 @@ async function fetchAnn(manual = false) {
 
 function renderOvAnn() {
   const el = document.getElementById('ovAnn');
-  const items = _ann.slice(0, 3);
+  const items = _ann.filter(a => a.division === 'Vindex' || a.division === 'All').slice(0, 3);
   if (!items.length) {
     el.innerHTML = '<div class="empty">No announcements yet.</div>';
     return;
