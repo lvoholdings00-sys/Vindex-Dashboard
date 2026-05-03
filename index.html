@@ -31,15 +31,14 @@
       --bg:#000000;--bg2:#000000;--bg3:#000000;
       --chrome:#C8C8D0;--white:#F0EEEC;--dim:#6A6A64;--dim2:#888880;
       --border:rgba(200,169,110,.14);--border-hi:rgba(200,169,110,.38);
-      --sidebar:220px;
-      --bottom-nav:56px;
+      --sidebar:220px;--bottom-nav:56px;
     }
     html,body{height:100%;overflow:hidden}
     body{background:var(--bg);color:var(--white);font-family:'Cormorant Garamond',Georgia,serif;display:flex;flex-direction:column}
     body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.028;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 
-    /* LOAD */
+    /* ── LOAD ── */
     #loadScreen{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity .6s ease}
     #loadScreen.out{opacity:0;pointer-events:none}
     .ls-rule{width:1px;height:80px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);animation:lsPulse 1.8s ease-in-out infinite}
@@ -52,14 +51,14 @@
     .ls-bar-fill{position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:lsBar 1.4s ease-in-out infinite}
     @keyframes lsBar{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
 
-    /* ERROR */
+    /* ── ERROR ── */
     #errorScreen{position:fixed;inset:0;z-index:8999;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;padding:2rem;text-align:center}
     #errorScreen.show{display:flex}
     .err-title{font-family:'Cinzel',serif;font-size:1.2rem;letter-spacing:.2em;color:var(--red-hi)}
     .err-msg{font-size:.95rem;font-style:italic;color:var(--dim2);max-width:480px;line-height:1.8}
     .err-detail{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.25em;color:var(--dim);border:.5px solid var(--border);padding:.8rem 1.2rem;max-width:480px;word-break:break-all}
 
-    /* TOPBAR */
+    /* ── TOPBAR ── */
     #topbar{height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 1.8rem;background:var(--bg);border-bottom:.5px solid var(--border);position:relative;z-index:100}
     .tb-left{display:flex;align-items:center;gap:1.4rem}
     .tb-mark{font-family:'Cinzel',serif;font-size:.78rem;font-weight:600;letter-spacing:.28em;color:var(--gold)}
@@ -70,10 +69,10 @@
     .tb-name{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.2em;color:var(--dim2);text-transform:uppercase}
     #clerkBtn{display:flex;align-items:center}
 
-    /* SHELL */
+    /* ── SHELL ── */
     #shell{flex:1;display:flex;overflow:hidden;position:relative;z-index:1}
 
-    /* SIDEBAR */
+    /* ── SIDEBAR ── */
     #sidebar{width:var(--sidebar);flex-shrink:0;display:flex;flex-direction:column;background:var(--bg2);border-right:.5px solid var(--border);overflow-y:auto}
     #sidebar::-webkit-scrollbar{width:2px}
     #sidebar::-webkit-scrollbar-thumb{background:var(--border)}
@@ -88,6 +87,7 @@
     .nav-item:hover .nav-lbl{color:var(--chrome)}
     .nav-item.active .nav-lbl{color:var(--gold)}
     .nav-badge{margin-left:auto;font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.12em;color:var(--gold);background:rgba(200,169,110,.1);border:.5px solid var(--border);padding:.12rem .38rem}
+    .nav-badge.red{color:var(--red-hi);background:rgba(204,32,32,.08);border-color:rgba(204,32,32,.3)}
     .sb-foot{margin-top:auto;padding:1rem;border-top:.5px solid var(--border)}
     .sb-back{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.25em;color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .2s;display:block;padding:.4rem 0}
     .sb-back:hover{color:var(--gold)}
@@ -98,15 +98,8 @@
     .sb-status{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;padding:.3rem 0;display:flex;align-items:center;gap:.4rem}
     .sb-status.ok{color:var(--gold)}.sb-status.err{color:var(--red-hi)}
 
-    /* MOBILE BOTTOM NAV */
-    #bottomNav{
-      display:none;position:fixed;bottom:0;left:0;right:0;
-      padding-bottom:calc(env(safe-area-inset-bottom) + 100px);
-      margin-bottom:-100px;
-      background:rgba(0,0,0,.96);
-      border-top:.5px solid var(--border);
-      z-index:200;padding-left:.3rem;padding-right:.3rem;
-    }
+    /* ── MOBILE BOTTOM NAV ── */
+    #bottomNav{display:none;position:fixed;bottom:0;left:0;right:0;padding-bottom:calc(env(safe-area-inset-bottom) + 100px);margin-bottom:-100px;background:rgba(0,0,0,.96);border-top:.5px solid var(--border);z-index:200;padding-left:.3rem;padding-right:.3rem}
     .bn-inner{display:flex;align-items:stretch;height:var(--bottom-nav);overflow-x:auto;-webkit-overflow-scrolling:touch;gap:0}
     .bn-inner::-webkit-scrollbar{display:none}
     .bn-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;padding:.4rem .55rem;cursor:pointer;min-width:52px;flex:1;border-top:2px solid transparent;transition:all .18s;position:relative}
@@ -117,13 +110,14 @@
     .bn-lbl{font-family:'Cinzel',serif;font-size:.3rem;letter-spacing:.18em;color:var(--dim2);text-transform:uppercase;white-space:nowrap;transition:color .18s}
     .bn-dot{position:absolute;top:.35rem;right:.35rem;width:5px;height:5px;border-radius:50%;background:var(--gold);display:none}
     .bn-dot.show{display:block}
+    .bn-dot.red{background:var(--red-hi)}
 
-    /* MAIN */
+    /* ── MAIN ── */
     #main{flex:1;overflow-y:auto;padding:2.2rem 2.4rem 3rem;background:var(--bg)}
     #main::-webkit-scrollbar{width:2px}
     #main::-webkit-scrollbar-thumb{background:var(--border)}
 
-    /* PANELS */
+    /* ── PANELS ── */
     .panel{display:none}.panel.active{display:block;animation:panelIn .3s cubic-bezier(.16,1,.3,1)}
     @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
@@ -139,8 +133,11 @@
     .sc:hover{background:var(--gold-glow)}.sc:hover::after{transform:scaleX(1)}
     .sc-lbl{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.4em;color:var(--dim);text-transform:uppercase;margin-bottom:.4rem}
     .sc-val{font-family:'Cinzel',serif;font-size:.82rem;font-weight:600;letter-spacing:.1em;color:var(--chrome)}
+    .sc-val.warn{color:#f59e0b}
+    .sc-val.alert{color:var(--red-hi)}
 
     .g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
     .g-full{margin-bottom:1.2rem}
 
     .card{background:var(--bg2);border:.5px solid var(--border);position:relative}
@@ -151,36 +148,84 @@
     .cb{padding:1.2rem 1.4rem}
     .empty{font-size:.88rem;font-style:italic;color:var(--dim);padding:1.2rem 0;text-align:center}
 
-    /* PROPERTY / DEAL */
-    .deal{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s;will-change:background}
-    .deal:last-child{border-bottom:none}
-    .deal::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);opacity:0;transition:opacity .2s;pointer-events:none}
-    .deal:hover{background:var(--gold-glow)}.deal:hover::before{opacity:1}
-    .deal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;gap:.8rem;flex-wrap:wrap}
-    .deal-name{font-family:'Cinzel',serif;font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--chrome)}
-    .deal-st{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.18em;padding:.18rem .5rem;text-transform:uppercase}
-    .deal-st.active{color:#22c55e;border:.5px solid rgba(34,197,94,.28);background:rgba(34,197,94,.05)}
-    .deal-st.pending{color:var(--gold);border:.5px solid rgba(200,169,110,.28);background:rgba(200,169,110,.05)}
-    .deal-st.under-contract{color:#60a5fa;border:.5px solid rgba(96,165,250,.28);background:rgba(96,165,250,.05)}
-    .deal-st.closed{color:var(--dim);border:.5px solid rgba(100,100,95,.2)}
-    .deal-meta{display:flex;gap:1.4rem;flex-wrap:wrap}
-    .dm-lbl{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;margin-bottom:.15rem}
-    .dm-val{font-size:.82rem;font-style:italic;color:var(--chrome)}
-    .deal-note{margin-top:.6rem;font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.6;border-top:.5px solid var(--border);padding-top:.55rem}
+    /* ── PROPERTY ROW ── */
+    .prop-row{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s;will-change:background}
+    .prop-row:last-child{border-bottom:none}
+    .prop-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);opacity:0;transition:opacity .2s;pointer-events:none}
+    .prop-row:hover{background:var(--gold-glow)}.prop-row:hover::before{opacity:1}
+    .prop-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.6rem;gap:.8rem;flex-wrap:wrap}
+    .prop-name{font-family:'Cinzel',serif;font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--chrome)}
+    .prop-address{font-size:.8rem;font-style:italic;color:var(--dim2);margin-top:.15rem}
+    .prop-badges{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+    .badge{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.18em;padding:.18rem .5rem;text-transform:uppercase}
+    .badge.active{color:#22c55e;border:.5px solid rgba(34,197,94,.28);background:rgba(34,197,94,.05)}
+    .badge.pending{color:var(--gold);border:.5px solid rgba(200,169,110,.28);background:rgba(200,169,110,.05)}
+    .badge.under-contract{color:#60a5fa;border:.5px solid rgba(96,165,250,.28);background:rgba(96,165,250,.05)}
+    .badge.vacant{color:var(--red-hi);border:.5px solid rgba(204,32,32,.28);background:rgba(204,32,32,.05)}
+    .badge.occupied{color:#22c55e;border:.5px solid rgba(34,197,94,.28);background:rgba(34,197,94,.05)}
+    .badge.maintenance{color:#f59e0b;border:.5px solid rgba(245,158,11,.28);background:rgba(245,158,11,.05)}
+    .badge.type{color:var(--dim2);border:.5px solid var(--border)}
+    .prop-meta{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:.5rem}
+    .pm-lbl{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;margin-bottom:.15rem}
+    .pm-val{font-size:.82rem;font-style:italic;color:var(--chrome)}
+    .prop-note{margin-top:.6rem;font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.6;border-top:.5px solid var(--border);padding-top:.55rem}
 
-    /* FINANCIALS TABLE */
-    .fin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1.2rem}
-    .fgc{background:var(--bg2);padding:1.1rem 1.3rem}
-    .fg-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.35rem}
-    .fg-val{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;color:var(--chrome)}
-    .ft{width:100%;border-collapse:collapse}
-    .ft th{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;padding:.65rem 1rem;border-bottom:.5px solid var(--border);text-align:left;font-weight:400}
-    .ft td{padding:.85rem 1rem;border-bottom:.5px solid rgba(200,169,110,.05);font-size:.84rem;font-style:italic;color:var(--chrome)}
-    .ft tr:last-child td{border-bottom:none}
-    .ft tr:hover td{background:var(--gold-glow)}
-    .ft-lbl{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;font-style:normal;display:block;margin-bottom:.18rem}
+    /* ── WORK ORDER ── */
+    .wo-row{padding:1.1rem 1.4rem;border-bottom:.5px solid var(--border);display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center;transition:background .2s}
+    .wo-row:last-child{border-bottom:none}
+    .wo-row:hover{background:var(--gold-glow)}
+    .wo-priority{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:.2rem}
+    .wo-priority.critical{background:var(--red-hi)}
+    .wo-priority.high{background:#f59e0b}
+    .wo-priority.medium{background:var(--gold)}
+    .wo-priority.low{background:var(--dim)}
+    .wo-body{}
+    .wo-title{font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.12em;color:var(--chrome);margin-bottom:.25rem}
+    .wo-meta{font-size:.78rem;font-style:italic;color:var(--dim2);display:flex;gap:.8rem;flex-wrap:wrap}
+    .wo-status{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.18em;padding:.2rem .55rem;text-transform:uppercase;white-space:nowrap}
+    .wo-status.open{color:var(--red-hi);border:.5px solid rgba(204,32,32,.28)}
+    .wo-status.in-progress{color:#f59e0b;border:.5px solid rgba(245,158,11,.28)}
+    .wo-status.completed{color:#22c55e;border:.5px solid rgba(34,197,94,.28)}
+    .wo-status.scheduled{color:#60a5fa;border:.5px solid rgba(96,165,250,.28)}
 
-    /* ANNOUNCEMENTS */
+    /* ── WORK ORDER FORM ── */
+    .wo-form{padding:1.4rem;border-top:.5px solid var(--border)}
+    .wo-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem}
+    .form-group{display:flex;flex-direction:column;gap:.35rem}
+    .form-label{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.28em;color:var(--dim);text-transform:uppercase}
+    .form-input,.form-select,.form-textarea{background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.9rem;padding:.65rem .9rem;outline:none;transition:border-color .3s;width:100%}
+    .form-input::placeholder,.form-textarea::placeholder{color:var(--dim);font-style:italic}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold)}
+    .form-select option{background:#0a0a0a}
+    .form-textarea{resize:vertical;min-height:68px;line-height:1.5}
+    .form-full{grid-column:1/-1}
+
+    /* ── VALUATION ── */
+    .val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1.2rem}
+    .val-cell{background:var(--bg2);padding:1.2rem 1.4rem}
+    .val-lbl{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.4rem}
+    .val-num{font-family:'Cinzel',serif;font-size:.82rem;font-weight:600;letter-spacing:.1em;color:var(--chrome)}
+    .val-sub{font-size:.78rem;font-style:italic;color:var(--dim2);margin-top:.2rem}
+    .val-change{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.18em;margin-top:.25rem}
+    .val-change.up{color:#22c55e}
+    .val-change.down{color:var(--red-hi)}
+
+    /* ── TEAM ── */
+    .team-row{padding:1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;align-items:center;gap:1rem;flex-wrap:wrap;transition:background .2s}
+    .team-row:last-child{border-bottom:none}
+    .team-row:hover{background:var(--gold-glow)}
+    .team-avatar{width:32px;height:32px;border-radius:50%;background:var(--gold-dim);border:.5px solid var(--border-hi);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .team-initials{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.1em;color:var(--gold)}
+    .team-info{flex:1;min-width:0}
+    .team-name{font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.14em;color:var(--chrome)}
+    .team-role{font-size:.82rem;font-style:italic;color:var(--dim2);margin-top:.15rem}
+    .team-props{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.18em;color:var(--dim);margin-top:.2rem}
+    .team-status{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.18em;padding:.2rem .55rem;white-space:nowrap}
+    .team-status.available{color:#22c55e;border:.5px solid rgba(34,197,94,.28)}
+    .team-status.on-site{color:var(--gold);border:.5px solid rgba(200,169,110,.28)}
+    .team-status.off{color:var(--dim);border:.5px solid var(--border)}
+
+    /* ── ANNOUNCEMENTS ── */
     .ann{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);transition:background .2s;position:relative}
     .ann:last-child{border-bottom:none}
     .ann:hover{background:var(--gold-glow)}
@@ -197,7 +242,19 @@
     .fb{background:transparent;border:.5px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.22em;padding:.42rem .75rem;cursor:pointer;text-transform:uppercase;transition:all .2s}
     .fb:hover,.fb.active{border-color:var(--gold);color:var(--gold)}
 
-    /* ACCOUNT */
+    /* ── FINANCIALS ── */
+    .fin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1.2rem}
+    .fgc{background:var(--bg2);padding:1.1rem 1.3rem}
+    .fg-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.35rem}
+    .fg-val{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;color:var(--chrome)}
+    .ft{width:100%;border-collapse:collapse}
+    .ft th{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;padding:.65rem 1rem;border-bottom:.5px solid var(--border);text-align:left;font-weight:400}
+    .ft td{padding:.85rem 1rem;border-bottom:.5px solid rgba(200,169,110,.05);font-size:.84rem;font-style:italic;color:var(--chrome)}
+    .ft tr:last-child td{border-bottom:none}
+    .ft tr:hover td{background:var(--gold-glow)}
+    .ft-lbl{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;font-style:normal;display:block;margin-bottom:.18rem}
+
+    /* ── ACCOUNT ── */
     .tier-band{display:flex;align-items:center;justify-content:space-between;border:.5px solid var(--border-hi);padding:1.3rem 1.6rem;margin-bottom:1.2rem;flex-wrap:wrap;gap:1rem;background:rgba(200,169,110,.025)}
     .tb-tier-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem}
     .tb-tier-val{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.18em;color:var(--gold)}
@@ -212,7 +269,7 @@
     .ln-text{font-family:'Cinzel',serif;font-size:.45rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;line-height:1.9}
     .ln-text span{color:var(--red-hi)}
 
-    /* ACTIVITY */
+    /* ── ACTIVITY ── */
     .act-list{max-height:260px;overflow-y:auto;padding:0 1.4rem}
     .act-list::-webkit-scrollbar{width:2px}
     .act-list::-webkit-scrollbar-thumb{background:var(--border)}
@@ -223,24 +280,20 @@
     .act-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.18em;color:var(--dim);margin-bottom:.12rem}
     .act-txt{font-size:.82rem;font-style:italic;color:var(--chrome);line-height:1.5}
 
-    /* ADMIN */
+    /* ── ADMIN ── */
     .adm-row{display:grid;grid-template-columns:1fr 160px 90px;gap:.8rem;align-items:center;padding:.95rem 0;border-bottom:.5px solid var(--border)}
     .adm-row:last-child{border-bottom:none}
 
-    /* BUTTONS */
+    /* ── BUTTONS ── */
     .btn{background:transparent;border:.5px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;padding:.7rem 1.2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s}
     .btn:hover{background:var(--gold);color:var(--bg)}
+    .btn.danger{border-color:var(--red-hi);color:var(--red-hi)}
+    .btn.danger:hover{background:var(--red-hi);color:var(--bg)}
     .btn.ghost{border-color:var(--border);color:var(--dim2)}
     .btn.ghost:hover{background:var(--border);color:var(--chrome)}
     .btn.sm{font-size:.38rem;padding:.5rem .85rem}
     .btn:disabled{opacity:.38;cursor:not-allowed}
     .btn-row{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
-
-    /* PROPERTY TYPE TAGS */
-    .prop-tag{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;border:.5px solid var(--border);color:var(--dim2);padding:.18rem .5rem;text-transform:uppercase;margin-right:.4rem}
-    .prop-tag.residential{color:var(--gold);border-color:rgba(200,169,110,.3)}
-    .prop-tag.commercial{color:#60a5fa;border-color:rgba(96,165,250,.3)}
-    .prop-tag.mixed{color:#a78bfa;border-color:rgba(167,139,250,.3)}
 
     #toasts{position:fixed;bottom:calc(var(--bottom-nav) + .8rem);right:1rem;z-index:400;display:flex;flex-direction:column;gap:.4rem}
     .tst{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.2em;padding:.65rem 1rem;border:.5px solid var(--border-hi);background:var(--bg2);color:var(--gold);text-transform:uppercase;animation:tstIn .25s ease}
@@ -254,11 +307,10 @@
     .cl-avatarBox,.cl-userButtonAvatarBox{border-radius:50%!important;overflow:hidden!important}
     .cl-avatar,.cl-userButtonAvatar{border-radius:50%!important}
 
-    /* RESPONSIVE */
     @media(max-width:900px){
       .stat-bar{grid-template-columns:1fr 1fr}
-      .g2{grid-template-columns:1fr}
-      .fin-grid{grid-template-columns:1fr 1fr}
+      .g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr}
+      .fin-grid,.val-grid{grid-template-columns:1fr 1fr}
     }
     @media(max-width:640px){
       :root{--sidebar:0px}
@@ -269,13 +321,14 @@
       #main{padding:1.2rem 1rem calc(var(--bottom-nav) + env(safe-area-inset-bottom) + 1.5rem)}
       .stat-bar{grid-template-columns:1fr 1fr}
       .ig{grid-template-columns:1fr}
-      .fin-grid{grid-template-columns:1fr}
+      .fin-grid,.val-grid{grid-template-columns:1fr}
       .ft{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+      .g2,.g3{grid-template-columns:1fr}
       .ph-left .ph-title{font-size:1.15rem}
       .adm-row{grid-template-columns:1fr;gap:.4rem}
       .tb-crumb{display:none}.tb-tier{display:none}
+      .wo-form-grid{grid-template-columns:1fr}
       #toasts{bottom:calc(var(--bottom-nav) + .5rem);right:.5rem;left:.5rem}
-      .tst{font-size:.38rem;padding:.55rem .8rem}
     }
   </style>
 </head>
@@ -315,12 +368,14 @@
 <div id="shell" style="display:none">
   <nav id="sidebar">
     <div class="sb-section">
-      <div class="sb-label">Navigation</div>
+      <div class="sb-label">Operations</div>
       <div class="nav-item active" data-p="overview" onclick="goTo('overview')"><span class="nav-ico">◈</span><span class="nav-lbl">Overview</span></div>
       <div class="nav-item" data-p="properties" onclick="goTo('properties')"><span class="nav-ico">◇</span><span class="nav-lbl">Properties</span><span class="nav-badge" id="propBadge" style="display:none">0</span></div>
-      <div class="nav-item" data-p="financials" onclick="goTo('financials')"><span class="nav-ico">◉</span><span class="nav-lbl">Financials</span></div>
-      <div class="nav-item" data-p="acquisitions" onclick="goTo('acquisitions')"><span class="nav-ico">▲</span><span class="nav-lbl">Acquisitions</span></div>
-      <div class="nav-item" data-p="announcements" onclick="goTo('announcements')"><span class="nav-ico">▣</span><span class="nav-lbl">Announcements</span><span class="nav-badge" id="annBadge" style="display:none">★</span></div>
+      <div class="nav-item" data-p="maintenance" onclick="goTo('maintenance')"><span class="nav-ico">◉</span><span class="nav-lbl">Maintenance</span><span class="nav-badge red" id="maintBadge" style="display:none">0</span></div>
+      <div class="nav-item" data-p="valuations" onclick="goTo('valuations')"><span class="nav-ico">▲</span><span class="nav-lbl">Valuations</span></div>
+      <div class="nav-item" data-p="team" onclick="goTo('team')"><span class="nav-ico">▦</span><span class="nav-lbl">Team</span></div>
+      <div class="nav-item" data-p="financials" onclick="goTo('financials')"><span class="nav-ico">▣</span><span class="nav-lbl">Financials</span></div>
+      <div class="nav-item" data-p="announcements" onclick="goTo('announcements')"><span class="nav-ico">◎</span><span class="nav-lbl">Announcements</span><span class="nav-badge" id="annBadge" style="display:none">★</span></div>
     </div>
     <div class="sb-section">
       <div class="sb-label">Account</div>
@@ -336,7 +391,7 @@
 
   <main id="main">
 
-    <!-- OVERVIEW -->
+    <!-- ── OVERVIEW ── -->
     <div class="panel active" id="p-overview">
       <div class="ph">
         <div class="ph-left">
@@ -349,13 +404,23 @@
       <div class="stat-bar">
         <div class="sc"><div class="sc-lbl">Standing</div><div class="sc-val" id="sTier">—</div></div>
         <div class="sc"><div class="sc-lbl">Properties</div><div class="sc-val" id="sProps">—</div></div>
-        <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val">Vindex</div></div>
+        <div class="sc"><div class="sc-lbl">Open Work Orders</div><div class="sc-val" id="sOpenWO" style="color:var(--white)">—</div></div>
         <div class="sc"><div class="sc-lbl">Member Since</div><div class="sc-val" id="sJoined">—</div></div>
       </div>
       <div class="g2">
         <div class="card">
-          <div class="ch"><span class="ct">Active Properties</span><span class="cm" id="ovPropCount">—</span></div>
+          <div class="ch"><span class="ct">Properties</span><span class="cm" id="ovPropCount">—</span></div>
           <div id="ovProps"><div class="empty">Loading…</div></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="ct">Open Work Orders</span><span class="cm" id="ovWOCount">—</span></div>
+          <div id="ovWO"><div class="empty">Loading…</div></div>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="ch"><span class="ct">Team On-Site</span><span class="cm" id="ovTeamCount">—</span></div>
+          <div id="ovTeam"><div class="empty">Loading…</div></div>
         </div>
         <div class="card">
           <div class="ch">
@@ -374,22 +439,133 @@
       </div>
     </div>
 
-    <!-- PROPERTIES -->
+    <!-- ── PROPERTIES ── -->
     <div class="panel" id="p-properties">
       <div class="ph">
-        <div class="ph-left"><div class="ph-eyebrow">Portfolio</div><div class="ph-title">Properties</div><div class="ph-sub">All properties assigned to your Vindex account.</div></div>
+        <div class="ph-left"><div class="ph-eyebrow">Portfolio</div><div class="ph-title">Properties</div><div class="ph-sub">All properties in the Vindex portfolio.</div></div>
         <div class="ph-rule"></div>
       </div>
       <div id="propsLocked" class="locked-notice" style="display:none"><p class="ln-text">Property Data <span>Restricted</span><br/>Unlocked at Tier III and above</p></div>
       <div id="propsContent"></div>
     </div>
 
-    <!-- FINANCIALS -->
-    <div class="panel" id="p-financials">
+    <!-- ── MAINTENANCE ── -->
+    <div class="panel" id="p-maintenance">
       <div class="ph">
-        <div class="ph-left"><div class="ph-eyebrow">Capital</div><div class="ph-title">Financials</div><div class="ph-sub">Portfolio valuation and capital deployment summary.</div></div>
+        <div class="ph-left"><div class="ph-eyebrow">Operations</div><div class="ph-title">Maintenance</div><div class="ph-sub">Work orders, repairs, and scheduled maintenance across all properties.</div></div>
+        <div class="ph-rule"></div>
+        <div class="btn-row">
+          <button class="btn sm" onclick="toggleWOForm()">+ New Work Order</button>
+        </div>
+      </div>
+
+      <!-- NEW WORK ORDER FORM -->
+      <div id="woForm" class="card g-full" style="display:none">
+        <div class="ch"><span class="ct">New Work Order</span><button class="btn sm ghost" onclick="toggleWOForm()">✕ Cancel</button></div>
+        <div class="wo-form">
+          <div class="wo-form-grid">
+            <div class="form-group">
+              <label class="form-label">Property</label>
+              <select class="form-select" id="woProperty"><option value="">Select property…</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <select class="form-select" id="woPriority">
+                <option value="critical">Critical</option>
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select class="form-select" id="woCategory">
+                <option>Plumbing</option>
+                <option>Electrical</option>
+                <option>HVAC</option>
+                <option>Roofing</option>
+                <option>Foundation</option>
+                <option>Appliances</option>
+                <option>Exterior</option>
+                <option>Interior</option>
+                <option>Landscaping</option>
+                <option>General Repair</option>
+                <option>Inspection</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Assigned To</label>
+              <select class="form-select" id="woAssigned"><option value="">Unassigned</option></select>
+            </div>
+            <div class="form-group form-full">
+              <label class="form-label">Description</label>
+              <textarea class="form-textarea" id="woDescription" placeholder="Describe the issue or task…"></textarea>
+            </div>
+          </div>
+          <button class="btn" onclick="submitWorkOrder()">Submit Work Order →</button>
+        </div>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div class="fbar">
+        <button class="fb active" onclick="filterWO('all',this)">All</button>
+        <button class="fb" onclick="filterWO('open',this)">Open</button>
+        <button class="fb" onclick="filterWO('in-progress',this)">In Progress</button>
+        <button class="fb" onclick="filterWO('scheduled',this)">Scheduled</button>
+        <button class="fb" onclick="filterWO('completed',this)">Completed</button>
+      </div>
+      <div class="card" id="woList"><div class="empty" style="padding:1.5rem">No work orders yet.</div></div>
+    </div>
+
+    <!-- ── VALUATIONS ── -->
+    <div class="panel" id="p-valuations">
+      <div class="ph">
+        <div class="ph-left"><div class="ph-eyebrow">Portfolio Value</div><div class="ph-title">Valuations</div><div class="ph-sub">Estimated market values and capital positions for Vindex holdings.</div></div>
         <div class="ph-rule"></div>
       </div>
+      <div id="valLocked" class="locked-notice" style="display:none"><p class="ln-text">Valuation Data <span>Restricted</span><br/>Unlocked at Tier III and above</p></div>
+      <div id="valContent">
+        <div class="val-grid" id="valSummary">
+          <div class="val-cell"><div class="val-lbl">Total Portfolio Value</div><div class="val-num" id="valTotal">—</div><div class="val-sub">Estimated market value</div></div>
+          <div class="val-cell"><div class="val-lbl">Capital Deployed</div><div class="val-num" id="valDeployed">—</div><div class="val-sub">Acquisition cost basis</div></div>
+          <div class="val-cell"><div class="val-lbl">Equity Position</div><div class="val-num" id="valEquity">—</div><div class="val-sub">Value minus cost basis</div></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="ct">Property Valuations</span><span class="cm" id="valUpdated">—</span></div>
+          <div id="valList"><div class="empty" style="padding:1.5rem">No valuations on file. Add properties with capital values to see portfolio breakdown.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TEAM ── -->
+    <div class="panel" id="p-team">
+      <div class="ph">
+        <div class="ph-left"><div class="ph-eyebrow">Field Operations</div><div class="ph-title">Team</div><div class="ph-sub">Foremen, contractors, and maintenance staff assigned to Vindex properties.</div></div>
+        <div class="ph-rule"></div>
+      </div>
+      <div class="card g-full">
+        <div class="ch"><span class="ct">Field Team</span><span class="cm" id="teamCount">—</span></div>
+        <div id="teamList"><div class="empty" style="padding:1.5rem">Loading team…</div></div>
+      </div>
+      <div class="card g-full">
+        <div class="ch"><span class="ct">Emergency Contacts</span></div>
+        <div style="padding:1.4rem;display:flex;flex-direction:column;gap:1.2rem">
+          <div>
+            <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.3rem">LVO Vindex Operations</div>
+            <p style="font-size:.88rem;font-style:italic;color:var(--dim2)">For emergency maintenance requests, contact the on-call foreman directly. Non-emergency repairs go through the work order system.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)">
+            <div style="background:var(--bg2);padding:1rem 1.2rem"><div style="font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem">Operations Line</div><div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;color:var(--chrome)">(346) 298-2878</div></div>
+            <div style="background:var(--bg2);padding:1rem 1.2rem"><div style="font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem">Response Time</div><div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;color:var(--chrome)">Critical: &lt; 2hrs</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FINANCIALS ── */
+    <div class="panel" id="p-financials">
+      <div class="ph"><div class="ph-left"><div class="ph-eyebrow">Capital</div><div class="ph-title">Financials</div><div class="ph-sub">Portfolio capital summary and property positions.</div></div><div class="ph-rule"></div></div>
       <div id="finLocked" class="locked-notice" style="display:none"><p class="ln-text">Financial Data <span>Restricted</span><br/>Unlocked at Tier III and above</p></div>
       <div id="finContent">
         <div class="fin-grid">
@@ -400,56 +576,14 @@
         <div class="card" style="overflow-x:auto">
           <div class="ch"><span class="ct">Property Positions</span><span class="cm" id="finMonth">—</span></div>
           <table class="ft">
-            <thead><tr><th>Property</th><th>Type</th><th>Position</th><th>Status</th><th>Capital</th></tr></thead>
+            <thead><tr><th>Property</th><th>Status</th><th>Position</th><th>Value</th><th>Occupancy</th></tr></thead>
             <tbody id="finTbody"><tr><td colspan="5"><div class="empty">Loading…</div></td></tr></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ACQUISITIONS -->
-    <div class="panel" id="p-acquisitions">
-      <div class="ph">
-        <div class="ph-left"><div class="ph-eyebrow">Strategy</div><div class="ph-title">Acquisitions</div><div class="ph-sub">Criteria, pipeline, and acquisition framework for Vindex holdings.</div></div>
-        <div class="ph-rule"></div>
-      </div>
-      <div class="g2">
-        <div class="card">
-          <div class="ch"><span class="ct">Acquisition Criteria</span></div>
-          <div class="cb" style="display:flex;flex-direction:column;gap:1rem">
-            <div>
-              <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">Property Types</div>
-              <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7">Residential single-family, multi-family (2–8 units), and select commercial. Mixed-use considered case by case.</p>
-            </div>
-            <div>
-              <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">Target Markets</div>
-              <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7">Houston metropolitan area and surrounding counties. Focus on underperforming assets in stabilizing neighborhoods.</p>
-            </div>
-            <div>
-              <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">Acquisition Strategy</div>
-              <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7">We move on value, not emotion. Distressed assets, off-market deals, and estate sales are prioritized. Every dollar is deployed with purpose.</p>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="ch"><span class="ct">Legacy Trust Holdings</span></div>
-          <div class="cb">
-            <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.8rem">LVO Family Legacy Trust</div>
-            <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7;margin-bottom:1.2rem">Properties acquired under Vindex are held within the LVO Family Legacy Trust structure. Built to outlast us. Positioned to grow beyond us.</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)">
-              <div style="background:var(--bg2);padding:1rem 1.2rem"><div style="font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem">Structure</div><div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;color:var(--chrome)">Family Trust</div></div>
-              <div style="background:var(--bg2);padding:1rem 1.2rem"><div style="font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem">Objective</div><div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;color:var(--chrome)">Generational</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card g-full">
-        <div class="ch"><span class="ct">Pipeline</span><span class="cm">Properties Under Review</span></div>
-        <div id="pipelineContent"><div class="empty" style="padding:1.5rem">No pipeline properties on record. Contact LVO Vindex administration to add acquisition targets.</div></div>
-      </div>
-    </div>
-
-    <!-- ANNOUNCEMENTS -->
+    <!-- ── ANNOUNCEMENTS ── -->
     <div class="panel" id="p-announcements">
       <div class="ph">
         <div class="ph-left"><div class="ph-eyebrow">Communications</div><div class="ph-title">Announcements</div><div class="ph-sub">Posted from LVO. Refreshes every 15 minutes.</div></div>
@@ -464,7 +598,7 @@
       <div id="annList" class="card"><div class="empty" style="padding:1.5rem">Loading…</div></div>
     </div>
 
-    <!-- ACCOUNT -->
+    <!-- ── ACCOUNT ── -->
     <div class="panel" id="p-account">
       <div class="ph"><div class="ph-left"><div class="ph-eyebrow">Profile</div><div class="ph-title">My Account</div></div><div class="ph-rule"></div></div>
       <div id="admBadgeWrap" style="display:none"><div class="adm-badge"><span>⬡ LVO Administration · Executive Access</span></div></div>
@@ -478,7 +612,7 @@
         <div class="ic"><div class="ic-lbl">Division</div><div class="ic-val">Vindex · Real Estate</div></div>
         <div class="ic"><div class="ic-lbl">Role</div><div class="ic-val" id="acRole">—</div></div>
         <div class="ic"><div class="ic-lbl">Member Since</div><div class="ic-val" id="acJoined">—</div></div>
-        <div class="ic"><div class="ic-lbl">Portal</div><div class="ic-val">Vindex Dashboard v2.1</div></div>
+        <div class="ic"><div class="ic-lbl">Portal</div><div class="ic-val">Vindex Dashboard v3.0</div></div>
       </div>
       <div class="card" id="clerkProfileCard" style="overflow:visible">
         <div class="ch"><span class="ct">Manage Account</span></div>
@@ -486,14 +620,14 @@
       </div>
     </div>
 
-    <!-- ADMIN -->
+    <!-- ── ADMIN ── -->
     <div class="panel" id="p-admin">
       <div class="ph"><div class="ph-left"><div class="ph-eyebrow" style="color:var(--gold)">Executive</div><div class="ph-title">Admin Panel</div></div><div class="ph-rule"></div></div>
       <div class="stat-bar" style="margin-bottom:1.5rem">
         <div class="sc"><div class="sc-lbl">Total Members</div><div class="sc-val" id="admTotal">—</div></div>
         <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val">Vindex</div></div>
         <div class="sc"><div class="sc-lbl">Your Standing</div><div class="sc-val" id="admMyTier">—</div></div>
-        <div class="sc"><div class="sc-lbl">Version</div><div class="sc-val">2.1 · 2026</div></div>
+        <div class="sc"><div class="sc-lbl">Version</div><div class="sc-val">3.0 · 2026</div></div>
       </div>
       <div class="card" style="margin-bottom:1.2rem">
         <div class="ch"><span class="ct">Member Tier Management</span></div>
@@ -519,9 +653,10 @@
   <div class="bn-inner">
     <div class="bn-item active" data-p="overview" onclick="goTo('overview')"><span class="bn-ico">◈</span><span class="bn-lbl">Overview</span></div>
     <div class="bn-item" data-p="properties" onclick="goTo('properties')"><span class="bn-ico">◇</span><span class="bn-lbl">Properties</span><span class="bn-dot" id="bnPropDot"></span></div>
-    <div class="bn-item" data-p="financials" onclick="goTo('financials')"><span class="bn-ico">◉</span><span class="bn-lbl">Financials</span></div>
-    <div class="bn-item" data-p="acquisitions" onclick="goTo('acquisitions')"><span class="bn-ico">▲</span><span class="bn-lbl">Acquire</span></div>
-    <div class="bn-item" data-p="announcements" onclick="goTo('announcements')"><span class="bn-ico">▣</span><span class="bn-lbl">News</span><span class="bn-dot" id="bnAnnDot"></span></div>
+    <div class="bn-item" data-p="maintenance" onclick="goTo('maintenance')"><span class="bn-ico">◉</span><span class="bn-lbl">Repairs</span><span class="bn-dot red" id="bnMaintDot"></span></div>
+    <div class="bn-item" data-p="valuations" onclick="goTo('valuations')"><span class="bn-ico">▲</span><span class="bn-lbl">Values</span></div>
+    <div class="bn-item" data-p="team" onclick="goTo('team')"><span class="bn-ico">▦</span><span class="bn-lbl">Team</span></div>
+    <div class="bn-item" data-p="financials" onclick="goTo('financials')"><span class="bn-ico">▣</span><span class="bn-lbl">Finance</span></div>
     <div class="bn-item" data-p="account" onclick="goTo('account')"><span class="bn-ico">◎</span><span class="bn-lbl">Account</span></div>
     <div class="bn-item" id="bnAdminItem" data-p="admin" onclick="goTo('admin')" style="display:none"><span class="bn-ico">⬡</span><span class="bn-lbl">Admin</span></div>
   </div>
@@ -539,6 +674,7 @@ const TIER_LABELS={1:'Tier I — Principal',2:'Tier II — Associate',3:'Tier II
 /* ── STATE ── */
 let _U=null,_ann=[],_annFilter='all',_annTimer=null,_annSec=900,_activity=[],_members=[];
 let _clerkProfileMounted=false,_dashboardPopulated=false;
+let _props=[],_woFilter='all';
 
 /* ── UTILS ── */
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -551,38 +687,40 @@ function logAct(action,isAdmin=false){_activity.unshift({action,isAdmin,time:new
 /* ── localStorage ── */
 function ls(key,fb='{}'){try{return JSON.parse(localStorage.getItem(key)||fb)}catch(e){return JSON.parse(fb)}}
 function lsSet(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch(e){}}
-function getMemberMeta(uid){return ls('lvo_vindex_members')[uid]||null}
-function setMemberMeta(uid,data){const d=ls('lvo_vindex_members');d[uid]=data;lsSet('lvo_vindex_members',d)}
+function getMeta(uid){return ls('lvo_vindex_members')[uid]||null}
+function setMeta(uid,data){const d=ls('lvo_vindex_members');d[uid]=data;lsSet('lvo_vindex_members',d)}
+function getWOs(){return ls('lvo_vindex_workorders','[]')}
+function saveWOs(arr){lsSet('lvo_vindex_workorders',arr)}
+function getTeam(){return ls('lvo_vindex_team','[]')}
+function saveTeam(arr){lsSet('lvo_vindex_team',arr)}
 
 /* ── NAVIGATION ── */
 function goTo(id){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.p===id));
   document.querySelectorAll('.bn-item').forEach(n=>n.classList.toggle('active',n.dataset.p===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='p-'+id));
-  if(id==='announcements'){document.getElementById('annBadge').style.display='none';document.getElementById('bnAnnDot').classList.remove('show');}
+  if(id==='announcements'){document.getElementById('annBadge').style.display='none';}
   if(id==='properties') document.getElementById('bnPropDot').classList.remove('show');
+  if(id==='maintenance'){document.getElementById('bnMaintDot').classList.remove('show');}
   if(id==='admin') renderAdminPanel();
   document.getElementById('main').scrollTop=0;
 }
 
-/* ── POPULATE ── */
+/* ── POPULATE DASHBOARD ── */
 function populateDash(user){
   const meta=user.publicMetadata||{};
-  const lsMeta=getMemberMeta(user.id)||{};
+  const lsMeta=getMeta(user.id)||{};
   const name=user.fullName||user.firstName||'Member';
   const email=user.primaryEmailAddress?.emailAddress||'—';
   const isAdmin=meta.role==='admin';
   const tier=parseInt(lsMeta.tier)||parseInt(meta.tier)||4;
   const role=meta.role||lsMeta.role||'—';
   const joined=user.createdAt?new Date(user.createdAt).toLocaleDateString('en-US',{month:'long',year:'numeric'}):'—';
-  // Vindex uses active_deals array as property listings
-  const props=Array.isArray(meta.active_deals)?meta.active_deals:[];
+  _props=Array.isArray(meta.active_deals)?meta.active_deals:[];
 
-  if(!getMemberMeta(user.id)){
-    setMemberMeta(user.id,{name,email,tier,role,joinedRaw:user.createdAt});
-  }
+  if(!getMeta(user.id)) setMeta(user.id,{name,email,tier,role,joinedRaw:user.createdAt});
 
-  _U={uid:user.id,name,email,isAdmin,tier,role,joined,props};
+  _U={uid:user.id,name,email,isAdmin,tier,role,joined};
 
   document.getElementById('tbName').textContent=name;
   document.getElementById('tbTier').textContent=TIER_LABELS[tier]||TIER_LABELS[4];
@@ -601,31 +739,41 @@ function populateDash(user){
   const amt=document.getElementById('admMyTier');if(amt)amt.textContent=TIER_LABELS[tier]||TIER_LABELS[4];
   document.getElementById('finMonth').textContent=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
 
-  renderProps(props,tier,isAdmin);
-  renderFin(props,tier,isAdmin);
+  renderProps(_props,tier,isAdmin);
+  renderFin(_props,tier,isAdmin);
+  renderValuations(_props,tier,isAdmin);
+  renderWorkOrders();
+  renderTeam();
+  populateWOPropertySelect(_props);
+  populateWOAssignedSelect();
 }
 
 /* ── PROPERTIES ── */
 function propHTML(d,isAdmin,tier){
   const sc=(d.status||'active').toLowerCase().replace(/\s+/g,'-');
+  const occ=(d.occupancy||'').toLowerCase().replace(/\s+/g,'-');
   const showCap=isAdmin||tier<=1;
-  // Detect property type from division field or a "type" field
   const propType=d.type||d.division||'';
-  const typeClass=propType.toLowerCase().includes('commercial')?'commercial':propType.toLowerCase().includes('mixed')?'mixed':'residential';
-  return`<div class="deal">
-    <div class="deal-hd">
-      <span class="deal-name">${esc(d.name||'Unnamed Property')}</span>
-      <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
-        ${propType?`<span class="prop-tag ${typeClass}">${esc(propType)}</span>`:''}
-        <span class="deal-st ${sc}">${esc(d.status||'Active')}</span>
+  return`<div class="prop-row">
+    <div class="prop-hd">
+      <div>
+        <div class="prop-name">${esc(d.name||'Unnamed Property')}</div>
+        ${d.address?`<div class="prop-address">${esc(d.address)}</div>`:''}
+      </div>
+      <div class="prop-badges">
+        ${propType?`<span class="badge type">${esc(propType)}</span>`:''}
+        ${occ?`<span class="badge ${occ}">${esc(d.occupancy)}</span>`:''}
+        <span class="badge ${sc}">${esc(d.status||'Active')}</span>
       </div>
     </div>
-    <div class="deal-meta">
-      <div><div class="dm-lbl">Position</div><div class="dm-val">${esc(d.position||'—')}</div></div>
-      <div><div class="dm-lbl">Date</div><div class="dm-val">${esc(d.date||'—')}</div></div>
-      ${showCap&&d.capital?`<div><div class="dm-lbl">Value</div><div class="dm-val">${esc(d.capital)}</div></div>`:''}
+    <div class="prop-meta">
+      <div><div class="pm-lbl">Position</div><div class="pm-val">${esc(d.position||'—')}</div></div>
+      <div><div class="pm-lbl">Acquired</div><div class="pm-val">${esc(d.date||'—')}</div></div>
+      ${showCap&&d.capital?`<div><div class="pm-lbl">Value</div><div class="pm-val">${esc(d.capital)}</div></div>`:''}
+      ${d.sqft?`<div><div class="pm-lbl">Sq Ft</div><div class="pm-val">${esc(d.sqft)}</div></div>`:''}
+      ${d.units?`<div><div class="pm-lbl">Units</div><div class="pm-val">${esc(d.units)}</div></div>`:''}
     </div>
-    ${d.note?`<div class="deal-note">${esc(d.note)}</div>`:''}
+    ${d.note?`<div class="prop-note">${esc(d.note)}</div>`:''}
   </div>`;
 }
 
@@ -646,6 +794,198 @@ function renderProps(props,tier,isAdmin){
   document.getElementById('propsContent').innerHTML=`<div class="card">${props.map(d=>propHTML(d,isAdmin,tier)).join('')}</div>`;
 }
 
+/* ── WORK ORDERS ── */
+function toggleWOForm(){
+  const form=document.getElementById('woForm');
+  form.style.display=form.style.display==='none'?'block':'none';
+}
+
+function populateWOPropertySelect(props){
+  const sel=document.getElementById('woProperty');
+  if(!sel)return;
+  sel.innerHTML='<option value="">Select property…</option>'+props.map(p=>`<option value="${esc(p.name)}">${esc(p.name)}</option>`).join('');
+}
+
+function populateWOAssignedSelect(){
+  const sel=document.getElementById('woAssigned');
+  if(!sel)return;
+  const team=getTeam();
+  sel.innerHTML='<option value="">Unassigned</option>'+team.map(t=>`<option value="${esc(t.name)}">${esc(t.name)} · ${esc(t.role)}</option>`).join('');
+}
+
+function submitWorkOrder(){
+  const prop=document.getElementById('woProperty').value;
+  const priority=document.getElementById('woPriority').value;
+  const category=document.getElementById('woCategory').value;
+  const assigned=document.getElementById('woAssigned').value;
+  const desc=document.getElementById('woDescription').value.trim();
+  if(!prop||!desc){toast('Select a property and describe the issue.',true);return;}
+  const wos=getWOs();
+  wos.unshift({id:'wo_'+Date.now(),property:prop,priority,category,description:desc,assigned,status:'open',created:new Date().toISOString(),createdBy:_U?.name||'Unknown'});
+  saveWOs(wos);
+  document.getElementById('woDescription').value='';
+  document.getElementById('woForm').style.display='none';
+  renderWorkOrders();
+  renderOvWO();
+  updateMaintBadge();
+  logAct(`Created work order: ${category} at ${prop} — ${priority.toUpperCase()} priority`);
+  toast('Work order submitted');
+}
+
+let _woFilterActive='all';
+function filterWO(type,btn){
+  _woFilterActive=type;
+  document.querySelectorAll('#p-maintenance .fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderWorkOrders();
+}
+
+function renderWorkOrders(){
+  let wos=getWOs();
+  if(_woFilterActive!=='all') wos=wos.filter(w=>w.status===_woFilterActive);
+  const el=document.getElementById('woList');
+  if(!wos.length){el.innerHTML='<div class="empty" style="padding:1.5rem">No work orders found.</div>';return;}
+  el.innerHTML=wos.map(w=>`
+    <div class="wo-row">
+      <div class="wo-priority ${w.priority||'medium'}"></div>
+      <div class="wo-body">
+        <div class="wo-title">${esc(w.category||'Repair')} — ${esc(w.property||'—')}</div>
+        <div class="wo-meta">
+          <span>${esc(w.description||'—').slice(0,80)}${(w.description||'').length>80?'…':''}</span>
+          ${w.assigned?`<span>→ ${esc(w.assigned)}</span>`:''}
+          <span>${new Date(w.created).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.4rem">
+        <span class="wo-status ${(w.status||'open').replace(/\s+/g,'-')}">${esc(w.status||'Open')}</span>
+        ${_U?.isAdmin?`<select onchange="updateWOStatus('${w.id}',this.value)" style="background:transparent;border:.5px solid var(--border);color:var(--dim2);font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.1em;padding:.2rem .5rem;cursor:pointer;outline:none;margin-top:.2rem">
+          <option value="open" ${w.status==='open'?'selected':''}>Open</option>
+          <option value="in-progress" ${w.status==='in-progress'?'selected':''}>In Progress</option>
+          <option value="scheduled" ${w.status==='scheduled'?'selected':''}>Scheduled</option>
+          <option value="completed" ${w.status==='completed'?'selected':''}>Completed</option>
+        </select>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function updateWOStatus(id,newStatus){
+  const wos=getWOs();
+  const wo=wos.find(w=>w.id===id);
+  if(!wo)return;
+  wo.status=newStatus;
+  saveWOs(wos);
+  renderWorkOrders();
+  renderOvWO();
+  updateMaintBadge();
+  logAct(`Updated work order status: ${wo.category} at ${wo.property} → ${newStatus}`,true);
+  toast(`Work order → ${newStatus}`);
+}
+
+function updateMaintBadge(){
+  const open=getWOs().filter(w=>w.status==='open'||w.status==='in-progress').length;
+  const badge=document.getElementById('maintBadge');
+  const dot=document.getElementById('bnMaintDot');
+  const sc=document.getElementById('sOpenWO');
+  badge.style.display=open>0?'block':'none';
+  if(badge)badge.textContent=open;
+  if(dot){dot.classList.toggle('show',open>0);}
+  if(sc){sc.textContent=open||'0';sc.className='sc-val'+(open>0?' alert':'');}
+}
+
+function renderOvWO(){
+  const wos=getWOs().filter(w=>w.status==='open'||w.status==='in-progress').slice(0,3);
+  const el=document.getElementById('ovWO');
+  document.getElementById('ovWOCount').textContent=wos.length?`${wos.length} open`:'None open';
+  if(!wos.length){el.innerHTML='<div class="empty">No open work orders.</div>';return;}
+  el.innerHTML=wos.map(w=>`
+    <div class="wo-row">
+      <div class="wo-priority ${w.priority||'medium'}"></div>
+      <div class="wo-body">
+        <div class="wo-title">${esc(w.category||'Repair')} — ${esc(w.property||'—')}</div>
+        <div class="wo-meta"><span>${esc(w.description||'').slice(0,60)}…</span></div>
+      </div>
+      <span class="wo-status ${(w.status||'open').replace(/\s+/g,'-')}">${esc(w.status||'Open')}</span>
+    </div>`).join('');
+}
+
+/* ── VALUATIONS ── */
+function renderValuations(props,tier,isAdmin){
+  const canSee=isAdmin||tier<=3;
+  document.getElementById('valLocked').style.display=canSee?'none':'block';
+  document.getElementById('valContent').style.display=canSee?'block':'none';
+  if(!canSee)return;
+  const showCap=isAdmin||tier<=1;
+  let totalCap=0;
+  props.forEach(d=>{if(!d.capital)return;const n=parseFloat(String(d.capital).replace(/[$,\s~+]/g,''));if(!isNaN(n))totalCap+=n;});
+  document.getElementById('valTotal').textContent=showCap?(totalCap?'$'+totalCap.toLocaleString('en-US'):'—'):'Restricted';
+  document.getElementById('valDeployed').textContent=showCap?(totalCap?'$'+totalCap.toLocaleString('en-US'):'—'):'Restricted';
+  document.getElementById('valEquity').textContent=showCap?'Calculated on request':'Restricted';
+  document.getElementById('valUpdated').textContent=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const list=document.getElementById('valList');
+  if(!props.length){list.innerHTML='<div class="empty" style="padding:1.5rem">No properties on file.</div>';return;}
+  list.innerHTML=props.map(d=>{
+    const cap=d.capital?parseFloat(String(d.capital).replace(/[$,\s~+]/g,'')):0;
+    return`<div class="prop-row">
+      <div class="prop-hd">
+        <div>
+          <div class="prop-name">${esc(d.name||'—')}</div>
+          ${d.address?`<div class="prop-address">${esc(d.address)}</div>`:''}
+        </div>
+        <span class="badge ${(d.status||'active').toLowerCase().replace(/\s+/g,'-')}">${esc(d.status||'Active')}</span>
+      </div>
+      <div class="prop-meta">
+        ${showCap&&d.capital?`<div><div class="pm-lbl">Est. Value</div><div class="pm-val">${esc(d.capital)}</div></div>`:''}
+        ${d.sqft?`<div><div class="pm-lbl">Sq Ft</div><div class="pm-val">${esc(d.sqft)}</div></div>`:''}
+        ${d.type||d.division?`<div><div class="pm-lbl">Type</div><div class="pm-val">${esc(d.type||d.division)}</div></div>`:''}
+        <div><div class="pm-lbl">Date</div><div class="pm-val">${esc(d.date||'—')}</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── TEAM ── */
+function renderTeam(){
+  let team=getTeam();
+  // Seed demo team if empty
+  if(!team.length){
+    team=[
+      {id:'t1',name:'Add Your Foreman',role:'Lead Foreman',properties:'All Properties',status:'available',phone:''},
+      {id:'t2',name:'Add Maintenance Staff',role:'Maintenance Technician',properties:'—',status:'off',phone:''},
+    ];
+  }
+  const el=document.getElementById('teamList');
+  document.getElementById('teamCount').textContent=`${team.length} staff`;
+  document.getElementById('ovTeamCount').textContent=`${team.filter(t=>t.status==='on-site').length} on-site`;
+  const ovTeamEl=document.getElementById('ovTeam');
+  const onSite=team.filter(t=>t.status==='on-site');
+  ovTeamEl.innerHTML=onSite.length?onSite.map(t=>teamRowHTML(t)).join(''):'<div class="empty">No staff currently on-site.</div>';
+
+  el.innerHTML=team.map(t=>teamRowHTML(t)).join('');
+
+  // Populate WO assigned select with actual team
+  populateWOAssignedSelect_from(team);
+}
+
+function teamRowHTML(t){
+  const initials=(t.name||'??').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  return`<div class="team-row">
+    <div class="team-avatar"><span class="team-initials">${esc(initials)}</span></div>
+    <div class="team-info">
+      <div class="team-name">${esc(t.name)}</div>
+      <div class="team-role">${esc(t.role)}</div>
+      ${t.properties?`<div class="team-props">${esc(t.properties)}</div>`:''}
+    </div>
+    ${t.phone?`<a href="tel:${esc(t.phone)}" style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.2em;color:var(--gold);text-decoration:none;border:.5px solid var(--border);padding:.3rem .6rem;transition:background .2s" onmouseover="this.style.background='rgba(200,169,110,.1)'" onmouseout="this.style.background=''">${esc(t.phone)}</a>`:''}
+    <span class="team-status ${t.status||'off'}">${(t.status||'off').replace(/-/g,' ')}</span>
+  </div>`;
+}
+
+function populateWOAssignedSelect_from(team){
+  const sel=document.getElementById('woAssigned');
+  if(!sel)return;
+  sel.innerHTML='<option value="">Unassigned</option>'+team.map(t=>`<option value="${esc(t.name)}">${esc(t.name)} · ${esc(t.role)}</option>`).join('');
+}
+
 /* ── FINANCIALS ── */
 function renderFin(props,tier,isAdmin){
   const canSee=isAdmin||tier<=3;
@@ -659,13 +999,17 @@ function renderFin(props,tier,isAdmin){
   document.getElementById('finDls').textContent=props.filter(d=>(d.status||'').toLowerCase()==='active').length||props.length||'—';
   const tb=document.getElementById('finTbody');
   if(!props.length){tb.innerHTML='<tr><td colspan="5"><div class="empty">No property positions on file.</div></td></tr>';return;}
-  tb.innerHTML=props.map(d=>{const sc=(d.status||'active').toLowerCase().replace(/\s+/g,'-');const propType=d.type||d.division||'—';return`<tr>
-    <td><span class="ft-lbl">Property</span>${esc(d.name||'—')}</td>
-    <td><span class="ft-lbl">Type</span>${esc(propType)}</td>
-    <td><span class="ft-lbl">Position</span>${esc(d.position||'—')}</td>
-    <td><span class="deal-st ${sc}" style="display:inline-block">${esc(d.status||'Active')}</span></td>
-    <td>${showCap?esc(d.capital||'—'):'—'}</td>
-  </tr>`}).join('');
+  tb.innerHTML=props.map(d=>{
+    const sc=(d.status||'active').toLowerCase().replace(/\s+/g,'-');
+    const occ=d.occupancy||'—';
+    return`<tr>
+      <td><span class="ft-lbl">Property</span>${esc(d.name||'—')}</td>
+      <td><span class="badge ${sc}" style="display:inline-block">${esc(d.status||'Active')}</span></td>
+      <td><span class="ft-lbl">Position</span>${esc(d.position||'—')}</td>
+      <td>${showCap?esc(d.capital||'—'):'—'}</td>
+      <td>${esc(occ)}</td>
+    </tr>`;
+  }).join('');
 }
 
 /* ── ANNOUNCEMENTS ── */
@@ -677,7 +1021,7 @@ async function fetchAnn(manual=false){
     _ann=await res.json();
     renderAnnList();renderOvAnn();
     const pinned=_ann.filter(a=>a.pinned&&(a.division==='Vindex'||a.division==='All'));
-    if(pinned.length){document.getElementById('annBadge').style.display='block';document.getElementById('bnAnnDot').classList.add('show');}
+    if(pinned.length){document.getElementById('annBadge').style.display='block';}
     setSbStatus(true,'Database Online · 15 Min Timer');
     const t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
     document.getElementById('ovAnnTime').textContent=`Updated ${t}`;
@@ -694,7 +1038,7 @@ async function fetchAnn(manual=false){
 function renderOvAnn(){
   const el=document.getElementById('ovAnn');
   const items=_ann.filter(a=>a.division==='Vindex'||a.division==='All').slice(0,3);
-  if(!items.length){el.innerHTML='<div class="empty">No announcements yet.</div>';return;}
+  if(!items.length){el.innerHTML='<div class="empty">No announcements.</div>';return;}
   el.innerHTML=items.map(a=>{
     const previewBody=(a.body||'').slice(0,100)+(a.body||'').length>100?'…':'';
     return`<div style="padding:.75rem 1.4rem;border-bottom:.5px solid var(--border)">
@@ -716,27 +1060,17 @@ function renderAnnList(){
   else if(_annFilter==='div')data=data.filter(a=>a.division==='Vindex');
   if(!data.length){el.innerHTML='<div class="empty" style="padding:1.5rem">No announcements found.</div>';return;}
   el.innerHTML=data.map(a=>`<div class="ann${a.pinned?' pinned':''}">
-    <div class="ann-hd">
-      <div>${a.pinned?'<span class="ann-pin-badge">★ Pinned · </span>':''}<span class="ann-title">${esc(a.title||'')}</span></div>
-      <span class="ann-div">${esc(a.division||'All')}</span>
-    </div>
+    <div class="ann-hd"><div>${a.pinned?'<span class="ann-pin-badge">★ Pinned · </span>':''}<span class="ann-title">${esc(a.title||'')}</span></div><span class="ann-div">${esc(a.division||'All')}</span></div>
     <div class="ann-body">${esc(a.body||'')}</div>
-    <div class="ann-ft">
-      <span class="ann-author">${esc(a.author||'LVO Administration')}</span>
-      <span class="ann-time">${new Date(a.created_at).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</span>
-    </div>
+    <div class="ann-ft"><span class="ann-author">${esc(a.author||'LVO Administration')}</span><span class="ann-time">${new Date(a.created_at).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</span></div>
   </div>`).join('');
 }
 
-function filterAnn(type,btn){_annFilter=type;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAnnList()}
+function filterAnn(type,btn){_annFilter=type;document.querySelectorAll('#p-announcements .fb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAnnList()}
 
 function startCountdown(){
   clearInterval(_annTimer);
-  _annTimer=setInterval(()=>{
-    _annSec--;const m=Math.floor(_annSec/60),s=_annSec%60;
-    document.getElementById('refreshLabel').textContent=`${m}:${String(s).padStart(2,'0')}`;
-    if(_annSec<=0)fetchAnn();
-  },1000);
+  _annTimer=setInterval(()=>{_annSec--;const m=Math.floor(_annSec/60),s=_annSec%60;document.getElementById('refreshLabel').textContent=`${m}:${String(s).padStart(2,'0')}`;if(_annSec<=0)fetchAnn();},1000);
 }
 
 /* ── ACTIVITY ── */
@@ -780,7 +1114,7 @@ function renderMemberList(list){
 function saveTier(clerkId,memberName){
   const sel=document.getElementById('ts-'+clerkId);if(!sel)return;
   const newTier=parseInt(sel.value);
-  const meta=getMemberMeta(clerkId)||{};meta.tier=newTier;setMemberMeta(clerkId,meta);
+  const meta=getMeta(clerkId)||{};meta.tier=newTier;setMeta(clerkId,meta);
   const btn=document.querySelector(`#ar-${clerkId} .btn`);
   if(btn){btn.textContent='Saved ✓';btn.style.color='#22c55e';setTimeout(()=>{btn.textContent='Save';btn.style.color='';},2000);}
   logAct(`Updated ${memberName}'s tier to ${TIER_LABELS[newTier]}`,true);
@@ -822,6 +1156,8 @@ window.addEventListener('load',async()=>{
     try{Clerk.mountUserButton(document.getElementById('clerkBtn'),{appearance:APPEARANCE});}catch(e){}
     if(!_clerkProfileMounted){try{Clerk.mountUserProfile(document.getElementById('clerkProfile'),{appearance:APPEARANCE});_clerkProfileMounted=true;}catch(e){}}
     populateDash(user);_dashboardPopulated=true;
+    // Init maintenance badge
+    updateMaintBadge();
     document.getElementById('topbar').style.display='flex';
     document.getElementById('shell').style.display='flex';
     const ls=document.getElementById('loadScreen');ls.classList.add('out');setTimeout(()=>ls.remove(),700);
@@ -834,18 +1170,11 @@ window.addEventListener('load',async()=>{
     setLoad('Checking session…');
     await new Promise(r=>setTimeout(r,1000));
     if(Clerk.user){await showDash(Clerk.user);}
-    else{
-      setLoad('Redirecting…');
-      setTimeout(()=>{window.location.href='https://vindex.wearelvo.com';},800);
-    }
+    else{setLoad('Redirecting…');setTimeout(()=>{window.location.href='https://vindex.wearelvo.com';},800);}
   }
 
   Clerk.addListener(({user})=>{
-    if(!user){
-      _dashboardPopulated=false;_clerkProfileMounted=false;
-      clearInterval(_annTimer);
-      window.location.href='https://vindex.wearelvo.com';
-    }
+    if(!user){_dashboardPopulated=false;_clerkProfileMounted=false;clearInterval(_annTimer);window.location.href='https://vindex.wearelvo.com';}
   });
 });
 </script>
