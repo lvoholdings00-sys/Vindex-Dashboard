@@ -242,6 +242,57 @@
     .prop-tag.commercial{color:#60a5fa;border-color:rgba(96,165,250,.3)}
     .prop-tag.mixed{color:#a78bfa;border-color:rgba(167,139,250,.3)}
 
+    /* ── FIELD OPS ── */
+    .wo{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s}
+    .wo:last-child{border-bottom:none}
+    .wo::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;opacity:0;transition:opacity .2s;pointer-events:none}
+    .wo.open::before{background:#ef4444;opacity:1}
+    .wo.in-progress::before{background:var(--gold);opacity:1}
+    .wo.scheduled::before{background:#60a5fa;opacity:1}
+    .wo.completed::before{background:#22c55e;opacity:.5}
+    .wo:hover{background:var(--gold-glow)}
+    .wo-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;gap:.8rem;flex-wrap:wrap}
+    .wo-id{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.25em;color:var(--dim);margin-bottom:.18rem}
+    .wo-title{font-family:'Cinzel',serif;font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--chrome)}
+    .wo-badges{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+    .wo-badge{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.18em;padding:.18rem .5rem;text-transform:uppercase}
+    .wo-badge.open{color:#ef4444;border:.5px solid rgba(239,68,68,.28);background:rgba(239,68,68,.05)}
+    .wo-badge.in-progress{color:var(--gold);border:.5px solid rgba(200,169,110,.28);background:rgba(200,169,110,.05)}
+    .wo-badge.scheduled{color:#60a5fa;border:.5px solid rgba(96,165,250,.28);background:rgba(96,165,250,.05)}
+    .wo-badge.completed{color:#22c55e;border:.5px solid rgba(34,197,94,.28);background:rgba(34,197,94,.05)}
+    .wo-badge.urgent{color:#ef4444;border:.5px solid rgba(239,68,68,.2);font-size:.3rem}
+    .wo-badge.type{color:var(--dim2);border:.5px solid var(--border)}
+    .wo-meta{display:flex;gap:1.4rem;flex-wrap:wrap;margin-bottom:.35rem}
+    .wm-lbl{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;margin-bottom:.15rem}
+    .wm-val{font-size:.82rem;font-style:italic;color:var(--chrome)}
+    .wo-note{font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.6;border-top:.5px solid var(--border);padding-top:.5rem;margin-top:.4rem}
+
+    /* VENDOR */
+    .vendor-row{padding:1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:background .2s}
+    .vendor-row:last-child{border-bottom:none}
+    .vendor-row:hover{background:var(--gold-glow)}
+    .vn-name{font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.14em;color:var(--chrome);margin-bottom:.15rem}
+    .vn-trade{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;margin-bottom:.2rem}
+    .vn-contact{font-size:.8rem;font-style:italic;color:var(--dim2)}
+    .vn-stars{display:flex;gap:2px;margin-bottom:.25rem;justify-content:flex-end}
+    .vn-star{width:7px;height:7px;background:var(--gold);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+    .vn-star.empty{background:rgba(200,169,110,.18)}
+    .vn-status-ok{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.2em;color:#22c55e;text-transform:uppercase}
+    .vn-status-na{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+
+    /* INSPECTIONS */
+    .insp-row{padding:1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:background .2s}
+    .insp-row:last-child{border-bottom:none}
+    .insp-row:hover{background:var(--gold-glow)}
+    .insp-prop{font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.12em;color:var(--chrome);margin-bottom:.15rem}
+    .insp-type{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:.18rem}
+    .insp-date{font-size:.8rem;font-style:italic;color:var(--dim2)}
+    .insp-badge{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.2em;padding:.18rem .55rem;text-transform:uppercase}
+    .insp-badge.pass{color:#22c55e;border:.5px solid rgba(34,197,94,.28);background:rgba(34,197,94,.05)}
+    .insp-badge.attention{color:var(--gold);border:.5px solid rgba(200,169,110,.28);background:rgba(200,169,110,.05)}
+    .insp-badge.fail{color:#ef4444;border:.5px solid rgba(239,68,68,.28);background:rgba(239,68,68,.05)}
+    .insp-badge.upcoming{color:#60a5fa;border:.5px solid rgba(96,165,250,.28);background:rgba(96,165,250,.05)}
+
     #toasts{position:fixed;bottom:calc(var(--bottom-nav) + .8rem);right:1rem;z-index:400;display:flex;flex-direction:column;gap:.4rem}
     .tst{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.2em;padding:.65rem 1rem;border:.5px solid var(--border-hi);background:var(--bg2);color:var(--gold);text-transform:uppercase;animation:tstIn .25s ease}
     .tst.err{color:var(--red-hi);border-color:rgba(204,32,32,.3)}
@@ -276,6 +327,7 @@
       .tb-crumb{display:none}.tb-tier{display:none}
       #toasts{bottom:calc(var(--bottom-nav) + .5rem);right:.5rem;left:.5rem}
       .tst{font-size:.38rem;padding:.55rem .8rem}
+      .g2{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -319,7 +371,7 @@
       <div class="nav-item active" data-p="overview" onclick="goTo('overview')"><span class="nav-ico">◈</span><span class="nav-lbl">Overview</span></div>
       <div class="nav-item" data-p="properties" onclick="goTo('properties')"><span class="nav-ico">◇</span><span class="nav-lbl">Properties</span><span class="nav-badge" id="propBadge" style="display:none">0</span></div>
       <div class="nav-item" data-p="financials" onclick="goTo('financials')"><span class="nav-ico">◉</span><span class="nav-lbl">Financials</span></div>
-      <div class="nav-item" data-p="acquisitions" onclick="goTo('acquisitions')"><span class="nav-ico">▲</span><span class="nav-lbl">Acquisitions</span></div>
+      <div class="nav-item" data-p="fieldops" onclick="goTo('fieldops')"><span class="nav-ico">⬟</span><span class="nav-lbl">Field Ops</span><span class="nav-badge" id="opsBadge" style="display:none">!</span></div>
       <div class="nav-item" data-p="announcements" onclick="goTo('announcements')"><span class="nav-ico">▣</span><span class="nav-lbl">Announcements</span><span class="nav-badge" id="annBadge" style="display:none">★</span></div>
     </div>
     <div class="sb-section">
@@ -407,45 +459,140 @@
       </div>
     </div>
 
-    <!-- ACQUISITIONS -->
-    <div class="panel" id="p-acquisitions">
+    <!-- FIELD OPS -->
+    <div class="panel" id="p-fieldops">
       <div class="ph">
-        <div class="ph-left"><div class="ph-eyebrow">Strategy</div><div class="ph-title">Acquisitions</div><div class="ph-sub">Criteria, pipeline, and acquisition framework for Vindex holdings.</div></div>
+        <div class="ph-left">
+          <div class="ph-eyebrow">Operations</div>
+          <div class="ph-title">Field Ops</div>
+          <div class="ph-sub">Work orders, maintenance, vendors, and inspections across all properties.</div>
+        </div>
         <div class="ph-rule"></div>
+        <div class="btn-row">
+          <button class="btn sm" onclick="showNewWOForm()">+ New Work Order</button>
+          <button class="btn sm ghost" onclick="fetchFieldOps(true)">↺ Refresh</button>
+        </div>
       </div>
+
+      <!-- STATS -->
+      <div class="stat-bar" id="opsStatBar">
+        <div class="sc"><div class="sc-lbl">Open Orders</div><div class="sc-val" id="opsOpen" style="color:#ef4444">—</div></div>
+        <div class="sc"><div class="sc-lbl">In Progress</div><div class="sc-val" id="opsInProg" style="color:var(--gold)">—</div></div>
+        <div class="sc"><div class="sc-lbl">Completed (30d)</div><div class="sc-val" id="opsDone" style="color:#22c55e">—</div></div>
+        <div class="sc"><div class="sc-lbl">Next Inspection</div><div class="sc-val" id="opsNextInsp" style="font-size:.6rem">—</div></div>
+      </div>
+
+      <!-- WORK ORDERS -->
+      <div class="card g-full">
+        <div class="ch">
+          <span class="ct">Work Orders</span>
+          <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
+            <div class="fbar" style="margin:0">
+              <button class="fb active" onclick="filterWO('all',this)">All</button>
+              <button class="fb" onclick="filterWO('open',this)">Open</button>
+              <button class="fb" onclick="filterWO('in-progress',this)">In Progress</button>
+              <button class="fb" onclick="filterWO('scheduled',this)">Scheduled</button>
+              <button class="fb" onclick="filterWO('completed',this)">Completed</button>
+            </div>
+          </div>
+        </div>
+        <div id="woList"><div class="empty" style="padding:1.5rem">Loading work orders…</div></div>
+      </div>
+
+      <!-- NEW WORK ORDER FORM (hidden by default) -->
+      <div id="newWOForm" class="card g-full" style="display:none">
+        <div class="ch"><span class="ct">New Work Order</span><button class="btn sm ghost" onclick="hideNewWOForm()">✕ Cancel</button></div>
+        <div class="cb" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div style="grid-column:1/-1">
+            <div class="ic-lbl" style="margin-bottom:.4rem">Title / Description</div>
+            <input id="woTitle" placeholder="e.g. HVAC unit failure — Unit 3B" style="width:100%;background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.7rem .9rem;outline:none"/>
+          </div>
+          <div>
+            <div class="ic-lbl" style="margin-bottom:.4rem">Property</div>
+            <input id="woProperty" placeholder="Address or property name" style="width:100%;background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.7rem .9rem;outline:none"/>
+          </div>
+          <div>
+            <div class="ic-lbl" style="margin-bottom:.4rem">Trade Type</div>
+            <select id="woType" style="width:100%;background:var(--bg2);border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.7rem .9rem;outline:none;cursor:pointer">
+              <option value="">Select trade…</option>
+              <option>HVAC</option><option>Plumbing</option><option>Electrical</option>
+              <option>Roofing</option><option>Carpentry</option><option>Cosmetic</option>
+              <option>Landscaping</option><option>Appliance</option><option>General</option>
+            </select>
+          </div>
+          <div>
+            <div class="ic-lbl" style="margin-bottom:.4rem">Priority</div>
+            <select id="woPriority" style="width:100%;background:var(--bg2);border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.7rem .9rem;outline:none;cursor:pointer">
+              <option value="normal">Normal</option>
+              <option value="urgent">Urgent</option>
+            </select>
+          </div>
+          <div>
+            <div class="ic-lbl" style="margin-bottom:.4rem">Assigned Vendor</div>
+            <input id="woVendor" placeholder="Vendor name (optional)" style="width:100%;background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.7rem .9rem;outline:none"/>
+          </div>
+          <div>
+            <div class="ic-lbl" style="margin-bottom:.4rem">Est. Cost</div>
+            <input id="woCost" placeholder="e.g. $800–$1,200" style="width:100%;background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.7rem .9rem;outline:none"/>
+          </div>
+          <div style="grid-column:1/-1">
+            <div class="ic-lbl" style="margin-bottom:.4rem">Notes</div>
+            <textarea id="woNotes" placeholder="Additional context or details…" rows="3" style="width:100%;background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.7rem .9rem;outline:none;resize:vertical"></textarea>
+          </div>
+          <div style="grid-column:1/-1">
+            <button class="btn" onclick="submitWO()" id="woSubmitBtn">Submit Work Order</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VENDORS + INSPECTIONS -->
       <div class="g2">
         <div class="card">
-          <div class="ch"><span class="ct">Acquisition Criteria</span></div>
-          <div class="cb" style="display:flex;flex-direction:column;gap:1rem">
-            <div>
-              <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">Property Types</div>
-              <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7">Residential single-family, multi-family (2–8 units), and select commercial. Mixed-use considered case by case.</p>
+          <div class="ch">
+            <span class="ct">Vendor Directory</span>
+            <button class="btn sm ghost" onclick="showAddVendorForm()">+ Add</button>
+          </div>
+          <div id="vendorList"><div class="empty" style="padding:1rem">Loading vendors…</div></div>
+          <!-- Add vendor form -->
+          <div id="addVendorForm" style="display:none;border-top:.5px solid var(--border);padding:1rem 1.4rem">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.7rem">
+              <input id="vName" placeholder="Company name" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.6rem .8rem;outline:none;width:100%"/>
+              <input id="vTrade" placeholder="Trade specialty" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.6rem .8rem;outline:none;width:100%"/>
+              <input id="vPhone" placeholder="Phone" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.6rem .8rem;outline:none;width:100%"/>
+              <input id="vEmail" placeholder="Email" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.6rem .8rem;outline:none;width:100%"/>
             </div>
-            <div>
-              <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">Target Markets</div>
-              <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7">Houston metropolitan area and surrounding counties. Focus on underperforming assets in stabilizing neighborhoods.</p>
-            </div>
-            <div>
-              <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">Acquisition Strategy</div>
-              <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7">We move on value, not emotion. Distressed assets, off-market deals, and estate sales are prioritized. Every dollar is deployed with purpose.</p>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn sm" onclick="submitVendor()">Add Vendor</button>
+              <button class="btn sm ghost" onclick="hideAddVendorForm()">Cancel</button>
             </div>
           </div>
         </div>
+
         <div class="card">
-          <div class="ch"><span class="ct">Legacy Trust Holdings</span></div>
-          <div class="cb">
-            <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.8rem">LVO Family Legacy Trust</div>
-            <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7;margin-bottom:1.2rem">Properties acquired under Vindex are held within the LVO Family Legacy Trust structure. Built to outlast us. Positioned to grow beyond us.</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)">
-              <div style="background:var(--bg2);padding:1rem 1.2rem"><div style="font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem">Structure</div><div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;color:var(--chrome)">Family Trust</div></div>
-              <div style="background:var(--bg2);padding:1rem 1.2rem"><div style="font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem">Objective</div><div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;color:var(--chrome)">Generational</div></div>
+          <div class="ch">
+            <span class="ct">Inspections</span>
+            <button class="btn sm ghost" onclick="showAddInspForm()">+ Schedule</button>
+          </div>
+          <div id="inspList"><div class="empty" style="padding:1rem">Loading inspections…</div></div>
+          <!-- Add inspection form -->
+          <div id="addInspForm" style="display:none;border-top:.5px solid var(--border);padding:1rem 1.4rem">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.7rem">
+              <input id="iProperty" placeholder="Property address" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.6rem .8rem;outline:none;width:100%"/>
+              <input id="iType" placeholder="Inspection type" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.6rem .8rem;outline:none;width:100%"/>
+              <input id="iDate" type="date" style="background:transparent;border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;padding:.6rem .8rem;outline:none;width:100%;letter-spacing:.1em"/>
+              <select id="iResult" style="background:var(--bg2);border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.6rem .8rem;outline:none;cursor:pointer;width:100%">
+                <option value="upcoming">Upcoming</option>
+                <option value="pass">Pass</option>
+                <option value="attention">Attention</option>
+                <option value="fail">Fail</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn sm" onclick="submitInsp()">Save Inspection</button>
+              <button class="btn sm ghost" onclick="hideAddInspForm()">Cancel</button>
             </div>
           </div>
         </div>
-      </div>
-      <div class="card g-full">
-        <div class="ch"><span class="ct">Pipeline</span><span class="cm">Properties Under Review</span></div>
-        <div id="pipelineContent"><div class="empty" style="padding:1.5rem">No pipeline properties on record. Contact LVO Vindex administration to add acquisition targets.</div></div>
       </div>
     </div>
 
@@ -478,7 +625,7 @@
         <div class="ic"><div class="ic-lbl">Division</div><div class="ic-val">Vindex · Real Estate</div></div>
         <div class="ic"><div class="ic-lbl">Role</div><div class="ic-val" id="acRole">—</div></div>
         <div class="ic"><div class="ic-lbl">Member Since</div><div class="ic-val" id="acJoined">—</div></div>
-        <div class="ic"><div class="ic-lbl">Portal</div><div class="ic-val">Vindex Dashboard v2.1</div></div>
+        <div class="ic"><div class="ic-lbl">Portal</div><div class="ic-val">Vindex Dashboard v2.2</div></div>
       </div>
       <div class="card" id="clerkProfileCard" style="overflow:visible">
         <div class="ch"><span class="ct">Manage Account</span></div>
@@ -493,7 +640,7 @@
         <div class="sc"><div class="sc-lbl">Total Members</div><div class="sc-val" id="admTotal">—</div></div>
         <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val">Vindex</div></div>
         <div class="sc"><div class="sc-lbl">Your Standing</div><div class="sc-val" id="admMyTier">—</div></div>
-        <div class="sc"><div class="sc-lbl">Version</div><div class="sc-val">2.1 · 2026</div></div>
+        <div class="sc"><div class="sc-lbl">Version</div><div class="sc-val">2.2 · 2026</div></div>
       </div>
       <div class="card" style="margin-bottom:1.2rem">
         <div class="ch"><span class="ct">Member Tier Management</span></div>
@@ -520,7 +667,7 @@
     <div class="bn-item active" data-p="overview" onclick="goTo('overview')"><span class="bn-ico">◈</span><span class="bn-lbl">Overview</span></div>
     <div class="bn-item" data-p="properties" onclick="goTo('properties')"><span class="bn-ico">◇</span><span class="bn-lbl">Properties</span><span class="bn-dot" id="bnPropDot"></span></div>
     <div class="bn-item" data-p="financials" onclick="goTo('financials')"><span class="bn-ico">◉</span><span class="bn-lbl">Financials</span></div>
-    <div class="bn-item" data-p="acquisitions" onclick="goTo('acquisitions')"><span class="bn-ico">▲</span><span class="bn-lbl">Acquire</span></div>
+    <div class="bn-item" data-p="fieldops" onclick="goTo('fieldops')"><span class="bn-ico">⬟</span><span class="bn-lbl">Field Ops</span><span class="bn-dot" id="bnOpsDot"></span></div>
     <div class="bn-item" data-p="announcements" onclick="goTo('announcements')"><span class="bn-ico">▣</span><span class="bn-lbl">News</span><span class="bn-dot" id="bnAnnDot"></span></div>
     <div class="bn-item" data-p="account" onclick="goTo('account')"><span class="bn-ico">◎</span><span class="bn-lbl">Account</span></div>
     <div class="bn-item" id="bnAdminItem" data-p="admin" onclick="goTo('admin')" style="display:none"><span class="bn-ico">⬡</span><span class="bn-lbl">Admin</span></div>
@@ -539,6 +686,7 @@ const TIER_LABELS={1:'Tier I — Principal',2:'Tier II — Associate',3:'Tier II
 /* ── STATE ── */
 let _U=null,_ann=[],_annFilter='all',_annTimer=null,_annSec=900,_activity=[],_members=[];
 let _clerkProfileMounted=false,_dashboardPopulated=false;
+let _workOrders=[],_vendors=[],_inspections=[],_woFilter='all';
 
 /* ── UTILS ── */
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -549,6 +697,7 @@ function setSbStatus(ok,msg){const el=document.getElementById('sbStatus');if(!el
 function logAct(action,isAdmin=false){_activity.unshift({action,isAdmin,time:new Date().toISOString()});_activity=_activity.slice(0,50);renderAct()}
 function setText(id,val){const el=document.getElementById(id);if(el)el.textContent=val}
 function setDisplay(id,val){const el=document.getElementById(id);if(el)el.style.display=val}
+function genWOId(){return'WO-'+new Date().getFullYear()+'-'+String(Math.floor(Math.random()*900)+100)}
 
 /* ── localStorage ── */
 function lsGet(key,fb='{}'){try{return JSON.parse(localStorage.getItem(key)||fb)}catch(e){return JSON.parse(fb)}}
@@ -563,11 +712,12 @@ function goTo(id){
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='p-'+id));
   if(id==='announcements'){setDisplay('annBadge','none');const d=document.getElementById('bnAnnDot');if(d)d.classList.remove('show');}
   if(id==='properties'){const d=document.getElementById('bnPropDot');if(d)d.classList.remove('show');}
+  if(id==='fieldops'){const d=document.getElementById('bnOpsDot');if(d)d.classList.remove('show');setDisplay('opsBadge','none');}
   if(id==='admin')renderAdminPanel();
   const m=document.getElementById('main');if(m)m.scrollTop=0;
 }
 
-/* ── POPULATE (fully null-safe) ── */
+/* ── POPULATE ── */
 function populateDash(user){
   const meta=user.publicMetadata||{};
   const lsMeta=getMemberMeta(user.id)||{};
@@ -579,9 +729,7 @@ function populateDash(user){
   const joined=user.createdAt?new Date(user.createdAt).toLocaleDateString('en-US',{month:'long',year:'numeric'}):'—';
   const props=Array.isArray(meta.active_deals)?meta.active_deals:[];
 
-  if(!getMemberMeta(user.id)){
-    setMemberMeta(user.id,{name,email,tier,role,joinedRaw:user.createdAt});
-  }
+  if(!getMemberMeta(user.id)){setMemberMeta(user.id,{name,email,tier,role,joinedRaw:user.createdAt});}
 
   _U={uid:user.id,name,email,isAdmin,tier,role,joined,props};
 
@@ -637,27 +785,22 @@ function renderProps(props,tier,isAdmin){
   setText('sProps',canSee?String(props.length):'—');
   setText('ovPropCount',canSee?`${props.length} propert${props.length!==1?'ies':'y'}`:'Restricted');
   if(props.length&&canSee){
-    const pb=document.getElementById('propBadge');
-    if(pb){pb.style.display='block';pb.textContent=props.length;}
+    const pb=document.getElementById('propBadge');if(pb){pb.style.display='block';pb.textContent=props.length;}
     const dot=document.getElementById('bnPropDot');if(dot)dot.classList.add('show');
   }
   const ovEl=document.getElementById('ovProps');
   if(!canSee){
     if(ovEl)ovEl.innerHTML='<div class="empty">Unlocked at Tier III+</div>';
     setDisplay('propsLocked','block');
-    const pc=document.getElementById('propsContent');if(pc)pc.innerHTML='';
-    return;
+    const pc=document.getElementById('propsContent');if(pc)pc.innerHTML='';return;
   }
   setDisplay('propsLocked','none');
   if(!props.length){
     if(ovEl)ovEl.innerHTML='<div class="empty">No properties assigned.</div>';
-    const pc=document.getElementById('propsContent');
-    if(pc)pc.innerHTML='<div class="empty" style="padding:1.5rem">No properties assigned to your account yet.</div>';
-    return;
+    const pc=document.getElementById('propsContent');if(pc)pc.innerHTML='<div class="empty" style="padding:1.5rem">No properties assigned to your account yet.</div>';return;
   }
   if(ovEl)ovEl.innerHTML=props.slice(0,2).map(d=>propHTML(d,isAdmin,tier)).join('');
-  const pc=document.getElementById('propsContent');
-  if(pc)pc.innerHTML=`<div class="card">${props.map(d=>propHTML(d,isAdmin,tier)).join('')}</div>`;
+  const pc=document.getElementById('propsContent');if(pc)pc.innerHTML=`<div class="card">${props.map(d=>propHTML(d,isAdmin,tier)).join('')}</div>`;
 }
 
 /* ── FINANCIALS ── */
@@ -671,20 +814,250 @@ function renderFin(props,tier,isAdmin){
   setText('finCap',showCap?(total?'$'+total.toLocaleString('en-US'):'—'):'Restricted');
   setText('finEq',String(props.length||'—'));
   setText('finDls',String(props.filter(d=>(d.status||'').toLowerCase()==='active').length||props.length||'—'));
-  const tb=document.getElementById('finTbody');
-  if(!tb)return;
+  const tb=document.getElementById('finTbody');if(!tb)return;
   if(!props.length){tb.innerHTML='<tr><td colspan="5"><div class="empty">No property positions on file.</div></td></tr>';return;}
   tb.innerHTML=props.map(d=>{
     const sc=(d.status||'active').toLowerCase().replace(/\s+/g,'-');
     const propType=d.type||d.division||'—';
-    return`<tr>
-      <td><span class="ft-lbl">Property</span>${esc(d.name||'—')}</td>
-      <td><span class="ft-lbl">Type</span>${esc(propType)}</td>
-      <td><span class="ft-lbl">Position</span>${esc(d.position||'—')}</td>
-      <td><span class="deal-st ${sc}" style="display:inline-block">${esc(d.status||'Active')}</span></td>
-      <td>${showCap?esc(d.capital||'—'):'—'}</td>
-    </tr>`;
+    return`<tr><td><span class="ft-lbl">Property</span>${esc(d.name||'—')}</td><td><span class="ft-lbl">Type</span>${esc(propType)}</td><td><span class="ft-lbl">Position</span>${esc(d.position||'—')}</td><td><span class="deal-st ${sc}" style="display:inline-block">${esc(d.status||'Active')}</span></td><td>${showCap?esc(d.capital||'—'):'—'}</td></tr>`;
   }).join('');
+}
+
+/* ══════════════════════════════════
+   FIELD OPS — Supabase integration
+   Tables needed:
+     lvo_work_orders  — id, wo_id, title, property, type, priority, status, vendor, cost, notes, created_at, updated_at
+     lvo_vendors      — id, name, trade, phone, email, rating, active, created_at
+     lvo_inspections  — id, property, type, date, result, created_at
+   ══════════════════════════════════ */
+
+async function fetchFieldOps(manual=false){
+  try{
+    const [woRes,vRes,iRes]=await Promise.all([
+      fetch(`${SB_URL}/rest/v1/lvo_work_orders?select=*&order=created_at.desc`,{headers:SB_H}),
+      fetch(`${SB_URL}/rest/v1/lvo_vendors?select=*&order=name.asc`,{headers:SB_H}),
+      fetch(`${SB_URL}/rest/v1/lvo_inspections?select=*&order=date.desc`,{headers:SB_H})
+    ]);
+
+    if(woRes.ok) _workOrders=await woRes.json(); else _workOrders=[];
+    if(vRes.ok)  _vendors=await vRes.json();     else _vendors=[];
+    if(iRes.ok)  _inspections=await iRes.json(); else _inspections=[];
+
+    renderWorkOrders();
+    renderVendors();
+    renderInspections();
+    updateOpsStats();
+    setSbStatus(true,'Database Online · 15 Min Timer');
+    if(manual)toast('Field Ops refreshed');
+  }catch(e){
+    console.error('fetchFieldOps',e);
+    setSbStatus(false,'Supabase error');
+    if(manual)toast('Refresh failed',true);
+    // Graceful fallback: show empty state instead of broken UI
+    renderWorkOrdersFallback();
+    renderVendorsFallback();
+    renderInspectionsFallback();
+  }
+}
+
+function updateOpsStats(){
+  const open=_workOrders.filter(w=>w.status==='open').length;
+  const inProg=_workOrders.filter(w=>w.status==='in-progress').length;
+  const thirty=new Date();thirty.setDate(thirty.getDate()-30);
+  const done=_workOrders.filter(w=>w.status==='completed'&&new Date(w.updated_at||w.created_at)>=thirty).length;
+  setText('opsOpen',String(open||'0'));
+  setText('opsInProg',String(inProg||'0'));
+  setText('opsDone',String(done||'0'));
+
+  // Next upcoming inspection
+  const upcoming=_inspections.filter(i=>i.result==='upcoming'&&i.date).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(upcoming.length){
+    const d=new Date(upcoming[0].date);
+    setText('opsNextInsp',d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));
+  }else setText('opsNextInsp','None');
+
+  // Badge for open urgent orders
+  if(open>0){
+    const ob=document.getElementById('opsBadge');if(ob)ob.style.display='block';
+    const dot=document.getElementById('bnOpsDot');if(dot)dot.classList.add('show');
+  }
+}
+
+/* ── WORK ORDERS ── */
+function filterWO(status,btn){
+  _woFilter=status;
+  document.querySelectorAll('#p-fieldops .fb').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  renderWorkOrders();
+}
+
+function renderWorkOrders(){
+  const el=document.getElementById('woList');if(!el)return;
+  let data=[..._workOrders];
+  if(_woFilter!=='all')data=data.filter(w=>w.status===_woFilter);
+  if(!data.length){el.innerHTML='<div class="empty" style="padding:1.5rem">No work orders found.</div>';return;}
+  el.innerHTML=data.map(w=>{
+    const sc=(w.status||'open').toLowerCase().replace(/\s+/g,'-');
+    const isUrgent=w.priority==='urgent';
+    return`<div class="wo ${sc}">
+      <div class="wo-id">${esc(w.wo_id||'WO-—')}</div>
+      <div class="wo-hd">
+        <div class="wo-title">${esc(w.title||'Untitled')}</div>
+        <div class="wo-badges">
+          ${isUrgent?'<span class="wo-badge urgent">⬡ Urgent</span>':''}
+          ${w.type?`<span class="wo-badge type">${esc(w.type)}</span>`:''}
+          <span class="wo-badge ${sc}">${esc(w.status||'Open')}</span>
+        </div>
+      </div>
+      <div class="wo-meta">
+        ${w.property?`<div><div class="wm-lbl">Property</div><div class="wm-val">${esc(w.property)}</div></div>`:''}
+        <div><div class="wm-lbl">Reported</div><div class="wm-val">${w.created_at?new Date(w.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—'}</div></div>
+        <div><div class="wm-lbl">Assigned To</div><div class="wm-val">${esc(w.vendor||'Unassigned')}</div></div>
+        ${w.cost?`<div><div class="wm-lbl">Est. Cost</div><div class="wm-val">${esc(w.cost)}</div></div>`:''}
+      </div>
+      ${w.notes?`<div class="wo-note">${esc(w.notes)}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function renderWorkOrdersFallback(){
+  const el=document.getElementById('woList');
+  if(el)el.innerHTML='<div class="empty" style="padding:1.5rem">Unable to load work orders. Check Supabase table <strong>lvo_work_orders</strong> exists.</div>';
+}
+
+/* NEW WORK ORDER */
+function showNewWOForm(){setDisplay('newWOForm','block');const m=document.getElementById('main');if(m)setTimeout(()=>m.scrollTo({top:m.scrollHeight,behavior:'smooth'}),100);}
+function hideNewWOForm(){setDisplay('newWOForm','none')}
+
+async function submitWO(){
+  const title=document.getElementById('woTitle')?.value?.trim();
+  const property=document.getElementById('woProperty')?.value?.trim();
+  const type=document.getElementById('woType')?.value;
+  const priority=document.getElementById('woPriority')?.value||'normal';
+  const vendor=document.getElementById('woVendor')?.value?.trim();
+  const cost=document.getElementById('woCost')?.value?.trim();
+  const notes=document.getElementById('woNotes')?.value?.trim();
+  if(!title){toast('Title is required',true);return;}
+  const btn=document.getElementById('woSubmitBtn');
+  if(btn){btn.disabled=true;btn.textContent='Submitting…';}
+  try{
+    const payload={wo_id:genWOId(),title,property,type,priority,status:'open',vendor:vendor||null,cost:cost||null,notes:notes||null,created_at:new Date().toISOString(),updated_at:new Date().toISOString()};
+    const res=await fetch(`${SB_URL}/rest/v1/lvo_work_orders`,{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    if(!res.ok){const t=await res.text();throw new Error(t);}
+    const created=await res.json();
+    _workOrders.unshift(Array.isArray(created)?created[0]:created);
+    renderWorkOrders();
+    updateOpsStats();
+    hideNewWOForm();
+    // Clear fields
+    ['woTitle','woProperty','woVendor','woCost','woNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    document.getElementById('woType').value='';
+    document.getElementById('woPriority').value='normal';
+    toast('Work order created');
+    logAct(`New work order: ${title}`);
+  }catch(e){
+    console.error(e);toast('Failed to create work order',true);
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Submit Work Order';}
+  }
+}
+
+/* ── VENDORS ── */
+function renderVendors(){
+  const el=document.getElementById('vendorList');if(!el)return;
+  if(!_vendors.length){el.innerHTML='<div class="empty" style="padding:1rem">No vendors on file.</div>';return;}
+  el.innerHTML=_vendors.map(v=>{
+    const stars=[1,2,3,4,5].map(i=>`<div class="vn-star${i>(v.rating||0)?' empty':''}"></div>`).join('');
+    return`<div class="vendor-row">
+      <div>
+        <div class="vn-name">${esc(v.name||'—')}</div>
+        <div class="vn-trade">${esc(v.trade||'—')}</div>
+        <div class="vn-contact">${[v.phone,v.email].filter(Boolean).map(esc).join(' · ')||'—'}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="vn-stars">${stars}</div>
+        <div class="${v.active!==false?'vn-status-ok':'vn-status-na'}">${v.active!==false?'Active':'Inactive'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderVendorsFallback(){
+  const el=document.getElementById('vendorList');
+  if(el)el.innerHTML='<div class="empty" style="padding:1rem">Unable to load. Check table <strong>lvo_vendors</strong>.</div>';
+}
+
+function showAddVendorForm(){setDisplay('addVendorForm','block')}
+function hideAddVendorForm(){setDisplay('addVendorForm','none')}
+
+async function submitVendor(){
+  const name=document.getElementById('vName')?.value?.trim();
+  const trade=document.getElementById('vTrade')?.value?.trim();
+  const phone=document.getElementById('vPhone')?.value?.trim();
+  const email=document.getElementById('vEmail')?.value?.trim();
+  if(!name){toast('Vendor name required',true);return;}
+  try{
+    const payload={name,trade:trade||null,phone:phone||null,email:email||null,rating:0,active:true,created_at:new Date().toISOString()};
+    const res=await fetch(`${SB_URL}/rest/v1/lvo_vendors`,{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    if(!res.ok)throw new Error(await res.text());
+    const created=await res.json();
+    _vendors.push(Array.isArray(created)?created[0]:created);
+    _vendors.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+    renderVendors();
+    hideAddVendorForm();
+    ['vName','vTrade','vPhone','vEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    toast(`${name} added to vendor directory`);
+    logAct(`Added vendor: ${name}`);
+  }catch(e){console.error(e);toast('Failed to add vendor',true);}
+}
+
+/* ── INSPECTIONS ── */
+function renderInspections(){
+  const el=document.getElementById('inspList');if(!el)return;
+  if(!_inspections.length){el.innerHTML='<div class="empty" style="padding:1rem">No inspections on file.</div>';return;}
+  el.innerHTML=_inspections.slice(0,8).map(i=>{
+    const d=i.date?new Date(i.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+    const result=(i.result||'upcoming').toLowerCase();
+    const badge=result==='upcoming'?'Upcoming':result==='pass'?'Pass':result==='attention'?'Attention':'Fail';
+    return`<div class="insp-row">
+      <div>
+        <div class="insp-prop">${esc(i.property||'—')}</div>
+        <div class="insp-type">${esc(i.type||'General')}</div>
+        <div class="insp-date">${d}</div>
+      </div>
+      <span class="insp-badge ${result}">${badge}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderInspectionsFallback(){
+  const el=document.getElementById('inspList');
+  if(el)el.innerHTML='<div class="empty" style="padding:1rem">Unable to load. Check table <strong>lvo_inspections</strong>.</div>';
+}
+
+function showAddInspForm(){setDisplay('addInspForm','block')}
+function hideAddInspForm(){setDisplay('addInspForm','none')}
+
+async function submitInsp(){
+  const property=document.getElementById('iProperty')?.value?.trim();
+  const type=document.getElementById('iType')?.value?.trim();
+  const date=document.getElementById('iDate')?.value;
+  const result=document.getElementById('iResult')?.value||'upcoming';
+  if(!property||!date){toast('Property and date required',true);return;}
+  try{
+    const payload={property,type:type||'General',date,result,created_at:new Date().toISOString()};
+    const res=await fetch(`${SB_URL}/rest/v1/lvo_inspections`,{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    if(!res.ok)throw new Error(await res.text());
+    const created=await res.json();
+    _inspections.unshift(Array.isArray(created)?created[0]:created);
+    renderInspections();
+    updateOpsStats();
+    hideAddInspForm();
+    ['iProperty','iType','iDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    document.getElementById('iResult').value='upcoming';
+    toast('Inspection scheduled');
+    logAct(`Scheduled inspection: ${property}`);
+  }catch(e){console.error(e);toast('Failed to save inspection',true);}
 }
 
 /* ── ANNOUNCEMENTS ── */
@@ -696,10 +1069,7 @@ async function fetchAnn(manual=false){
     _ann=await res.json();
     renderAnnList();renderOvAnn();
     const pinned=_ann.filter(a=>a.pinned&&(a.division==='Vindex'||a.division==='All'));
-    if(pinned.length){
-      const ab=document.getElementById('annBadge');if(ab)ab.style.display='block';
-      const dot=document.getElementById('bnAnnDot');if(dot)dot.classList.add('show');
-    }
+    if(pinned.length){const ab=document.getElementById('annBadge');if(ab)ab.style.display='block';const dot=document.getElementById('bnAnnDot');if(dot)dot.classList.add('show');}
     setSbStatus(true,'Database Online · 15 Min Timer');
     const t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
     setText('ovAnnTime',`Updated ${t}`);
@@ -783,8 +1153,7 @@ function filterMembers(){const q=document.getElementById('memberSearch')?.value?
 
 function renderMemberList(list){
   const el=document.getElementById('admList');if(!el)return;
-  const countEl=document.getElementById('memberCount');
-  if(countEl)countEl.textContent=`${list.length} member${list.length!==1?'s':''}`;
+  const countEl=document.getElementById('memberCount');if(countEl)countEl.textContent=`${list.length} member${list.length!==1?'s':''}`;
   if(!list.length){el.innerHTML='<div class="empty">No members found.</div>';return;}
   el.innerHTML=list.map(m=>{
     const tv=parseInt(m.tier)||4;const safeName=esc(m.name||'Unknown');const safeId=m.clerk_id||'';
@@ -833,97 +1202,51 @@ const APPEARANCE={
 /* ── INIT ── */
 window.addEventListener('load', async () => {
   setLoad('Loading Clerk…');
-
-  // Hard timeout — never hang forever
-  const hardTimeout = setTimeout(() => {
-    showError('Authentication timed out.', 'The auth server did not respond. Try refreshing.');
-  }, 15000);
-
-  // Wait for Clerk script to define the global
-  let attempts = 0;
-  while (typeof Clerk === 'undefined' && attempts < 40) {
-    await new Promise(r => setTimeout(r, 200));
-    attempts++;
-  }
-  if (typeof Clerk === 'undefined') {
-    clearTimeout(hardTimeout);
-    showError('Clerk failed to load.', 'Check your network or publishable key.');
-    return;
-  }
-
-  try {
+  const hardTimeout=setTimeout(()=>{showError('Authentication timed out.','The auth server did not respond. Try refreshing.');},15000);
+  let attempts=0;
+  while(typeof Clerk==='undefined'&&attempts<40){await new Promise(r=>setTimeout(r,200));attempts++;}
+  if(typeof Clerk==='undefined'){clearTimeout(hardTimeout);showError('Clerk failed to load.','Check your network or publishable key.');return;}
+  try{
     setLoad('Authenticating…');
-    await Promise.race([
-      Clerk.load(),
-      new Promise((_,rej) => setTimeout(() => rej(new Error('Clerk load timeout after 10s')), 10000))
-    ]);
-  } catch(e) {
-    clearTimeout(hardTimeout);
-    showError('Clerk initialization failed.', e.message || String(e));
-    return;
-  }
+    await Promise.race([Clerk.load(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('Clerk load timeout after 10s')),10000))]);
+  }catch(e){clearTimeout(hardTimeout);showError('Clerk initialization failed.',e.message||String(e));return;}
 
-  async function showDash(user) {
+  async function showDash(user){
     clearTimeout(hardTimeout);
-    if (_dashboardPopulated) { populateDash(user); return; }
+    if(_dashboardPopulated){populateDash(user);return;}
     setLoad('Loading your profile…');
-    try { await user.reload(); } catch(e) {}
+    try{await user.reload();}catch(e){}
     setLoad('Building dashboard…');
-
-    try { Clerk.mountUserButton(document.getElementById('clerkBtn'), { appearance: APPEARANCE }); } catch(e) {}
-    if (!_clerkProfileMounted) {
-      try {
-        const profileEl = document.getElementById('clerkProfile');
-        if (profileEl) { Clerk.mountUserProfile(profileEl, { appearance: APPEARANCE }); _clerkProfileMounted = true; }
-      } catch(e) {}
+    try{Clerk.mountUserButton(document.getElementById('clerkBtn'),{appearance:APPEARANCE});}catch(e){}
+    if(!_clerkProfileMounted){
+      try{const profileEl=document.getElementById('clerkProfile');if(profileEl){Clerk.mountUserProfile(profileEl,{appearance:APPEARANCE});_clerkProfileMounted=true;}}catch(e){}
     }
-
     populateDash(user);
-    _dashboardPopulated = true;
-
-    const topbar = document.getElementById('topbar');
-    const shell = document.getElementById('shell');
-    if (topbar) topbar.style.display = 'flex';
-    if (shell) shell.style.display = 'flex';
-
-    const loadScreen = document.getElementById('loadScreen');
-    if (loadScreen) { loadScreen.classList.add('out'); setTimeout(() => loadScreen.remove(), 700); }
-
+    _dashboardPopulated=true;
+    const topbar=document.getElementById('topbar');const shell=document.getElementById('shell');
+    if(topbar)topbar.style.display='flex';if(shell)shell.style.display='flex';
+    const loadScreen=document.getElementById('loadScreen');
+    if(loadScreen){loadScreen.classList.add('out');setTimeout(()=>loadScreen.remove(),700);}
     await fetchAnn();
+    await fetchFieldOps();
     startCountdown();
-    logAct(`Signed in · ${user.fullName || user.firstName || 'Member'}`);
+    logAct(`Signed in · ${user.fullName||user.firstName||'Member'}`);
   }
 
-  // Check immediately
-  if (Clerk.user) {
-    await showDash(Clerk.user);
-    return;
-  }
-
-  // Use Clerk's listener instead of a blind setTimeout
+  if(Clerk.user){await showDash(Clerk.user);return;}
   setLoad('Checking session…');
-  const sessionUser = await new Promise(resolve => {
-    const unsub = Clerk.addListener(({ user }) => {
-      if (user) { unsub(); resolve(user); }
-    });
-    setTimeout(() => { unsub(); resolve(null); }, 5000);
+  const sessionUser=await new Promise(resolve=>{
+    const unsub=Clerk.addListener(({user})=>{if(user){unsub();resolve(user);}});
+    setTimeout(()=>{unsub();resolve(null);},5000);
   });
+  if(sessionUser){await showDash(sessionUser);}
+  else{clearTimeout(hardTimeout);setLoad('Redirecting…');setTimeout(()=>{window.location.href='https://vindex.wearelvo.com';},800);}
 
-  if (sessionUser) {
-    await showDash(sessionUser);
-  } else {
-    clearTimeout(hardTimeout);
-    setLoad('Redirecting…');
-    setTimeout(() => { window.location.href = 'https://vindex.wearelvo.com'; }, 800);
-  }
-
-  // Sign-out listener
-  Clerk.addListener(({ user }) => {
-    if (!user) {
-      _dashboardPopulated = false;
-      _clerkProfileMounted = false;
+  Clerk.addListener(({user})=>{
+    if(!user){
+      _dashboardPopulated=false;_clerkProfileMounted=false;
       clearInterval(_annTimer);
-      window.location.href = 'https://vindex.wearelvo.com';
+      window.location.href='https://vindex.wearelvo.com';
     }
   });
 });
