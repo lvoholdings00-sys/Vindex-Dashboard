@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
   <title>LVO Vindex · Dashboard</title>
+
+  <link rel="icon" type="image/png" href="assets/logo.png"/>
+  <link rel="apple-touch-icon" href="assets/logo.png"/>
+
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -18,23 +22,24 @@
 
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    input,textarea,select{font-size:16px !important}
+
     :root{
-      --gold:#C8A96E;--gold-dim:rgba(200,169,110,.18);--gold-hi:rgba(200,169,110,.45);
-      --gold-glow:rgba(200,169,110,.07);
+      --gold:#C8A96E;--gold-dim:rgba(200,169,110,.18);--gold-hi:rgba(200,169,110,.42);
+      --gold-glow:rgba(200,169,110,.06);
       --red-hi:#CC2020;
       --bg:#000000;--bg2:#000000;--bg3:#000000;
       --chrome:#C8C8D0;--white:#F0EEEC;--dim:#6A6A64;--dim2:#888880;
-      --border:rgba(200,169,110,.15);--border-hi:rgba(200,169,110,.38);
+      --border:rgba(200,169,110,.14);--border-hi:rgba(200,169,110,.38);
       --sidebar:220px;
+      --bottom-nav:56px;
     }
     html,body{height:100%;overflow:hidden}
     body{background:var(--bg);color:var(--white);font-family:'Cormorant Garamond',Georgia,serif;display:flex;flex-direction:column}
-
-    /* GRAIN */
     body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.028;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 
-    /* LOAD SCREEN */
+    /* LOAD */
     #loadScreen{position:fixed;inset:0;z-index:9000;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity .6s ease}
     #loadScreen.out{opacity:0;pointer-events:none}
     .ls-rule{width:1px;height:80px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);animation:lsPulse 1.8s ease-in-out infinite}
@@ -47,7 +52,7 @@
     .ls-bar-fill{position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:lsBar 1.4s ease-in-out infinite}
     @keyframes lsBar{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
 
-    /* ERROR SCREEN */
+    /* ERROR */
     #errorScreen{position:fixed;inset:0;z-index:8999;background:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;padding:2rem;text-align:center}
     #errorScreen.show{display:flex}
     .err-title{font-family:'Cinzel',serif;font-size:1.2rem;letter-spacing:.2em;color:var(--red-hi)}
@@ -74,7 +79,7 @@
     #sidebar::-webkit-scrollbar-thumb{background:var(--border)}
     .sb-section{padding:1.4rem 1rem .4rem}
     .sb-label{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.45em;color:var(--dim);text-transform:uppercase;margin-bottom:.7rem;padding-left:.3rem}
-    .nav-item{display:flex;align-items:center;gap:.7rem;padding:.68rem .9rem;cursor:pointer;border-left:2px solid transparent;transition:all .2s;margin-bottom:1px;position:relative}
+    .nav-item{display:flex;align-items:center;gap:.7rem;padding:.68rem .9rem;cursor:pointer;border-left:2px solid transparent;transition:all .2s;margin-bottom:1px}
     .nav-item:hover{background:var(--gold-glow);border-left-color:rgba(200,169,110,.3)}
     .nav-item.active{background:var(--gold-glow);border-left-color:var(--gold)}
     .nav-ico{font-size:.7rem;opacity:.4;width:14px;flex-shrink:0;transition:opacity .2s}
@@ -90,6 +95,28 @@
     .pip{width:4px;height:4px;border-radius:50%;background:var(--gold);animation:pipBlink 2.2s ease-in-out infinite}
     @keyframes pipBlink{0%,100%{opacity:.25}50%{opacity:1}}
     .pip-txt{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+    .sb-status{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;padding:.3rem 0;display:flex;align-items:center;gap:.4rem}
+    .sb-status.ok{color:var(--gold)}.sb-status.err{color:var(--red-hi)}
+
+    /* MOBILE BOTTOM NAV */
+    #bottomNav{
+      display:none;position:fixed;bottom:0;left:0;right:0;
+      padding-bottom:calc(env(safe-area-inset-bottom) + 100px);
+      margin-bottom:-100px;
+      background:rgba(0,0,0,.96);
+      border-top:.5px solid var(--border);
+      z-index:200;padding-left:.3rem;padding-right:.3rem;
+    }
+    .bn-inner{display:flex;align-items:stretch;height:var(--bottom-nav);overflow-x:auto;-webkit-overflow-scrolling:touch;gap:0}
+    .bn-inner::-webkit-scrollbar{display:none}
+    .bn-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;padding:.4rem .55rem;cursor:pointer;min-width:52px;flex:1;border-top:2px solid transparent;transition:all .18s;position:relative}
+    .bn-item.active{border-top-color:var(--gold)}
+    .bn-item.active .bn-ico{opacity:1;color:var(--gold)}
+    .bn-item.active .bn-lbl{color:var(--gold)}
+    .bn-ico{font-size:.72rem;opacity:.38;transition:all .18s;color:var(--chrome)}
+    .bn-lbl{font-family:'Cinzel',serif;font-size:.3rem;letter-spacing:.18em;color:var(--dim2);text-transform:uppercase;white-space:nowrap;transition:color .18s}
+    .bn-dot{position:absolute;top:.35rem;right:.35rem;width:5px;height:5px;border-radius:50%;background:var(--gold);display:none}
+    .bn-dot.show{display:block}
 
     /* MAIN */
     #main{flex:1;overflow-y:auto;padding:2.2rem 2.4rem 3rem;background:var(--bg)}
@@ -97,74 +124,68 @@
     #main::-webkit-scrollbar-thumb{background:var(--border)}
 
     /* PANELS */
-    .panel{display:none}
-    .panel.active{display:block;animation:panelIn .3s cubic-bezier(.16,1,.3,1)}
+    .panel{display:none}.panel.active{display:block;animation:panelIn .3s cubic-bezier(.16,1,.3,1)}
     @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-    /* PANEL HEAD */
     .ph{margin-bottom:2rem;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem}
     .ph-left .ph-eyebrow{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.55em;color:var(--gold);text-transform:uppercase;margin-bottom:.35rem;opacity:.7}
     .ph-left .ph-title{font-family:'Cinzel',serif;font-size:1.55rem;font-weight:900;letter-spacing:.12em;color:var(--chrome);line-height:1}
     .ph-left .ph-sub{font-size:.92rem;font-weight:300;font-style:italic;color:var(--dim2);margin-top:.35rem}
     .ph-rule{flex:1;height:.5px;background:linear-gradient(to right,var(--border-hi),transparent);margin-bottom:.4rem;min-width:40px}
 
-    /* STAT BAR */
     .stat-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-bottom:2rem}
     .sc{background:var(--bg2);padding:1.2rem 1.4rem;position:relative;overflow:hidden;transition:background .25s}
     .sc::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s}
-    .sc:hover{background:var(--gold-glow)}
-    .sc:hover::after{transform:scaleX(1)}
+    .sc:hover{background:var(--gold-glow)}.sc:hover::after{transform:scaleX(1)}
     .sc-lbl{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.4em;color:var(--dim);text-transform:uppercase;margin-bottom:.4rem}
     .sc-val{font-family:'Cinzel',serif;font-size:.82rem;font-weight:600;letter-spacing:.1em;color:var(--chrome)}
 
-    /* GRIDS */
     .g2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
     .g-full{margin-bottom:1.2rem}
 
-    /* CARD */
     .card{background:var(--bg2);border:.5px solid var(--border);position:relative}
     .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-    .ch{padding:1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .ch{padding:1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
     .ct{font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;color:var(--gold);text-transform:uppercase}
     .cm{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
     .cb{padding:1.2rem 1.4rem}
+    .empty{font-size:.88rem;font-style:italic;color:var(--dim);padding:1.2rem 0;text-align:center}
 
-    /* DEAL ITEM */
-    .deal{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s}
+    /* PROPERTY / DEAL */
+    .deal{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s;will-change:background}
     .deal:last-child{border-bottom:none}
-    .deal::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);opacity:0;transition:opacity .2s}
-    .deal:hover{background:var(--gold-glow)}
-    .deal:hover::before{opacity:1}
-    .deal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;gap:.8rem}
+    .deal::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);opacity:0;transition:opacity .2s;pointer-events:none}
+    .deal:hover{background:var(--gold-glow)}.deal:hover::before{opacity:1}
+    .deal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;gap:.8rem;flex-wrap:wrap}
     .deal-name{font-family:'Cinzel',serif;font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--chrome)}
     .deal-st{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.18em;padding:.18rem .5rem;text-transform:uppercase}
     .deal-st.active{color:#22c55e;border:.5px solid rgba(34,197,94,.28);background:rgba(34,197,94,.05)}
-    .deal-st.pending{color:var(--gold);border:.5px solid var(--border-hi);background:rgba(200,169,110,.05)}
+    .deal-st.pending{color:var(--gold);border:.5px solid rgba(200,169,110,.28);background:rgba(200,169,110,.05)}
+    .deal-st.under-contract{color:#60a5fa;border:.5px solid rgba(96,165,250,.28);background:rgba(96,165,250,.05)}
     .deal-st.closed{color:var(--dim);border:.5px solid rgba(100,100,95,.2)}
-    .deal-meta{display:flex;gap:1.8rem;flex-wrap:wrap}
+    .deal-meta{display:flex;gap:1.4rem;flex-wrap:wrap}
     .dm-lbl{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;margin-bottom:.15rem}
     .dm-val{font-size:.82rem;font-style:italic;color:var(--chrome)}
     .deal-note{margin-top:.6rem;font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.6;border-top:.5px solid var(--border);padding-top:.55rem}
-    .empty{font-size:.88rem;font-style:italic;color:var(--dim);padding:1.2rem 0;text-align:center}
 
     /* FINANCIALS TABLE */
+    .fin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1.2rem}
+    .fgc{background:var(--bg2);padding:1.1rem 1.3rem}
+    .fg-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.35rem}
+    .fg-val{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;color:var(--chrome)}
     .ft{width:100%;border-collapse:collapse}
     .ft th{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;padding:.65rem 1rem;border-bottom:.5px solid var(--border);text-align:left;font-weight:400}
     .ft td{padding:.85rem 1rem;border-bottom:.5px solid rgba(200,169,110,.05);font-size:.84rem;font-style:italic;color:var(--chrome)}
     .ft tr:last-child td{border-bottom:none}
     .ft tr:hover td{background:var(--gold-glow)}
     .ft-lbl{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;font-style:normal;display:block;margin-bottom:.18rem}
-    .fin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1.2rem}
-    .fgc{background:var(--bg2);padding:1.1rem 1.3rem}
-    .fg-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.35rem}
-    .fg-val{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;color:var(--chrome)}
 
     /* ANNOUNCEMENTS */
     .ann{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);transition:background .2s;position:relative}
     .ann:last-child{border-bottom:none}
     .ann:hover{background:var(--gold-glow)}
     .ann.pinned{border-left:2px solid var(--gold);background:rgba(200,169,110,.03)}
-    .ann-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.55rem;gap:1rem}
+    .ann-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.55rem;gap:1rem;flex-wrap:wrap}
     .ann-title{font-family:'Cinzel',serif;font-size:.6rem;font-weight:600;letter-spacing:.12em;color:var(--chrome)}
     .ann-div{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.2em;color:var(--gold);border:.5px solid var(--border);padding:.15rem .45rem;flex-shrink:0;text-transform:uppercase}
     .ann-body{font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.75}
@@ -172,38 +193,21 @@
     .ann-author{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim)}
     .ann-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.15em;color:var(--dim);opacity:.55}
     .ann-pin-badge{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.2em;color:var(--gold);opacity:.75}
-
-    /* FILTER BAR */
     .fbar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
     .fb{background:transparent;border:.5px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.22em;padding:.42rem .75rem;cursor:pointer;text-transform:uppercase;transition:all .2s}
     .fb:hover,.fb.active{border-color:var(--gold);color:var(--gold)}
 
-    /* BUTTONS */
-    .btn{background:transparent;border:.5px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;padding:.7rem 1.2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s}
-    .btn:hover{background:var(--gold);color:var(--bg)}
-    .btn.ghost{border-color:var(--border);color:var(--dim2)}
-    .btn.ghost:hover{background:var(--border);color:var(--chrome)}
-    .btn.sm{font-size:.38rem;padding:.5rem .85rem}
-    .btn:disabled{opacity:.38;cursor:not-allowed}
-    .btn-row{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
-
-    /* INFO GRID */
-    .ig{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1.2rem}
-    .ic{background:var(--bg2);padding:1.3rem 1.4rem}
-    .ic-lbl{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.45rem}
-    .ic-val{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.1em;color:var(--chrome);word-break:break-word}
-
-    /* TIER BAND */
+    /* ACCOUNT */
     .tier-band{display:flex;align-items:center;justify-content:space-between;border:.5px solid var(--border-hi);padding:1.3rem 1.6rem;margin-bottom:1.2rem;flex-wrap:wrap;gap:1rem;background:rgba(200,169,110,.025)}
     .tb-tier-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem}
     .tb-tier-val{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.18em;color:var(--gold)}
     .tb-note{font-size:.82rem;font-style:italic;color:var(--dim);max-width:280px;line-height:1.6;text-align:right}
-
-    /* ADMIN BADGE */
+    .ig{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1.2rem}
+    .ic{background:var(--bg2);padding:1.3rem 1.4rem}
+    .ic-lbl{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.45rem}
+    .ic-val{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.1em;color:var(--chrome);word-break:break-word}
     .adm-badge{display:inline-flex;align-items:center;gap:.5rem;border:.5px solid rgba(200,169,110,.35);padding:.28rem .7rem;margin-bottom:1rem}
     .adm-badge span{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.28em;color:var(--gold);text-transform:uppercase}
-
-    /* LOCKED */
     .locked-notice{background:var(--bg2);border:.5px solid var(--border);padding:2.5rem;text-align:center}
     .ln-text{font-family:'Cinzel',serif;font-size:.45rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;line-height:1.9}
     .ln-text span{color:var(--red-hi)}
@@ -215,38 +219,43 @@
     .act-item{display:flex;gap:1rem;padding:.75rem 0;border-bottom:.5px solid var(--border)}
     .act-item:last-child{border-bottom:none}
     .act-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.35rem}
+    .act-dot.red{background:var(--red-hi)}
     .act-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.18em;color:var(--dim);margin-bottom:.12rem}
     .act-txt{font-size:.82rem;font-style:italic;color:var(--chrome);line-height:1.5}
 
-    /* REFRESH LABEL */
-    #refreshLabel{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
+    /* ADMIN */
+    .adm-row{display:grid;grid-template-columns:1fr 160px 90px;gap:.8rem;align-items:center;padding:.95rem 0;border-bottom:.5px solid var(--border)}
+    .adm-row:last-child{border-bottom:none}
 
-    /* SUPABASE STATUS */
-    .sb-status{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;padding:.3rem 0;display:flex;align-items:center;gap:.4rem}
-    .sb-status.ok{color:var(--gold)}
-    .sb-status.err{color:var(--red-hi)}
+    /* BUTTONS */
+    .btn{background:transparent;border:.5px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;padding:.7rem 1.2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s}
+    .btn:hover{background:var(--gold);color:var(--bg)}
+    .btn.ghost{border-color:var(--border);color:var(--dim2)}
+    .btn.ghost:hover{background:var(--border);color:var(--chrome)}
+    .btn.sm{font-size:.38rem;padding:.5rem .85rem}
+    .btn:disabled{opacity:.38;cursor:not-allowed}
+    .btn-row{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
 
-    /* TOAST */
-    #toasts{position:fixed;bottom:1.5rem;right:1.5rem;z-index:400;display:flex;flex-direction:column;gap:.4rem}
+    /* PROPERTY TYPE TAGS */
+    .prop-tag{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;border:.5px solid var(--border);color:var(--dim2);padding:.18rem .5rem;text-transform:uppercase;margin-right:.4rem}
+    .prop-tag.residential{color:var(--gold);border-color:rgba(200,169,110,.3)}
+    .prop-tag.commercial{color:#60a5fa;border-color:rgba(96,165,250,.3)}
+    .prop-tag.mixed{color:#a78bfa;border-color:rgba(167,139,250,.3)}
+
+    #toasts{position:fixed;bottom:calc(var(--bottom-nav) + .8rem);right:1rem;z-index:400;display:flex;flex-direction:column;gap:.4rem}
     .tst{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.2em;padding:.65rem 1rem;border:.5px solid var(--border-hi);background:var(--bg2);color:var(--gold);text-transform:uppercase;animation:tstIn .25s ease}
     .tst.err{color:var(--red-hi);border-color:rgba(204,32,32,.3)}
     @keyframes tstIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
 
-    /* ACCOUNT PANEL — stable layout, no flicker */
     #p-account{contain:layout style}
     #clerkProfileCard{overflow:visible;min-height:200px}
     #clerkProfile{overflow:visible;min-height:180px}
-    /* Prevent Clerk user profile from causing layout shifts */
-    #clerkProfile > * {display:block}
-    .cl-userProfile-root{max-width:100%!important}
-    .cl-card{border-radius:0!important}
-    .cl-avatarBox{border-radius:50%!important;overflow:hidden!important}
-    .cl-avatar{border-radius:50%!important}
-    .cl-userButtonAvatarBox{border-radius:50%!important;overflow:hidden!important}
-    .cl-userButtonAvatar{border-radius:50%!important}
+    #clerkProfile > *{display:block}
+    .cl-avatarBox,.cl-userButtonAvatarBox{border-radius:50%!important;overflow:hidden!important}
+    .cl-avatar,.cl-userButtonAvatar{border-radius:50%!important}
 
+    /* RESPONSIVE */
     @media(max-width:900px){
-      :root{--sidebar:190px}
       .stat-bar{grid-template-columns:1fr 1fr}
       .g2{grid-template-columns:1fr}
       .fin-grid{grid-template-columns:1fr 1fr}
@@ -254,15 +263,24 @@
     @media(max-width:640px){
       :root{--sidebar:0px}
       #sidebar{display:none}
-      #main{padding:1.4rem}
+      #bottomNav{display:block}
+      html,body{height:100%;height:100dvh}
+      #shell{height:calc(100dvh - 52px - var(--bottom-nav));min-height:0}
+      #main{padding:1.2rem 1rem calc(var(--bottom-nav) + env(safe-area-inset-bottom) + 1.5rem)}
       .stat-bar{grid-template-columns:1fr 1fr}
       .ig{grid-template-columns:1fr}
+      .fin-grid{grid-template-columns:1fr}
+      .ft{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+      .ph-left .ph-title{font-size:1.15rem}
+      .adm-row{grid-template-columns:1fr;gap:.4rem}
+      .tb-crumb{display:none}.tb-tier{display:none}
+      #toasts{bottom:calc(var(--bottom-nav) + .5rem);right:.5rem;left:.5rem}
+      .tst{font-size:.38rem;padding:.55rem .8rem}
     }
   </style>
 </head>
 <body>
 
-<!-- LOAD SCREEN -->
 <div id="loadScreen">
   <div class="ls-rule"></div>
   <div class="ls-mark">LVO Holdings · Division 01</div>
@@ -272,17 +290,15 @@
   <div class="ls-bar"><div class="ls-bar-fill"></div></div>
 </div>
 
-<!-- ERROR SCREEN -->
 <div id="errorScreen">
   <div class="ls-rule"></div>
   <div class="err-title">Authentication Error</div>
-  <div class="err-msg" id="errMsg">Unable to initialize the Clerk authentication service.</div>
+  <div class="err-msg" id="errMsg">Unable to initialize authentication.</div>
   <div class="err-detail" id="errDetail"></div>
   <button class="btn" onclick="window.location.reload()">↺ Retry</button>
   <a class="btn ghost" href="https://vindex.wearelvo.com" style="text-decoration:none;display:inline-flex;align-items:center;padding:.7rem 1.2rem">← Return to site</a>
 </div>
 
-<!-- TOPBAR -->
 <div id="topbar" style="display:none">
   <div class="tb-left">
     <span class="tb-mark">LVO Vindex</span>
@@ -296,14 +312,14 @@
   </div>
 </div>
 
-<!-- SHELL -->
 <div id="shell" style="display:none">
   <nav id="sidebar">
     <div class="sb-section">
       <div class="sb-label">Navigation</div>
       <div class="nav-item active" data-p="overview" onclick="goTo('overview')"><span class="nav-ico">◈</span><span class="nav-lbl">Overview</span></div>
-      <div class="nav-item" data-p="deals" onclick="goTo('deals')"><span class="nav-ico">◇</span><span class="nav-lbl">Deals</span><span class="nav-badge" id="dealsBadge" style="display:none">0</span></div>
+      <div class="nav-item" data-p="properties" onclick="goTo('properties')"><span class="nav-ico">◇</span><span class="nav-lbl">Properties</span><span class="nav-badge" id="propBadge" style="display:none">0</span></div>
       <div class="nav-item" data-p="financials" onclick="goTo('financials')"><span class="nav-ico">◉</span><span class="nav-lbl">Financials</span></div>
+      <div class="nav-item" data-p="acquisitions" onclick="goTo('acquisitions')"><span class="nav-ico">▲</span><span class="nav-lbl">Acquisitions</span></div>
       <div class="nav-item" data-p="announcements" onclick="goTo('announcements')"><span class="nav-ico">▣</span><span class="nav-lbl">Announcements</span><span class="nav-badge" id="annBadge" style="display:none">★</span></div>
     </div>
     <div class="sb-section">
@@ -332,17 +348,23 @@
       </div>
       <div class="stat-bar">
         <div class="sc"><div class="sc-lbl">Standing</div><div class="sc-val" id="sTier">—</div></div>
-        <div class="sc"><div class="sc-lbl">Active Deals</div><div class="sc-val" id="sDeals">—</div></div>
+        <div class="sc"><div class="sc-lbl">Properties</div><div class="sc-val" id="sProps">—</div></div>
         <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val">Vindex</div></div>
         <div class="sc"><div class="sc-lbl">Member Since</div><div class="sc-val" id="sJoined">—</div></div>
       </div>
       <div class="g2">
         <div class="card">
-          <div class="ch"><span class="ct">Recent Deals</span><span class="cm" id="ovDealCount">—</span></div>
-          <div id="ovDeals"><div class="empty">Loading…</div></div>
+          <div class="ch"><span class="ct">Active Properties</span><span class="cm" id="ovPropCount">—</span></div>
+          <div id="ovProps"><div class="empty">Loading…</div></div>
         </div>
         <div class="card">
-          <div class="ch"><span class="ct">Announcements</span><span class="cm" id="ovAnnTime">—</span></div>
+          <div class="ch">
+            <span class="ct">Announcements</span>
+            <div style="display:flex;align-items:center;gap:.8rem">
+              <span class="cm" id="ovAnnTime">—</span>
+              <button class="btn sm ghost" style="padding:.3rem .65rem;font-size:.34rem" onclick="fetchAnn(true)">↺</button>
+            </div>
+          </div>
           <div id="ovAnn"><div class="empty">Loading…</div></div>
         </div>
       </div>
@@ -352,61 +374,87 @@
       </div>
     </div>
 
-    <!-- DEALS -->
-    <div class="panel" id="p-deals">
+    <!-- PROPERTIES -->
+    <div class="panel" id="p-properties">
       <div class="ph">
-        <div class="ph-left">
-          <div class="ph-eyebrow">Deal Flow</div>
-          <div class="ph-title">Active Deals</div>
-          <div class="ph-sub">All deals assigned to your Vindex account.</div>
-        </div>
+        <div class="ph-left"><div class="ph-eyebrow">Portfolio</div><div class="ph-title">Properties</div><div class="ph-sub">All properties assigned to your Vindex account.</div></div>
         <div class="ph-rule"></div>
       </div>
-      <div id="dealsLocked" class="locked-notice" style="display:none">
-        <p class="ln-text">Deal Flow <span>Restricted</span><br/>Unlocked at Tier III and above</p>
-      </div>
-      <div id="dealsContent"></div>
+      <div id="propsLocked" class="locked-notice" style="display:none"><p class="ln-text">Property Data <span>Restricted</span><br/>Unlocked at Tier III and above</p></div>
+      <div id="propsContent"></div>
     </div>
 
     <!-- FINANCIALS -->
     <div class="panel" id="p-financials">
       <div class="ph">
-        <div class="ph-left">
-          <div class="ph-eyebrow">Capital</div>
-          <div class="ph-title">Financials</div>
-          <div class="ph-sub">Account-level positions and capital summary.</div>
-        </div>
+        <div class="ph-left"><div class="ph-eyebrow">Capital</div><div class="ph-title">Financials</div><div class="ph-sub">Portfolio valuation and capital deployment summary.</div></div>
         <div class="ph-rule"></div>
       </div>
-      <div id="finLocked" class="locked-notice" style="display:none">
-        <p class="ln-text">Financial Data <span>Restricted</span><br/>Unlocked at Tier III and above</p>
-      </div>
+      <div id="finLocked" class="locked-notice" style="display:none"><p class="ln-text">Financial Data <span>Restricted</span><br/>Unlocked at Tier III and above</p></div>
       <div id="finContent">
         <div class="fin-grid">
           <div class="fgc"><div class="fg-lbl">Capital Deployed</div><div class="fg-val" id="finCap">—</div></div>
-          <div class="fgc"><div class="fg-lbl">Equity Positions</div><div class="fg-val" id="finEq">—</div></div>
-          <div class="fgc"><div class="fg-lbl">Active Deals</div><div class="fg-val" id="finDls">—</div></div>
+          <div class="fgc"><div class="fg-lbl">Portfolio Holdings</div><div class="fg-val" id="finEq">—</div></div>
+          <div class="fgc"><div class="fg-lbl">Active Properties</div><div class="fg-val" id="finDls">—</div></div>
+        </div>
+        <div class="card" style="overflow-x:auto">
+          <div class="ch"><span class="ct">Property Positions</span><span class="cm" id="finMonth">—</span></div>
+          <table class="ft">
+            <thead><tr><th>Property</th><th>Type</th><th>Position</th><th>Status</th><th>Capital</th></tr></thead>
+            <tbody id="finTbody"><tr><td colspan="5"><div class="empty">Loading…</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACQUISITIONS -->
+    <div class="panel" id="p-acquisitions">
+      <div class="ph">
+        <div class="ph-left"><div class="ph-eyebrow">Strategy</div><div class="ph-title">Acquisitions</div><div class="ph-sub">Criteria, pipeline, and acquisition framework for Vindex holdings.</div></div>
+        <div class="ph-rule"></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="ch"><span class="ct">Acquisition Criteria</span></div>
+          <div class="cb" style="display:flex;flex-direction:column;gap:1rem">
+            <div>
+              <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">Property Types</div>
+              <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7">Residential single-family, multi-family (2–8 units), and select commercial. Mixed-use considered case by case.</p>
+            </div>
+            <div>
+              <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">Target Markets</div>
+              <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7">Houston metropolitan area and surrounding counties. Focus on underperforming assets in stabilizing neighborhoods.</p>
+            </div>
+            <div>
+              <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">Acquisition Strategy</div>
+              <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7">We move on value, not emotion. Distressed assets, off-market deals, and estate sales are prioritized. Every dollar is deployed with purpose.</p>
+            </div>
+          </div>
         </div>
         <div class="card">
-          <div class="ch"><span class="ct">Deal Positions</span><span class="cm" id="finMonth">—</span></div>
-          <table class="ft"><thead><tr><th>Deal</th><th>Position</th><th>Division</th><th>Status</th><th>Capital</th></tr></thead>
-          <tbody id="finTbody"><tr><td colspan="5"><div class="empty">Loading…</div></td></tr></tbody></table>
+          <div class="ch"><span class="ct">Legacy Trust Holdings</span></div>
+          <div class="cb">
+            <div style="font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:.8rem">LVO Family Legacy Trust</div>
+            <p style="font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.7;margin-bottom:1.2rem">Properties acquired under Vindex are held within the LVO Family Legacy Trust structure. Built to outlast us. Positioned to grow beyond us.</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)">
+              <div style="background:var(--bg2);padding:1rem 1.2rem"><div style="font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem">Structure</div><div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;color:var(--chrome)">Family Trust</div></div>
+              <div style="background:var(--bg2);padding:1rem 1.2rem"><div style="font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem">Objective</div><div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;color:var(--chrome)">Generational</div></div>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="card g-full">
+        <div class="ch"><span class="ct">Pipeline</span><span class="cm">Properties Under Review</span></div>
+        <div id="pipelineContent"><div class="empty" style="padding:1.5rem">No pipeline properties on record. Contact LVO Vindex administration to add acquisition targets.</div></div>
       </div>
     </div>
 
     <!-- ANNOUNCEMENTS -->
     <div class="panel" id="p-announcements">
       <div class="ph">
-        <div class="ph-left">
-          <div class="ph-eyebrow">Communications · Discord → Make → Supabase</div>
-          <div class="ph-title">Announcements</div>
-          <div class="ph-sub">Posted from Discord. Refreshes every 15 minutes.</div>
-        </div>
+        <div class="ph-left"><div class="ph-eyebrow">Communications</div><div class="ph-title">Announcements</div><div class="ph-sub">Posted from LVO. Refreshes every 15 minutes.</div></div>
         <div class="ph-rule"></div>
-        <div class="btn-row">
-          <button class="btn sm ghost" onclick="fetchAnn(true)">↺ Refresh</button>
-        </div>
+        <div class="btn-row"><button class="btn sm ghost" onclick="fetchAnn(true)">↺ Refresh</button></div>
       </div>
       <div class="fbar">
         <button class="fb active" onclick="filterAnn('all',this)">All</button>
@@ -418,10 +466,7 @@
 
     <!-- ACCOUNT -->
     <div class="panel" id="p-account">
-      <div class="ph">
-        <div class="ph-left"><div class="ph-eyebrow">Profile</div><div class="ph-title">My Account</div></div>
-        <div class="ph-rule"></div>
-      </div>
+      <div class="ph"><div class="ph-left"><div class="ph-eyebrow">Profile</div><div class="ph-title">My Account</div></div><div class="ph-rule"></div></div>
       <div id="admBadgeWrap" style="display:none"><div class="adm-badge"><span>⬡ LVO Administration · Executive Access</span></div></div>
       <div class="tier-band">
         <div><div class="tb-tier-lbl">Current Standing</div><div class="tb-tier-val" id="acTier">—</div></div>
@@ -435,7 +480,6 @@
         <div class="ic"><div class="ic-lbl">Member Since</div><div class="ic-val" id="acJoined">—</div></div>
         <div class="ic"><div class="ic-lbl">Portal</div><div class="ic-val">Vindex Dashboard v2.1</div></div>
       </div>
-      <!-- Clerk UserProfile mounted here — isolated to prevent layout thrash -->
       <div class="card" id="clerkProfileCard" style="overflow:visible">
         <div class="ch"><span class="ct">Manage Account</span></div>
         <div class="cb" id="clerkProfile" style="overflow:visible;min-height:200px"></div>
@@ -444,10 +488,7 @@
 
     <!-- ADMIN -->
     <div class="panel" id="p-admin">
-      <div class="ph">
-        <div class="ph-left"><div class="ph-eyebrow" style="color:var(--gold)">Executive</div><div class="ph-title">Admin Panel</div></div>
-        <div class="ph-rule"></div>
-      </div>
+      <div class="ph"><div class="ph-left"><div class="ph-eyebrow" style="color:var(--gold)">Executive</div><div class="ph-title">Admin Panel</div></div><div class="ph-rule"></div></div>
       <div class="stat-bar" style="margin-bottom:1.5rem">
         <div class="sc"><div class="sc-lbl">Total Members</div><div class="sc-val" id="admTotal">—</div></div>
         <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val">Vindex</div></div>
@@ -455,10 +496,10 @@
         <div class="sc"><div class="sc-lbl">Version</div><div class="sc-val">2.1 · 2026</div></div>
       </div>
       <div class="card" style="margin-bottom:1.2rem">
-        <div class="ch"><span class="ct">Member Tier Management</span><span class="cm">Changes apply on next sign-in</span></div>
+        <div class="ch"><span class="ct">Member Tier Management</span></div>
         <div class="cb">
           <div style="margin-bottom:1rem;display:flex;gap:.8rem;flex-wrap:wrap;align-items:center">
-            <input class="ci" id="memberSearch" placeholder="Search by name or email…" style="max-width:280px;background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.9rem;padding:.7rem .9rem;outline:none" oninput="filterMembers()"/>
+            <input id="memberSearch" placeholder="Search by name or email…" style="max-width:280px;background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.9rem;padding:.7rem .9rem;outline:none;width:100%" oninput="filterMembers()"/>
             <span style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase" id="memberCount"></span>
           </div>
           <div id="admList"><div class="empty">Loading members…</div></div>
@@ -473,654 +514,338 @@
   </main>
 </div>
 
+<!-- MOBILE BOTTOM NAV -->
+<div id="bottomNav">
+  <div class="bn-inner">
+    <div class="bn-item active" data-p="overview" onclick="goTo('overview')"><span class="bn-ico">◈</span><span class="bn-lbl">Overview</span></div>
+    <div class="bn-item" data-p="properties" onclick="goTo('properties')"><span class="bn-ico">◇</span><span class="bn-lbl">Properties</span><span class="bn-dot" id="bnPropDot"></span></div>
+    <div class="bn-item" data-p="financials" onclick="goTo('financials')"><span class="bn-ico">◉</span><span class="bn-lbl">Financials</span></div>
+    <div class="bn-item" data-p="acquisitions" onclick="goTo('acquisitions')"><span class="bn-ico">▲</span><span class="bn-lbl">Acquire</span></div>
+    <div class="bn-item" data-p="announcements" onclick="goTo('announcements')"><span class="bn-ico">▣</span><span class="bn-lbl">News</span><span class="bn-dot" id="bnAnnDot"></span></div>
+    <div class="bn-item" data-p="account" onclick="goTo('account')"><span class="bn-ico">◎</span><span class="bn-lbl">Account</span></div>
+    <div class="bn-item" id="bnAdminItem" data-p="admin" onclick="goTo('admin')" style="display:none"><span class="bn-ico">⬡</span><span class="bn-lbl">Admin</span></div>
+  </div>
+</div>
+
 <div id="toasts"></div>
 
 <script>
-/* ============================================================
-   CONFIG
-============================================================ */
-const SB_URL = 'https://pumteihkiaftgwbexaid.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bXRlaWhraWFmdGd3YmV4YWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NjAyMjYsImV4cCI6MjA5MzEzNjIyNn0.6JqNyNH_BBs-CsvAT41L_7Ku8G4CN_ymb9fXVYJEvf4';
-const SB_H = {
-  'apikey': SB_KEY,
-  'Authorization': `Bearer ${SB_KEY}`,
-  'Content-Type': 'application/json'
-};
+/* ── CONFIG ── */
+const SB_URL='https://pumteihkiaftgwbexaid.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bXRlaWhraWFmdGd3YmV4YWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NjAyMjYsImV4cCI6MjA5MzEzNjIyNn0.6JqNyNH_BBs-CsvAT41L_7Ku8G4CN_ymb9fXVYJEvf4';
+const SB_H={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json'};
+const TIER_LABELS={1:'Tier I — Principal',2:'Tier II — Associate',3:'Tier III — Partner',4:'Tier IV — Member'};
 
-const TIER_LABELS = {
-  1: 'Tier I — Principal',
-  2: 'Tier II — Associate',
-  3: 'Tier III — Partner',
-  4: 'Tier IV — Member'
-};
+/* ── STATE ── */
+let _U=null,_ann=[],_annFilter='all',_annTimer=null,_annSec=900,_activity=[],_members=[];
+let _clerkProfileMounted=false,_dashboardPopulated=false;
 
-/* ============================================================
-   STATE
-============================================================ */
-let _U = null;
-let _ann = [];
-let _annFilter = 'all';
-let _annTimer = null;
-let _annSec = 900;
-let _activity = [];
-let _clerkProfileMounted = false; // FIX: mount only once to prevent glitch
-let _dashboardPopulated = false;  // FIX: populate only once on login
+/* ── UTILS ── */
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function toast(msg,err=false){const z=document.getElementById('toasts');const el=document.createElement('div');el.className='tst'+(err?' err':'');el.textContent=msg;z.appendChild(el);setTimeout(()=>el.remove(),3200)}
+function setLoad(msg){const el=document.getElementById('loadStatus');if(el)el.textContent=msg}
+function showError(msg,detail=''){document.getElementById('loadScreen').classList.add('out');setTimeout(()=>{const ls=document.getElementById('loadScreen');if(ls)ls.remove()},700);document.getElementById('errMsg').textContent=msg;document.getElementById('errDetail').textContent=detail;document.getElementById('errorScreen').classList.add('show')}
+function setSbStatus(ok,msg){const el=document.getElementById('sbStatus');el.className='sb-status '+(ok?'ok':'err');el.textContent=(ok?'● ':'○ ')+msg}
+function logAct(action,isAdmin=false){_activity.unshift({action,isAdmin,time:new Date().toISOString()});_activity=_activity.slice(0,50);renderAct()}
 
-/* ============================================================
-   UTILITIES
-============================================================ */
-function esc(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* ── localStorage ── */
+function ls(key,fb='{}'){try{return JSON.parse(localStorage.getItem(key)||fb)}catch(e){return JSON.parse(fb)}}
+function lsSet(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch(e){}}
+function getMemberMeta(uid){return ls('lvo_vindex_members')[uid]||null}
+function setMemberMeta(uid,data){const d=ls('lvo_vindex_members');d[uid]=data;lsSet('lvo_vindex_members',d)}
+
+/* ── NAVIGATION ── */
+function goTo(id){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.p===id));
+  document.querySelectorAll('.bn-item').forEach(n=>n.classList.toggle('active',n.dataset.p===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='p-'+id));
+  if(id==='announcements'){document.getElementById('annBadge').style.display='none';document.getElementById('bnAnnDot').classList.remove('show');}
+  if(id==='properties') document.getElementById('bnPropDot').classList.remove('show');
+  if(id==='admin') renderAdminPanel();
+  document.getElementById('main').scrollTop=0;
 }
 
-function toast(msg, err = false) {
-  const z = document.getElementById('toasts');
-  const el = document.createElement('div');
-  el.className = 'tst' + (err ? ' err' : '');
-  el.textContent = msg;
-  z.appendChild(el);
-  setTimeout(() => el.remove(), 3200);
-}
+/* ── POPULATE ── */
+function populateDash(user){
+  const meta=user.publicMetadata||{};
+  const lsMeta=getMemberMeta(user.id)||{};
+  const name=user.fullName||user.firstName||'Member';
+  const email=user.primaryEmailAddress?.emailAddress||'—';
+  const isAdmin=meta.role==='admin';
+  const tier=parseInt(lsMeta.tier)||parseInt(meta.tier)||4;
+  const role=meta.role||lsMeta.role||'—';
+  const joined=user.createdAt?new Date(user.createdAt).toLocaleDateString('en-US',{month:'long',year:'numeric'}):'—';
+  // Vindex uses active_deals array as property listings
+  const props=Array.isArray(meta.active_deals)?meta.active_deals:[];
 
-function setLoad(msg) {
-  const el = document.getElementById('loadStatus');
-  if (el) el.textContent = msg;
-}
-
-function showError(msg, detail = '') {
-  document.getElementById('loadScreen').classList.add('out');
-  setTimeout(() => { const ls = document.getElementById('loadScreen'); if (ls) ls.remove(); }, 700);
-  const es = document.getElementById('errorScreen');
-  document.getElementById('errMsg').textContent = msg;
-  document.getElementById('errDetail').textContent = detail;
-  es.classList.add('show');
-}
-
-function setSbStatus(ok, msg) {
-  const el = document.getElementById('sbStatus');
-  el.className = 'sb-status ' + (ok ? 'ok' : 'err');
-  el.textContent = (ok ? '● ' : '○ ') + msg;
-}
-
-function logAct(action) {
-  _activity.unshift({ action, time: new Date().toISOString() });
-  _activity = _activity.slice(0, 50);
-  renderAct();
-}
-
-/* ============================================================
-   NAVIGATION
-============================================================ */
-function goTo(id) {
-  document.querySelectorAll('.nav-item').forEach(n =>
-    n.classList.toggle('active', n.dataset.p === id)
-  );
-  document.querySelectorAll('.panel').forEach(p =>
-    p.classList.toggle('active', p.id === 'p-' + id)
-  );
-  if (id === 'announcements') clearAnnBadge();
-  if (id === 'admin') renderAdminPanel();
-}
-
-/* ============================================================
-   CAPITAL SUM HELPER
-   Parses dollar strings like "$1,250,000" or "1250000" into numbers
-   and returns a formatted total.
-============================================================ */
-function sumCapital(deals) {
-  let total = 0;
-  deals.forEach(d => {
-    if (!d.capital) return;
-    const raw = String(d.capital).replace(/[$,\s]/g, '');
-    const num = parseFloat(raw);
-    if (!isNaN(num)) total += num;
-  });
-  if (total === 0) return '—';
-  // Format with commas and dollar sign
-  return '$' + total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-}
-
-/* ============================================================
-   POPULATE DASHBOARD
-   FIX: Guard with _dashboardPopulated so repeated Clerk listener
-   calls don't re-render everything and cause glitchiness.
-============================================================ */
-function populateDash(user) {
-  const meta = user.publicMetadata || {};
-  const name = user.fullName || user.firstName || 'Member';
-  const email = user.primaryEmailAddress?.emailAddress || '—';
-  const isAdmin = meta.role === 'admin' || user.organizationMemberships?.some?.(m => m.role === 'admin');
-  const tier = parseInt(meta.tier) || 4;
-  const role = meta.role || '—';
-  const joined = user.createdAt
-    ? new Date(user.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-    : '—';
-  const deals = Array.isArray(meta.active_deals) ? meta.active_deals : [];
-
-  _U = { uid: user.id, name, email, isAdmin, tier, role, joined };
-
-  // Topbar
-  document.getElementById('tbName').textContent = name;
-  document.getElementById('tbTier').textContent = TIER_LABELS[tier] || TIER_LABELS[4];
-
-  // Overview stats
-  document.getElementById('ovTitle').textContent = `Welcome, ${name.split(' ')[0]}`;
-  document.getElementById('sTier').textContent = TIER_LABELS[tier] || TIER_LABELS[4];
-  document.getElementById('sJoined').textContent = joined;
-
-  // Account panel
-  document.getElementById('acTier').textContent = TIER_LABELS[tier] || TIER_LABELS[4];
-  document.getElementById('acName').textContent = name;
-  document.getElementById('acEmail').textContent = email;
-  document.getElementById('acRole').textContent = role !== 'admin' ? role : 'Administrator';
-  document.getElementById('acJoined').textContent = joined;
-
-  // Admin visibility
-  document.getElementById('admBadgeWrap').style.display = isAdmin ? 'block' : 'none';
-  document.getElementById('adminNav').style.display = isAdmin ? 'flex' : 'none';
-
-  const tierNote = document.getElementById('tierNote');
-  if (tierNote) tierNote.style.display = (!isAdmin && tier >= 3) ? 'block' : 'none';
-
-  const admMyTier = document.getElementById('admMyTier');
-  if (admMyTier) admMyTier.textContent = TIER_LABELS[tier] || TIER_LABELS[4];
-
-  document.getElementById('finMonth').textContent = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-
-  renderDeals(deals, tier, isAdmin);
-  renderFin(deals, tier, isAdmin);
-}
-
-/* ============================================================
-   DEALS
-============================================================ */
-function renderDeals(deals, tier, isAdmin) {
-  const canSee = isAdmin || tier <= 3;
-
-  document.getElementById('sDeals').textContent = canSee ? deals.length : '—';
-  document.getElementById('ovDealCount').textContent = canSee
-    ? `${deals.length} deal${deals.length !== 1 ? 's' : ''}`
-    : 'Restricted';
-
-  if (deals.length > 0 && canSee) {
-    const b = document.getElementById('dealsBadge');
-    b.style.display = 'block';
-    b.textContent = deals.length;
+  if(!getMemberMeta(user.id)){
+    setMemberMeta(user.id,{name,email,tier,role,joinedRaw:user.createdAt});
   }
 
-  const ovEl = document.getElementById('ovDeals');
+  _U={uid:user.id,name,email,isAdmin,tier,role,joined,props};
 
-  if (!canSee) {
-    ovEl.innerHTML = '<div class="empty">Unlocked at Tier III+</div>';
-    document.getElementById('dealsLocked').style.display = 'block';
-    document.getElementById('dealsContent').innerHTML = '';
-    return;
-  }
+  document.getElementById('tbName').textContent=name;
+  document.getElementById('tbTier').textContent=TIER_LABELS[tier]||TIER_LABELS[4];
+  document.getElementById('ovTitle').textContent=`Welcome, ${name.split(' ')[0]}`;
+  document.getElementById('sTier').textContent=TIER_LABELS[tier]||TIER_LABELS[4];
+  document.getElementById('sJoined').textContent=joined;
+  document.getElementById('acTier').textContent=TIER_LABELS[tier]||TIER_LABELS[4];
+  document.getElementById('acName').textContent=name;
+  document.getElementById('acEmail').textContent=email;
+  document.getElementById('acRole').textContent=role!=='admin'?role:'Administrator';
+  document.getElementById('acJoined').textContent=joined;
+  document.getElementById('admBadgeWrap').style.display=isAdmin?'block':'none';
+  document.getElementById('adminNav').style.display=isAdmin?'flex':'none';
+  const bnAdmin=document.getElementById('bnAdminItem');if(bnAdmin)bnAdmin.style.display=isAdmin?'flex':'none';
+  const tn=document.getElementById('tierNote');if(tn)tn.style.display=(!isAdmin&&tier>=3)?'block':'none';
+  const amt=document.getElementById('admMyTier');if(amt)amt.textContent=TIER_LABELS[tier]||TIER_LABELS[4];
+  document.getElementById('finMonth').textContent=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
 
-  document.getElementById('dealsLocked').style.display = 'none';
-
-  if (!deals.length) {
-    ovEl.innerHTML = '<div class="empty">No deals assigned.</div>';
-    document.getElementById('dealsContent').innerHTML =
-      '<div class="empty" style="padding:1.5rem">No deals have been assigned to your account yet.</div>';
-    return;
-  }
-
-  ovEl.innerHTML = deals.slice(0, 2).map(d => dealHTML(d, isAdmin, tier)).join('');
-  document.getElementById('dealsContent').innerHTML =
-    `<div class="card">${deals.map(d => dealHTML(d, isAdmin, tier)).join('')}</div>`;
+  renderProps(props,tier,isAdmin);
+  renderFin(props,tier,isAdmin);
 }
 
-function dealHTML(d, isAdmin, tier) {
-  const sc = (d.status || 'active').toLowerCase();
-  const showCapital = isAdmin || tier <= 1;
-  return `
-    <div class="deal">
-      <div class="deal-hd">
-        <span class="deal-name">${esc(d.name || 'Unnamed')}</span>
-        <span class="deal-st ${sc}">${esc(d.status || 'Active')}</span>
+/* ── PROPERTIES ── */
+function propHTML(d,isAdmin,tier){
+  const sc=(d.status||'active').toLowerCase().replace(/\s+/g,'-');
+  const showCap=isAdmin||tier<=1;
+  // Detect property type from division field or a "type" field
+  const propType=d.type||d.division||'';
+  const typeClass=propType.toLowerCase().includes('commercial')?'commercial':propType.toLowerCase().includes('mixed')?'mixed':'residential';
+  return`<div class="deal">
+    <div class="deal-hd">
+      <span class="deal-name">${esc(d.name||'Unnamed Property')}</span>
+      <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+        ${propType?`<span class="prop-tag ${typeClass}">${esc(propType)}</span>`:''}
+        <span class="deal-st ${sc}">${esc(d.status||'Active')}</span>
       </div>
-      <div class="deal-meta">
-        <div><div class="dm-lbl">Division</div><div class="dm-val">${esc(d.division || '—')}</div></div>
-        <div><div class="dm-lbl">Position</div><div class="dm-val">${esc(d.position || '—')}</div></div>
-        <div><div class="dm-lbl">Date</div><div class="dm-val">${esc(d.date || '—')}</div></div>
-        ${showCapital && d.capital ? `<div><div class="dm-lbl">Capital</div><div class="dm-val">${esc(d.capital)}</div></div>` : ''}
+    </div>
+    <div class="deal-meta">
+      <div><div class="dm-lbl">Position</div><div class="dm-val">${esc(d.position||'—')}</div></div>
+      <div><div class="dm-lbl">Date</div><div class="dm-val">${esc(d.date||'—')}</div></div>
+      ${showCap&&d.capital?`<div><div class="dm-lbl">Value</div><div class="dm-val">${esc(d.capital)}</div></div>`:''}
+    </div>
+    ${d.note?`<div class="deal-note">${esc(d.note)}</div>`:''}
+  </div>`;
+}
+
+function renderProps(props,tier,isAdmin){
+  const canSee=isAdmin||tier<=3;
+  document.getElementById('sProps').textContent=canSee?props.length:'—';
+  document.getElementById('ovPropCount').textContent=canSee?`${props.length} propert${props.length!==1?'ies':'y'}`:'Restricted';
+  if(props.length&&canSee){
+    document.getElementById('propBadge').style.display='block';
+    document.getElementById('propBadge').textContent=props.length;
+    document.getElementById('bnPropDot').classList.add('show');
+  }
+  const ovEl=document.getElementById('ovProps');
+  if(!canSee){ovEl.innerHTML='<div class="empty">Unlocked at Tier III+</div>';document.getElementById('propsLocked').style.display='block';document.getElementById('propsContent').innerHTML='';return;}
+  document.getElementById('propsLocked').style.display='none';
+  if(!props.length){ovEl.innerHTML='<div class="empty">No properties assigned.</div>';document.getElementById('propsContent').innerHTML='<div class="empty" style="padding:1.5rem">No properties assigned to your account yet.</div>';return;}
+  ovEl.innerHTML=props.slice(0,2).map(d=>propHTML(d,isAdmin,tier)).join('');
+  document.getElementById('propsContent').innerHTML=`<div class="card">${props.map(d=>propHTML(d,isAdmin,tier)).join('')}</div>`;
+}
+
+/* ── FINANCIALS ── */
+function renderFin(props,tier,isAdmin){
+  const canSee=isAdmin||tier<=3;
+  document.getElementById('finLocked').style.display=canSee?'none':'block';
+  document.getElementById('finContent').style.display=canSee?'block':'none';
+  if(!canSee)return;
+  const showCap=isAdmin||tier<=1;
+  let total=0;props.forEach(d=>{if(!d.capital)return;const n=parseFloat(String(d.capital).replace(/[$,\s~+]/g,''));if(!isNaN(n))total+=n;});
+  document.getElementById('finCap').textContent=showCap?(total?'$'+total.toLocaleString('en-US'):'—'):'Restricted';
+  document.getElementById('finEq').textContent=props.length||'—';
+  document.getElementById('finDls').textContent=props.filter(d=>(d.status||'').toLowerCase()==='active').length||props.length||'—';
+  const tb=document.getElementById('finTbody');
+  if(!props.length){tb.innerHTML='<tr><td colspan="5"><div class="empty">No property positions on file.</div></td></tr>';return;}
+  tb.innerHTML=props.map(d=>{const sc=(d.status||'active').toLowerCase().replace(/\s+/g,'-');const propType=d.type||d.division||'—';return`<tr>
+    <td><span class="ft-lbl">Property</span>${esc(d.name||'—')}</td>
+    <td><span class="ft-lbl">Type</span>${esc(propType)}</td>
+    <td><span class="ft-lbl">Position</span>${esc(d.position||'—')}</td>
+    <td><span class="deal-st ${sc}" style="display:inline-block">${esc(d.status||'Active')}</span></td>
+    <td>${showCap?esc(d.capital||'—'):'—'}</td>
+  </tr>`}).join('');
+}
+
+/* ── ANNOUNCEMENTS ── */
+async function fetchAnn(manual=false){
+  _annSec=900;
+  try{
+    const res=await fetch(`${SB_URL}/rest/v1/lvo_announcements?select=*&order=pinned.desc,created_at.desc`,{headers:SB_H});
+    if(!res.ok){const txt=await res.text();throw new Error(`${res.status}: ${txt}`);}
+    _ann=await res.json();
+    renderAnnList();renderOvAnn();
+    const pinned=_ann.filter(a=>a.pinned&&(a.division==='Vindex'||a.division==='All'));
+    if(pinned.length){document.getElementById('annBadge').style.display='block';document.getElementById('bnAnnDot').classList.add('show');}
+    setSbStatus(true,'Database Online · 15 Min Timer');
+    const t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    document.getElementById('ovAnnTime').textContent=`Updated ${t}`;
+    if(manual)toast('Announcements refreshed');
+  }catch(e){
+    console.error(e);setSbStatus(false,'Supabase error');
+    if(e.message?.includes('42P01')||e.message?.includes('404')){
+      document.getElementById('annList').innerHTML='<div class="empty" style="padding:2rem">Table not found in Supabase.</div>';
+      document.getElementById('ovAnn').innerHTML='<div class="empty">Table not set up.</div>';
+    }else if(manual)toast('Refresh failed',true);
+  }
+}
+
+function renderOvAnn(){
+  const el=document.getElementById('ovAnn');
+  const items=_ann.filter(a=>a.division==='Vindex'||a.division==='All').slice(0,3);
+  if(!items.length){el.innerHTML='<div class="empty">No announcements yet.</div>';return;}
+  el.innerHTML=items.map(a=>{
+    const previewBody=(a.body||'').slice(0,100)+(a.body||'').length>100?'…':'';
+    return`<div style="padding:.75rem 1.4rem;border-bottom:.5px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.3rem">
+        ${a.pinned?'<span class="ann-pin-badge">★</span>':''}
+        <div style="font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.1em;color:var(--chrome)">${esc(a.title||'')}</div>
       </div>
-      ${d.note ? `<div class="deal-note">${esc(d.note)}</div>` : ''}
+      ${previewBody?`<div style="font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.5">${esc(previewBody)}</div>`:''}
     </div>`;
-}
-
-/* ============================================================
-   FINANCIALS
-   FIX: Capital Deployed now shows a real sum of all deal capitals
-============================================================ */
-function renderFin(deals, tier, isAdmin) {
-  const canSee = isAdmin || tier <= 3;
-  document.getElementById('finLocked').style.display = canSee ? 'none' : 'block';
-  document.getElementById('finContent').style.display = canSee ? 'block' : 'none';
-  if (!canSee) return;
-
-  const showCapital = isAdmin || tier <= 1;
-
-  // FIX: Sum all capital values from deals instead of showing "See deal rows"
-  if (showCapital) {
-    const dealsWithCapital = deals.filter(d => d.capital);
-    document.getElementById('finCap').textContent = dealsWithCapital.length
-      ? sumCapital(deals)
-      : '—';
-  } else {
-    document.getElementById('finCap').textContent = 'Restricted';
-  }
-
-  document.getElementById('finEq').textContent = deals.length || '—';
-  document.getElementById('finDls').textContent =
-    deals.filter(d => (d.status || '').toLowerCase() === 'active').length || deals.length || '—';
-
-  const tb = document.getElementById('finTbody');
-  if (!deals.length) {
-    tb.innerHTML = '<tr><td colspan="5"><div class="empty">No deal positions on file.</div></td></tr>';
-    return;
-  }
-  tb.innerHTML = deals.map(d => {
-    const sc = (d.status || 'active').toLowerCase();
-    return `<tr>
-      <td><span class="ft-lbl">Deal</span>${esc(d.name || '—')}</td>
-      <td><span class="ft-lbl">Position</span>${esc(d.position || '—')}</td>
-      <td><span class="ft-lbl">Division</span>${esc(d.division || '—')}</td>
-      <td><span class="deal-st ${sc}" style="display:inline-block">${esc(d.status || 'Active')}</span></td>
-      <td>${showCapital ? esc(d.capital || '—') : '—'}</td>
-    </tr>`;
   }).join('');
+  const last=el.querySelector('div:last-child');if(last)last.style.borderBottom='none';
 }
 
-/* ============================================================
-   ANNOUNCEMENTS
-============================================================ */
-async function fetchAnn(manual = false) {
-  _annSec = 900;
-  try {
-    const res = await fetch(
-      `${SB_URL}/rest/v1/lvo_announcements?select=*&order=pinned.desc,created_at.desc`,
-      { headers: SB_H }
-    );
-    if (!res.ok) {
-      const txt = await res.text();
-      throw new Error(`${res.status}: ${txt}`);
-    }
-    _ann = await res.json();
-    renderAnnList();
-    renderOvAnn();
-    updateAnnBadge();
-    setSbStatus(true, 'Supabase OK');
-    const t = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-    document.getElementById('ovAnnTime').textContent = `Updated ${t}`;
-    if (manual) toast('Announcements refreshed');
-  } catch (e) {
-    console.error('Supabase error:', e);
-    setSbStatus(false, 'Supabase error');
-    const msg = e.message || '';
-    if (msg.includes('42P01') || msg.includes('does not exist') || msg.includes('404')) {
-      document.getElementById('annList').innerHTML =
-        `<div class="empty" style="padding:2rem;line-height:2">
-          Table <code style="color:var(--chrome)">lvo_announcements</code> not found.<br/>
-          Create it in your Supabase SQL editor — see the comment in the HTML source.
-        </div>`;
-      document.getElementById('ovAnn').innerHTML = '<div class="empty">Table not set up yet.</div>';
-    } else if (manual) {
-      toast('Refresh failed — check console', true);
-    }
-  }
+function renderAnnList(){
+  const el=document.getElementById('annList');
+  let data=[..._ann];
+  if(_annFilter==='pinned')data=data.filter(a=>a.pinned&&(a.division==='Vindex'||a.division==='All'));
+  else if(_annFilter==='all')data=data.filter(a=>a.division==='All'||a.division==='Vindex');
+  else if(_annFilter==='div')data=data.filter(a=>a.division==='Vindex');
+  if(!data.length){el.innerHTML='<div class="empty" style="padding:1.5rem">No announcements found.</div>';return;}
+  el.innerHTML=data.map(a=>`<div class="ann${a.pinned?' pinned':''}">
+    <div class="ann-hd">
+      <div>${a.pinned?'<span class="ann-pin-badge">★ Pinned · </span>':''}<span class="ann-title">${esc(a.title||'')}</span></div>
+      <span class="ann-div">${esc(a.division||'All')}</span>
+    </div>
+    <div class="ann-body">${esc(a.body||'')}</div>
+    <div class="ann-ft">
+      <span class="ann-author">${esc(a.author||'LVO Administration')}</span>
+      <span class="ann-time">${new Date(a.created_at).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</span>
+    </div>
+  </div>`).join('');
 }
 
-function renderOvAnn() {
-  const el = document.getElementById('ovAnn');
-  const items = _ann.filter(a => a.division === 'Vindex' || a.division === 'All').slice(0, 3);
-  if (!items.length) {
-    el.innerHTML = '<div class="empty">No announcements yet.</div>';
-    return;
-  }
-  el.innerHTML = items.map(a => `
-    <div style="padding:.75rem 1.4rem;border-bottom:.5px solid var(--border)">
-      ${a.pinned ? '<span class="ann-pin-badge">★ </span>' : ''}
-      <div style="font-family:\'Cinzel\',serif;font-size:.54rem;letter-spacing:.1em;color:var(--chrome);margin-bottom:.25rem">${esc(a.title || '')}</div>
-      <div style="font-size:.8rem;font-style:italic;color:var(--dim2)">${esc((a.body || '').slice(0, 90))}${(a.body || '').length > 90 ? '…' : ''}</div>
-    </div>`).join('');
-  const last = el.querySelector('div:last-child');
-  if (last) last.style.borderBottom = 'none';
-}
+function filterAnn(type,btn){_annFilter=type;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAnnList()}
 
-function renderAnnList() {
-  const el = document.getElementById('annList');
-  let data = [..._ann];
-  if (_annFilter === 'pinned') data = data.filter(a => a.pinned && (a.division === 'Vindex' || a.division === 'All'));
-  if (_annFilter === 'all') data = data.filter(a => a.division === 'All' || a.division === 'Vindex');
-  if (_annFilter === 'div') data = data.filter(a => a.division === 'Vindex');
-  if (!data.length) {
-    el.innerHTML = '<div class="empty" style="padding:1.5rem">No announcements found.</div>';
-    return;
-  }
-  el.innerHTML = data.map(a => `
-    <div class="ann${a.pinned ? ' pinned' : ''}">
-      <div class="ann-hd">
-        <div>${a.pinned ? '<span class="ann-pin-badge">★ Pinned · </span>' : ''}<span class="ann-title">${esc(a.title || '')}</span></div>
-        <span class="ann-div">${esc(a.division || 'All')}</span>
-      </div>
-      <div class="ann-body">${esc(a.body || '')}</div>
-      <div class="ann-ft">
-        <span class="ann-author">${esc(a.author || 'LVO Administration')}</span>
-        <span class="ann-time">${new Date(a.created_at).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</span>
-      </div>
-    </div>`).join('');
-}
-
-function filterAnn(type, btn) {
-  _annFilter = type;
-  document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAnnList();
-}
-
-function updateAnnBadge() {
-  const b = document.getElementById('annBadge');
-  const p = _ann.filter(a => a.pinned).length;
-  b.style.display = p > 0 ? 'block' : 'none';
-}
-
-function clearAnnBadge() {
-  document.getElementById('annBadge').style.display = 'none';
-}
-
-/* FIX: Countdown only — does NOT log activity every second */
-function startCountdown() {
+function startCountdown(){
   clearInterval(_annTimer);
-  _annTimer = setInterval(() => {
-    _annSec--;
-    const m = Math.floor(_annSec / 60);
-    const s = _annSec % 60;
-    document.getElementById('refreshLabel').textContent = `${m}:${String(s).padStart(2, '0')}`;
-    if (_annSec <= 0) fetchAnn(); // fetchAnn resets _annSec to 900 internally
-  }, 1000);
+  _annTimer=setInterval(()=>{
+    _annSec--;const m=Math.floor(_annSec/60),s=_annSec%60;
+    document.getElementById('refreshLabel').textContent=`${m}:${String(s).padStart(2,'0')}`;
+    if(_annSec<=0)fetchAnn();
+  },1000);
 }
 
-/* ============================================================
-   ACTIVITY
-   FIX: renderAct no longer called every second — only on logAct
-============================================================ */
-function renderAct() {
-  const el = document.getElementById('actList');
-  if (!_activity.length) {
-    el.innerHTML = '<div class="empty">No activity yet.</div>';
-    return;
-  }
-  el.innerHTML = _activity.slice(0, 10).map(a => `
-    <div class="act-item">
-      <div class="act-dot"></div>
-      <div>
-        <div class="act-time">${new Date(a.time).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</div>
-        <div class="act-txt">${esc(a.action)}</div>
-      </div>
-    </div>`).join('');
-
-  const af = document.getElementById('admFeed');
-  if (af) af.innerHTML = el.innerHTML || '<div class="empty">No activity.</div>';
+/* ── ACTIVITY ── */
+function renderAct(){
+  const el=document.getElementById('actList');
+  if(!_activity.length){el.innerHTML='<div class="empty">No activity yet.</div>';return;}
+  el.innerHTML=_activity.slice(0,10).map(a=>`<div class="act-item"><div class="act-dot${a.isAdmin?' red':''}"></div><div><div class="act-time">${new Date(a.time).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</div><div class="act-txt">${esc(a.action)}</div></div></div>`).join('');
+  const af=document.getElementById('admFeed');if(af)af.innerHTML=el.innerHTML;
 }
 
-/* ============================================================
-   ADMIN — TIER MANAGEMENT
-============================================================ */
-const TIER_UPDATE_ENDPOINT = '';
-
-let _members = [];
-
-async function renderAdminPanel() {
-  if (!_U?.isAdmin && _U?.tier !== 1) return;
-
-  const el = document.getElementById('admList');
-  const totalEl = document.getElementById('admTotal');
-
-  el.innerHTML = '<div class="empty">Loading members…</div>';
-
-  try {
-    const res = await fetch(
-      `${SB_URL}/rest/v1/lvo_vindex_members?select=*&order=joined_at.desc`,
-      { headers: SB_H }
-    );
-    if (!res.ok) throw new Error(res.status);
-    _members = await res.json();
-  } catch (e) {
-    _members = [{
-      clerk_id: _U.uid,
-      name: _U.name,
-      email: _U.email,
-      tier: _U.tier,
-      role: _U.role,
-      joined_at: new Date().toISOString()
-    }];
-    console.warn('lvo_vindex_members table not found, fallback:', e);
-  }
-
-  if (totalEl) totalEl.textContent = _members.length;
+/* ── ADMIN ── */
+function renderAdminPanel(){
+  if(!_U?.isAdmin&&_U?.tier!==1)return;
+  const allMeta=ls('lvo_vindex_members');const ids=Object.keys(allMeta);
+  document.getElementById('admTotal').textContent=ids.length||'1';
+  _members=ids.map(id=>({clerk_id:id,...allMeta[id]}));
   renderMemberList(_members);
 }
 
-function filterMembers() {
-  const q = document.getElementById('memberSearch')?.value?.toLowerCase() || '';
-  const filtered = q
-    ? _members.filter(m => (m.name || '').toLowerCase().includes(q) || (m.email || '').toLowerCase().includes(q))
-    : _members;
-  renderMemberList(filtered);
-}
+function filterMembers(){const q=document.getElementById('memberSearch')?.value?.toLowerCase()||'';renderMemberList(q?_members.filter(m=>(m.name||'').toLowerCase().includes(q)||(m.email||'').toLowerCase().includes(q)):_members)}
 
-function renderMemberList(list) {
-  const el = document.getElementById('admList');
-  const countEl = document.getElementById('memberCount');
-  if (countEl) countEl.textContent = `${list.length} member${list.length !== 1 ? 's' : ''}`;
-
-  if (!list.length) {
-    el.innerHTML = '<div class="empty">No members found.</div>';
-    return;
-  }
-
-  el.innerHTML = list.map(m => {
-    const tv = parseInt(m.tier) || 4;
-    const safeName = esc(m.name || 'Unknown');
-    const safeId = m.clerk_id || '';
-    return `
-    <div class="adm-row" id="ar-${safeId}" style="display:grid;grid-template-columns:1fr 160px 90px;gap:.8rem;align-items:center;padding:.95rem 0;border-bottom:.5px solid var(--border)">
-      <div>
-        <div style="font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.14em;color:var(--chrome)">${safeName}</div>
-        <div style="font-size:.78rem;font-style:italic;color:var(--dim);margin-top:.15rem">${esc(m.email || '')} · ${esc(m.role || '—')}</div>
-      </div>
-      <select id="ts-${safeId}" style="background:transparent;border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.42rem .65rem;cursor:pointer;outline:none;width:100%" ${safeId === _U.uid ? 'disabled title="Cannot change your own tier"' : ''}>
-        <option value="1" ${tv===1?'selected':''}>Tier I — Principal</option>
-        <option value="2" ${tv===2?'selected':''}>Tier II — Associate</option>
-        <option value="3" ${tv===3?'selected':''}>Tier III — Partner</option>
-        <option value="4" ${tv===4?'selected':''}>Tier IV — Member</option>
+function renderMemberList(list){
+  const el=document.getElementById('admList');const countEl=document.getElementById('memberCount');
+  if(countEl)countEl.textContent=`${list.length} member${list.length!==1?'s':''}`;
+  if(!list.length){el.innerHTML='<div class="empty">No members found.</div>';return;}
+  el.innerHTML=list.map(m=>{const tv=parseInt(m.tier)||4;const safeName=esc(m.name||'Unknown');const safeId=m.clerk_id||'';
+    return`<div class="adm-row" id="ar-${safeId}">
+      <div><div style="font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.14em;color:var(--chrome)">${safeName}</div><div style="font-size:.78rem;font-style:italic;color:var(--dim);margin-top:.15rem">${esc(m.email||'')} · ${esc(m.role||'—')}</div></div>
+      <select id="ts-${safeId}" style="background:transparent;border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.42rem .65rem;cursor:pointer;outline:none;width:100%" ${safeId===_U.uid?'disabled':''}>
+        <option value="1" ${tv===1?'selected':''}>Tier I</option>
+        <option value="2" ${tv===2?'selected':''}>Tier II</option>
+        <option value="3" ${tv===3?'selected':''}>Tier III</option>
+        <option value="4" ${tv===4?'selected':''}>Tier IV</option>
       </select>
-      <button class="btn sm" onclick="saveTier('${safeId}','${safeName}')" ${safeId === _U.uid ? 'disabled' : ''}>Save</button>
+      <button class="btn sm" onclick="saveTier('${safeId}','${safeName}')" ${safeId===_U.uid?'disabled':''}>Save</button>
     </div>`;
   }).join('');
-
-  const rows = el.querySelectorAll('.adm-row');
-  if (rows.length) rows[rows.length - 1].style.borderBottom = 'none';
+  const rows=el.querySelectorAll('.adm-row');if(rows.length)rows[rows.length-1].style.borderBottom='none';
 }
 
-async function saveTier(clerkId, memberName) {
-  if (!clerkId) { toast('Missing Clerk user ID', true); return; }
-  const sel = document.getElementById('ts-' + clerkId);
-  if (!sel) return;
-  const newTier = parseInt(sel.value);
-  const btn = document.querySelector(`#ar-${clerkId} .btn`);
-
-  if (!TIER_UPDATE_ENDPOINT) {
-    toast('No backend endpoint set. Update tier in Clerk Dashboard directly.', true);
-    return;
-  }
-
-  if (btn) { btn.disabled = true; btn.textContent = '…'; }
-
-  try {
-    const res = await fetch(TIER_UPDATE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: clerkId, tier: newTier })
-    });
-    if (!res.ok) throw new Error(await res.text());
-
-    try {
-      await fetch(`${SB_URL}/rest/v1/lvo_vindex_members?clerk_id=eq.${clerkId}`, {
-        method: 'PATCH',
-        headers: { ...SB_H, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ tier: newTier })
-      });
-    } catch(e) { /* non-fatal */ }
-
-    const m = _members.find(x => x.clerk_id === clerkId);
-    if (m) m.tier = newTier;
-
-    toast(`${memberName} → ${TIER_LABELS[newTier]}`);
-    logAct(`Updated ${memberName}'s tier to ${TIER_LABELS[newTier]}`);
-    if (btn) { btn.textContent = 'Saved ✓'; setTimeout(() => { btn.textContent = 'Save'; btn.disabled = false; }, 2000); }
-  } catch (e) {
-    console.error(e);
-    toast('Update failed — check your endpoint', true);
-    if (btn) { btn.disabled = false; btn.textContent = 'Save'; }
-  }
+function saveTier(clerkId,memberName){
+  const sel=document.getElementById('ts-'+clerkId);if(!sel)return;
+  const newTier=parseInt(sel.value);
+  const meta=getMemberMeta(clerkId)||{};meta.tier=newTier;setMemberMeta(clerkId,meta);
+  const btn=document.querySelector(`#ar-${clerkId} .btn`);
+  if(btn){btn.textContent='Saved ✓';btn.style.color='#22c55e';setTimeout(()=>{btn.textContent='Save';btn.style.color='';},2000);}
+  logAct(`Updated ${memberName}'s tier to ${TIER_LABELS[newTier]}`,true);
+  toast(`${memberName} → ${TIER_LABELS[newTier]}`);
 }
 
-/* ============================================================
-   CLERK APPEARANCE
-============================================================ */
-const APPEARANCE = {
-  variables: {
-    colorBackground: '#080808',
-    colorText: '#F0EEEC',
-    colorPrimary: '#C8A96E',
-    colorInputBackground: 'transparent',
-    colorInputText: '#F0EEEC',
-    borderRadius: '0px',
-    fontFamily: "'Cormorant Garamond',Georgia,serif"
-  },
-  elements: {
-    card: { background: 'transparent', border: '.5px solid rgba(200,169,110,.25)', boxShadow: 'none', borderRadius: '0' },
-    headerTitle: { fontFamily: "'Cinzel',serif", letterSpacing: '.2em', color: '#C8C8D0' },
-    formFieldLabel: { color: '#888880', fontFamily: "'Cinzel',serif", letterSpacing: '.12em', fontSize: '.7rem' },
-    formFieldInput: { background: 'transparent', border: '.5px solid rgba(200,169,110,.3)', borderRadius: '0', color: '#F0EEEC' },
-    formButtonPrimary: { background: 'transparent', border: '.5px solid #C8A96E', borderRadius: '0', color: '#C8A96E', fontFamily: "'Cinzel',serif", letterSpacing: '.3em', textTransform: 'uppercase', boxShadow: 'none' },
-    footerActionLink: { color: '#C8A96E' },
-    avatarBox: { border: '.5px solid rgba(200,169,110,.35)', borderRadius: '50%' },
-    userButtonPopoverCard: { background: '#080808', border: '.5px solid rgba(200,169,110,.25)', boxShadow: '0 8px 32px rgba(0,0,0,.8)' },
-    userButtonPopoverActionButton: { color: '#F0EEEC' },
-    userButtonPopoverActionButtonText: { color: '#F0EEEC' },
-    userButtonPopoverFooter: { background: '#080808' }
+/* ── CLERK APPEARANCE ── */
+const APPEARANCE={
+  variables:{colorBackground:'#080808',colorText:'#F0EEEC',colorPrimary:'#C8A96E',colorInputBackground:'transparent',colorInputText:'#F0EEEC',borderRadius:'0px',fontFamily:"'Cormorant Garamond',Georgia,serif"},
+  elements:{
+    card:{background:'transparent',border:'.5px solid rgba(200,169,110,.25)',boxShadow:'none',borderRadius:'0'},
+    headerTitle:{fontFamily:"'Cinzel',serif",letterSpacing:'.2em',color:'#C8C8D0'},
+    formFieldLabel:{color:'#888880',fontFamily:"'Cinzel',serif",letterSpacing:'.12em',fontSize:'.7rem'},
+    formFieldInput:{background:'transparent',border:'.5px solid rgba(200,169,110,.35)',borderRadius:'0',color:'#F0EEEC'},
+    formButtonPrimary:{background:'transparent',border:'.5px solid #C8A96E',borderRadius:'0',color:'#C8A96E',fontFamily:"'Cinzel',serif",letterSpacing:'.3em',textTransform:'uppercase',boxShadow:'none'},
+    footerActionLink:{color:'#C8A96E'},
+    avatarBox:{border:'.5px solid rgba(200,169,110,.4)',borderRadius:'50%'},
+    userButtonPopoverCard:{background:'#080808',border:'.5px solid rgba(200,169,110,.25)',boxShadow:'0 8px 32px rgba(0,0,0,.8)'},
+    userButtonPopoverActionButton:{color:'#F0EEEC'},
+    userButtonPopoverActionButtonText:{color:'#F0EEEC'},
+    userButtonPopoverFooter:{background:'#080808'}
   }
 };
 
-/* ============================================================
-   MAIN INIT
-============================================================ */
-window.addEventListener('load', async () => {
+/* ── INIT ── */
+window.addEventListener('load',async()=>{
   setLoad('Loading Clerk…');
+  let attempts=0;
+  while(typeof Clerk==='undefined'&&attempts<30){await new Promise(r=>setTimeout(r,200));attempts++;}
+  if(typeof Clerk==='undefined'){showError('Clerk failed to load.','Check data-clerk-publishable-key.');return;}
+  try{setLoad('Authenticating…');await Clerk.load();}
+  catch(e){showError('Clerk initialization failed.',e.message||String(e));return;}
 
-  let attempts = 0;
-  while (typeof Clerk === 'undefined' && attempts < 30) {
-    await new Promise(r => setTimeout(r, 200));
-    attempts++;
-  }
-
-  if (typeof Clerk === 'undefined') {
-    showError(
-      'Clerk failed to load. This is usually caused by a truncated or invalid publishable key.',
-      'Check: data-clerk-publishable-key in the <script> tag.'
-    );
-    return;
-  }
-
-  try {
-    setLoad('Authenticating…');
-    await Clerk.load();
-  } catch (e) {
-    showError(
-      'Clerk initialization failed. Your publishable key may be truncated or the Clerk domain may be misconfigured.',
-      e.message || String(e)
-    );
-    return;
-  }
-
-  async function showDash(user) {
-    // FIX: If dashboard is already shown, just refresh data — don't remount
-    if (_dashboardPopulated) {
-      populateDash(user);
-      return;
-    }
-
+  async function showDash(user){
+    if(_dashboardPopulated){populateDash(user);return;}
     setLoad('Loading your profile…');
-    try { await user.reload(); } catch (e) { /* non-fatal */ }
-
-    window._rawMeta = user.publicMetadata || {};
-
-    setLoad('Connecting to Supabase…');
-
-    // Mount Clerk UserButton (topbar)
-    try {
-      Clerk.mountUserButton(document.getElementById('clerkBtn'), { appearance: APPEARANCE });
-    } catch (e) {
-      console.warn('Clerk UserButton mount error:', e);
-    }
-
-    // FIX: Mount UserProfile ONCE and never again to prevent My Account glitching
-    if (!_clerkProfileMounted) {
-      try {
-        Clerk.mountUserProfile(document.getElementById('clerkProfile'), { appearance: APPEARANCE });
-        _clerkProfileMounted = true;
-      } catch (e) {
-        console.warn('Clerk UserProfile mount error:', e);
-      }
-    }
-
-    populateDash(user);
-    _dashboardPopulated = true;
-
-    // Show the shell
-    document.getElementById('topbar').style.display = 'flex';
-    document.getElementById('shell').style.display = 'flex';
-    const ls = document.getElementById('loadScreen');
-    ls.classList.add('out');
-    setTimeout(() => ls.remove(), 700);
-
-    await fetchAnn();
-    startCountdown();
-
-    // FIX: Log sign-in only ONCE, not on every listener fire
-    logAct(`Signed in · ${user.fullName || user.firstName || 'Member'}`);
+    try{await user.reload();}catch(e){}
+    setLoad('Connecting…');
+    try{Clerk.mountUserButton(document.getElementById('clerkBtn'),{appearance:APPEARANCE});}catch(e){}
+    if(!_clerkProfileMounted){try{Clerk.mountUserProfile(document.getElementById('clerkProfile'),{appearance:APPEARANCE});_clerkProfileMounted=true;}catch(e){}}
+    populateDash(user);_dashboardPopulated=true;
+    document.getElementById('topbar').style.display='flex';
+    document.getElementById('shell').style.display='flex';
+    const ls=document.getElementById('loadScreen');ls.classList.add('out');setTimeout(()=>ls.remove(),700);
+    await fetchAnn();startCountdown();
+    logAct(`Signed in · ${user.fullName||user.firstName||'Member'}`);
   }
 
-  if (Clerk.user) {
-    await showDash(Clerk.user);
-  } else {
+  if(Clerk.user){await showDash(Clerk.user);}
+  else{
     setLoad('Checking session…');
-    await new Promise(r => setTimeout(r, 1000));
-    if (Clerk.user) {
-      await showDash(Clerk.user);
-    } else {
+    await new Promise(r=>setTimeout(r,1000));
+    if(Clerk.user){await showDash(Clerk.user);}
+    else{
       setLoad('Redirecting…');
-      setTimeout(() => { window.location.href = 'https://vindex.wearelvo.com'; }, 800);
+      setTimeout(()=>{window.location.href='https://vindex.wearelvo.com';},800);
     }
   }
 
-  /* FIX: Sign-out handler — when Clerk fires the listener with user=null,
-     immediately redirect. The spinner was caused by the listener re-calling
-     showDash(null) which threw and stalled. Now we handle null explicitly. */
-  Clerk.addListener(({ user }) => {
-    if (!user) {
-      // Signed out — clear state and redirect
-      _dashboardPopulated = false;
-      _clerkProfileMounted = false;
+  Clerk.addListener(({user})=>{
+    if(!user){
+      _dashboardPopulated=false;_clerkProfileMounted=false;
       clearInterval(_annTimer);
-      window.location.href = 'https://vindex.wearelvo.com';
+      window.location.href='https://vindex.wearelvo.com';
     }
-    // If user still exists (e.g. profile update), just refresh displayed data
-    // without remounting — handled by _dashboardPopulated guard in showDash
   });
 });
 </script>
