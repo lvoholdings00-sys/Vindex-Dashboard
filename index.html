@@ -13,8 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cormorant+SC:wght@300;400;500&display=swap" rel="stylesheet"/>
 
   <script
-    async
-    crossorigin="anonymous"
+    async crossorigin="anonymous"
     data-clerk-publishable-key="pk_live_Y2xlcmsudmluZGV4LndlYXJlbHZvLmNvbSQ"
     src="https://clerk.vindex.wearelvo.com/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
     type="text/javascript"
@@ -26,13 +25,11 @@
 
     :root{
       --gold:#C8A96E;--gold-dim:rgba(200,169,110,.18);--gold-hi:rgba(200,169,110,.42);
-      --gold-glow:rgba(200,169,110,.06);
-      --red-hi:#CC2020;
+      --gold-glow:rgba(200,169,110,.06);--red-hi:#CC2020;
       --bg:#000000;--bg2:#000000;--bg3:#000000;
       --chrome:#C8C8D0;--white:#F0EEEC;--dim:#6A6A64;--dim2:#888880;
       --border:rgba(200,169,110,.14);--border-hi:rgba(200,169,110,.38);
-      --sidebar:220px;
-      --bottom-nav:56px;
+      --green:#22c55e;--sidebar:220px;--bottom-nav:56px;
     }
     html,body{height:100%;overflow:hidden}
     body{background:var(--bg);color:var(--white);font-family:'Cormorant Garamond',Georgia,serif;display:flex;flex-direction:column}
@@ -57,7 +54,6 @@
     #errorScreen.show{display:flex}
     .err-title{font-family:'Cinzel',serif;font-size:1.2rem;letter-spacing:.2em;color:var(--red-hi)}
     .err-msg{font-size:.95rem;font-style:italic;color:var(--dim2);max-width:480px;line-height:1.8}
-    .err-detail{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.25em;color:var(--dim);border:.5px solid var(--border);padding:.8rem 1.2rem;max-width:480px;word-break:break-all}
 
     /* TOPBAR */
     #topbar{height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 1.8rem;background:var(--bg);border-bottom:.5px solid var(--border);position:relative;z-index:100}
@@ -99,14 +95,7 @@
     .sb-status.ok{color:var(--gold)}.sb-status.err{color:var(--red-hi)}
 
     /* MOBILE BOTTOM NAV */
-    #bottomNav{
-      display:none;position:fixed;bottom:0;left:0;right:0;
-      padding-bottom:calc(env(safe-area-inset-bottom) + 100px);
-      margin-bottom:-100px;
-      background:rgba(0,0,0,.96);
-      border-top:.5px solid var(--border);
-      z-index:200;padding-left:.3rem;padding-right:.3rem;
-    }
+    #bottomNav{display:none;position:fixed;bottom:0;left:0;right:0;padding-bottom:calc(env(safe-area-inset-bottom) + 100px);margin-bottom:-100px;background:rgba(0,0,0,.96);border-top:.5px solid var(--border);z-index:200;padding-left:.3rem;padding-right:.3rem}
     .bn-inner{display:flex;align-items:stretch;height:var(--bottom-nav);overflow-x:auto;-webkit-overflow-scrolling:touch;gap:0}
     .bn-inner::-webkit-scrollbar{display:none}
     .bn-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.18rem;padding:.4rem .55rem;cursor:pointer;min-width:52px;flex:1;border-top:2px solid transparent;transition:all .18s;position:relative}
@@ -152,7 +141,7 @@
     .empty{font-size:.88rem;font-style:italic;color:var(--dim);padding:1.2rem 0;text-align:center}
 
     /* PROPERTY / DEAL */
-    .deal{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s;will-change:background}
+    .deal{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s}
     .deal:last-child{border-bottom:none}
     .deal::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);opacity:0;transition:opacity .2s;pointer-events:none}
     .deal:hover{background:var(--gold-glow)}.deal:hover::before{opacity:1}
@@ -167,8 +156,12 @@
     .dm-lbl{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;margin-bottom:.15rem}
     .dm-val{font-size:.82rem;font-style:italic;color:var(--chrome)}
     .deal-note{margin-top:.6rem;font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.6;border-top:.5px solid var(--border);padding-top:.55rem}
+    .prop-tag{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;border:.5px solid var(--border);color:var(--dim2);padding:.18rem .5rem;text-transform:uppercase;margin-right:.4rem}
+    .prop-tag.residential{color:var(--gold);border-color:rgba(200,169,110,.3)}
+    .prop-tag.commercial{color:#60a5fa;border-color:rgba(96,165,250,.3)}
+    .prop-tag.mixed{color:#a78bfa;border-color:rgba(167,139,250,.3)}
 
-    /* FINANCIALS TABLE */
+    /* FINANCIALS */
     .fin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:1.2rem}
     .fgc{background:var(--bg2);padding:1.1rem 1.3rem}
     .fg-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.35rem}
@@ -180,69 +173,7 @@
     .ft tr:hover td{background:var(--gold-glow)}
     .ft-lbl{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.28em;color:var(--dim);text-transform:uppercase;font-style:normal;display:block;margin-bottom:.18rem}
 
-    /* ANNOUNCEMENTS */
-    .ann{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);transition:background .2s;position:relative}
-    .ann:last-child{border-bottom:none}
-    .ann:hover{background:var(--gold-glow)}
-    .ann.pinned{border-left:2px solid var(--gold);background:rgba(200,169,110,.03)}
-    .ann-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.55rem;gap:1rem;flex-wrap:wrap}
-    .ann-title{font-family:'Cinzel',serif;font-size:.6rem;font-weight:600;letter-spacing:.12em;color:var(--chrome)}
-    .ann-div{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.2em;color:var(--gold);border:.5px solid var(--border);padding:.15rem .45rem;flex-shrink:0;text-transform:uppercase}
-    .ann-body{font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.75}
-    .ann-ft{display:flex;justify-content:space-between;margin-top:.6rem;padding-top:.5rem;border-top:.5px solid var(--border);flex-wrap:wrap;gap:.4rem}
-    .ann-author{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim)}
-    .ann-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.15em;color:var(--dim);opacity:.55}
-    .ann-pin-badge{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.2em;color:var(--gold);opacity:.75}
-    .fbar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
-    .fb{background:transparent;border:.5px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.22em;padding:.42rem .75rem;cursor:pointer;text-transform:uppercase;transition:all .2s}
-    .fb:hover,.fb.active{border-color:var(--gold);color:var(--gold)}
-
-    /* ACCOUNT */
-    .tier-band{display:flex;align-items:center;justify-content:space-between;border:.5px solid var(--border-hi);padding:1.3rem 1.6rem;margin-bottom:1.2rem;flex-wrap:wrap;gap:1rem;background:rgba(200,169,110,.025)}
-    .tb-tier-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem}
-    .tb-tier-val{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.18em;color:var(--gold)}
-    .tb-note{font-size:.82rem;font-style:italic;color:var(--dim);max-width:280px;line-height:1.6;text-align:right}
-    .ig{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1.2rem}
-    .ic{background:var(--bg2);padding:1.3rem 1.4rem}
-    .ic-lbl{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.45rem}
-    .ic-val{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.1em;color:var(--chrome);word-break:break-word}
-    .adm-badge{display:inline-flex;align-items:center;gap:.5rem;border:.5px solid rgba(200,169,110,.35);padding:.28rem .7rem;margin-bottom:1rem}
-    .adm-badge span{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.28em;color:var(--gold);text-transform:uppercase}
-    .locked-notice{background:var(--bg2);border:.5px solid var(--border);padding:2.5rem;text-align:center}
-    .ln-text{font-family:'Cinzel',serif;font-size:.45rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;line-height:1.9}
-    .ln-text span{color:var(--red-hi)}
-
-    /* ACTIVITY */
-    .act-list{max-height:260px;overflow-y:auto;padding:0 1.4rem}
-    .act-list::-webkit-scrollbar{width:2px}
-    .act-list::-webkit-scrollbar-thumb{background:var(--border)}
-    .act-item{display:flex;gap:1rem;padding:.75rem 0;border-bottom:.5px solid var(--border)}
-    .act-item:last-child{border-bottom:none}
-    .act-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.35rem}
-    .act-dot.red{background:var(--red-hi)}
-    .act-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.18em;color:var(--dim);margin-bottom:.12rem}
-    .act-txt{font-size:.82rem;font-style:italic;color:var(--chrome);line-height:1.5}
-
-    /* ADMIN */
-    .adm-row{display:grid;grid-template-columns:1fr 160px 90px;gap:.8rem;align-items:center;padding:.95rem 0;border-bottom:.5px solid var(--border)}
-    .adm-row:last-child{border-bottom:none}
-
-    /* BUTTONS */
-    .btn{background:transparent;border:.5px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;padding:.7rem 1.2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s}
-    .btn:hover{background:var(--gold);color:var(--bg)}
-    .btn.ghost{border-color:var(--border);color:var(--dim2)}
-    .btn.ghost:hover{background:var(--border);color:var(--chrome)}
-    .btn.sm{font-size:.38rem;padding:.5rem .85rem}
-    .btn:disabled{opacity:.38;cursor:not-allowed}
-    .btn-row{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
-
-    /* PROPERTY TYPE TAGS */
-    .prop-tag{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;border:.5px solid var(--border);color:var(--dim2);padding:.18rem .5rem;text-transform:uppercase;margin-right:.4rem}
-    .prop-tag.residential{color:var(--gold);border-color:rgba(200,169,110,.3)}
-    .prop-tag.commercial{color:#60a5fa;border-color:rgba(96,165,250,.3)}
-    .prop-tag.mixed{color:#a78bfa;border-color:rgba(167,139,250,.3)}
-
-    /* ── FIELD OPS ── */
+    /* FIELD OPS */
     .wo{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);position:relative;transition:background .2s}
     .wo:last-child{border-bottom:none}
     .wo::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;opacity:0;transition:opacity .2s;pointer-events:none}
@@ -267,7 +198,7 @@
     .wm-val{font-size:.82rem;font-style:italic;color:var(--chrome)}
     .wo-note{font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.6;border-top:.5px solid var(--border);padding-top:.5rem;margin-top:.4rem}
 
-    /* VENDOR */
+    /* VENDOR / INSPECTION */
     .vendor-row{padding:1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:background .2s}
     .vendor-row:last-child{border-bottom:none}
     .vendor-row:hover{background:var(--gold-glow)}
@@ -279,8 +210,6 @@
     .vn-star.empty{background:rgba(200,169,110,.18)}
     .vn-status-ok{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.2em;color:#22c55e;text-transform:uppercase}
     .vn-status-na{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase}
-
-    /* INSPECTIONS */
     .insp-row{padding:1rem 1.4rem;border-bottom:.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:background .2s}
     .insp-row:last-child{border-bottom:none}
     .insp-row:hover{background:var(--gold-glow)}
@@ -293,17 +222,109 @@
     .insp-badge.fail{color:#ef4444;border:.5px solid rgba(239,68,68,.28);background:rgba(239,68,68,.05)}
     .insp-badge.upcoming{color:#60a5fa;border:.5px solid rgba(96,165,250,.28);background:rgba(96,165,250,.05)}
 
+    /* ANNOUNCEMENTS */
+    .ann{padding:1.2rem 1.4rem;border-bottom:.5px solid var(--border);transition:background .2s;position:relative}
+    .ann:last-child{border-bottom:none}
+    .ann:hover{background:var(--gold-glow)}
+    .ann.pinned{border-left:2px solid var(--gold);background:rgba(200,169,110,.03)}
+    .ann-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.55rem;gap:1rem;flex-wrap:wrap}
+    .ann-title{font-family:'Cinzel',serif;font-size:.6rem;font-weight:600;letter-spacing:.12em;color:var(--chrome)}
+    .ann-div{font-family:'Cinzel',serif;font-size:.33rem;letter-spacing:.2em;color:var(--gold);border:.5px solid var(--border);padding:.15rem .45rem;flex-shrink:0;text-transform:uppercase}
+    .ann-body{font-size:.88rem;font-style:italic;color:var(--dim2);line-height:1.75}
+    .ann-ft{display:flex;justify-content:space-between;margin-top:.6rem;padding-top:.5rem;border-top:.5px solid var(--border);flex-wrap:wrap;gap:.4rem;align-items:center}
+    .ann-author{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim)}
+    .ann-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.15em;color:var(--dim);opacity:.55}
+    .ann-pin-badge{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.2em;color:var(--gold);opacity:.75}
+    .ann-actions{display:flex;gap:.5rem;align-items:center}
+    .ann-action-btn{background:none;border:.5px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.15em;padding:.2rem .5rem;cursor:pointer;text-transform:uppercase;transition:all .2s}
+    .ann-action-btn:hover{border-color:var(--gold);color:var(--gold)}
+    .ann-action-btn.del:hover{border-color:var(--red-hi);color:var(--red-hi)}
+    .fbar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+    .fb{background:transparent;border:.5px solid var(--border);color:var(--dim);font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.22em;padding:.42rem .75rem;cursor:pointer;text-transform:uppercase;transition:all .2s}
+    .fb:hover,.fb.active{border-color:var(--gold);color:var(--gold)}
+
+    /* ACCOUNT */
+    .tier-band{display:flex;align-items:center;justify-content:space-between;border:.5px solid var(--border-hi);padding:1.3rem 1.6rem;margin-bottom:1.2rem;flex-wrap:wrap;gap:1rem;background:rgba(200,169,110,.025)}
+    .tb-tier-lbl{font-family:'Cinzel',serif;font-size:.35rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.3rem}
+    .tb-tier-val{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.18em;color:var(--gold)}
+    .tb-note{font-size:.82rem;font-style:italic;color:var(--dim);max-width:280px;line-height:1.6;text-align:right}
+    .ig{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-bottom:1.2rem}
+    .ic{background:var(--bg2);padding:1.3rem 1.4rem}
+    .ic-lbl{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.38em;color:var(--dim);text-transform:uppercase;margin-bottom:.45rem}
+    .ic-val{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.1em;color:var(--chrome);word-break:break-word}
+    .adm-badge{display:inline-flex;align-items:center;gap:.5rem;border:.5px solid rgba(200,169,110,.35);padding:.28rem .7rem;margin-bottom:1rem}
+    .adm-badge span{font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.28em;color:var(--gold);text-transform:uppercase}
+    .locked-notice{background:var(--bg2);border:.5px solid var(--border);padding:2.5rem;text-align:center}
+    .ln-text{font-family:'Cinzel',serif;font-size:.45rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;line-height:1.9}
+    .ln-text span{color:var(--red-hi)}
+
+    /* ── ADMIN TABS (new) ── */
+    .adm-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:.5px solid var(--border)}
+    .adm-tab{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;color:var(--dim2);padding:.75rem 1.2rem;cursor:pointer;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .2s;background:none;border-left:none;border-right:none;border-top:none}
+    .adm-tab:hover{color:var(--chrome)}
+    .adm-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+    .adm-section{display:none}.adm-section.active{display:block;animation:panelIn .25s ease}
+
+    /* ADMIN: ANNOUNCEMENT FORM */
+    .ann-form{display:grid;gap:.8rem}
+    .ann-form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+    .form-group{display:flex;flex-direction:column;gap:.4rem}
+    .form-label{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase}
+    .form-input{background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.9rem;padding:.7rem .9rem;outline:none;width:100%;transition:border-color .3s}
+    .form-input:focus{border-color:var(--gold)}
+    .form-input::placeholder{color:var(--dim);font-style:italic}
+    .form-select{background:var(--bg2);border:.5px solid var(--border);color:var(--white);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.7rem .9rem;outline:none;width:100%;cursor:pointer}
+    .form-textarea{background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.9rem;padding:.7rem .9rem;outline:none;width:100%;resize:vertical;min-height:100px;line-height:1.6;transition:border-color .3s}
+    .form-textarea:focus{border-color:var(--gold)}
+    .form-textarea::placeholder{color:var(--dim);font-style:italic}
+
+    /* ADMIN: MEMBER ROW */
+    .member-row{display:grid;grid-template-columns:1fr 160px 90px;gap:.8rem;align-items:center;padding:.95rem 0;border-bottom:.5px solid var(--border)}
+    .member-row:last-child{border-bottom:none}
+    .member-name{font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.14em;color:var(--chrome)}
+    .member-email{font-size:.78rem;font-style:italic;color:var(--dim);margin-top:.15rem}
+
+    /* ADMIN: ANN LIST */
+    .adm-ann{padding:1rem 1.2rem;border-bottom:.5px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;transition:background .2s}
+    .adm-ann:last-child{border-bottom:none}
+    .adm-ann:hover{background:var(--gold-glow)}
+    .adm-ann.pinned{border-left:2px solid var(--gold)}
+    .adm-ann-info{flex:1;min-width:0}
+    .adm-ann-title{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.12em;color:var(--chrome);margin-bottom:.3rem}
+    .adm-ann-meta{font-size:.78rem;font-style:italic;color:var(--dim2)}
+    .adm-ann-actions{display:flex;gap:.4rem;flex-shrink:0;align-items:flex-start}
+
+    /* ACTIVITY */
+    .act-list{max-height:320px;overflow-y:auto;padding:0 1.4rem}
+    .act-list::-webkit-scrollbar{width:2px}
+    .act-list::-webkit-scrollbar-thumb{background:var(--border)}
+    .act-item{display:flex;gap:1rem;padding:.75rem 0;border-bottom:.5px solid var(--border)}
+    .act-item:last-child{border-bottom:none}
+    .act-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:.35rem}
+    .act-dot.red{background:var(--red-hi)}
+    .act-time{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.18em;color:var(--dim);margin-bottom:.12rem}
+    .act-txt{font-size:.82rem;font-style:italic;color:var(--chrome);line-height:1.5}
+
+    /* BUTTONS */
+    .btn{background:transparent;border:.5px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;padding:.7rem 1.2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s}
+    .btn:hover{background:var(--gold);color:var(--bg)}
+    .btn.ghost{border-color:var(--border);color:var(--dim2)}
+    .btn.ghost:hover{background:var(--border);color:var(--chrome)}
+    .btn.danger{border-color:var(--red-hi);color:var(--red-hi)}
+    .btn.danger:hover{background:var(--red-hi);color:var(--white)}
+    .btn.sm{font-size:.38rem;padding:.5rem .85rem}
+    .btn.xs{font-size:.34rem;padding:.35rem .65rem}
+    .btn:disabled{opacity:.38;cursor:not-allowed}
+    .btn-row{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+
     #toasts{position:fixed;bottom:calc(var(--bottom-nav) + .8rem);right:1rem;z-index:400;display:flex;flex-direction:column;gap:.4rem}
     .tst{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.2em;padding:.65rem 1rem;border:.5px solid var(--border-hi);background:var(--bg2);color:var(--gold);text-transform:uppercase;animation:tstIn .25s ease}
     .tst.err{color:var(--red-hi);border-color:rgba(204,32,32,.3)}
+    .tst.ok{color:var(--green);border-color:rgba(34,197,94,.3)}
     @keyframes tstIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
 
     #p-account{contain:layout style}
-    #clerkProfileCard{overflow:visible;min-height:200px}
-    #clerkProfile{overflow:visible;min-height:180px}
-    #clerkProfile > *{display:block}
     .cl-avatarBox,.cl-userButtonAvatarBox{border-radius:50%!important;overflow:hidden!important}
-    .cl-avatar,.cl-userButtonAvatar{border-radius:50%!important}
 
     /* RESPONSIVE */
     @media(max-width:900px){
@@ -315,7 +336,7 @@
       :root{--sidebar:0px}
       #sidebar{display:none}
       #bottomNav{display:block}
-      html,body{height:100%;height:100dvh}
+      html,body{height:100dvh}
       #shell{height:calc(100dvh - 52px - var(--bottom-nav));min-height:0}
       #main{padding:1.2rem 1rem calc(var(--bottom-nav) + env(safe-area-inset-bottom) + 1.5rem)}
       .stat-bar{grid-template-columns:1fr 1fr}
@@ -323,11 +344,10 @@
       .fin-grid{grid-template-columns:1fr}
       .ft{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
       .ph-left .ph-title{font-size:1.15rem}
-      .adm-row{grid-template-columns:1fr;gap:.4rem}
+      .member-row{grid-template-columns:1fr;gap:.4rem}
       .tb-crumb{display:none}.tb-tier{display:none}
+      .ann-form-row{grid-template-columns:1fr}
       #toasts{bottom:calc(var(--bottom-nav) + .5rem);right:.5rem;left:.5rem}
-      .tst{font-size:.38rem;padding:.55rem .8rem}
-      .g2{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -346,7 +366,6 @@
   <div class="ls-rule"></div>
   <div class="err-title">Authentication Error</div>
   <div class="err-msg" id="errMsg">Unable to initialize authentication.</div>
-  <div class="err-detail" id="errDetail"></div>
   <button class="btn" onclick="window.location.reload()">↺ Retry</button>
   <a class="btn ghost" href="https://vindex.wearelvo.com" style="text-decoration:none;display:inline-flex;align-items:center;padding:.7rem 1.2rem">← Return to site</a>
 </div>
@@ -473,33 +492,25 @@
           <button class="btn sm ghost" onclick="fetchFieldOps(true)">↺ Refresh</button>
         </div>
       </div>
-
-      <!-- STATS -->
       <div class="stat-bar" id="opsStatBar">
         <div class="sc"><div class="sc-lbl">Open Orders</div><div class="sc-val" id="opsOpen" style="color:#ef4444">—</div></div>
         <div class="sc"><div class="sc-lbl">In Progress</div><div class="sc-val" id="opsInProg" style="color:var(--gold)">—</div></div>
         <div class="sc"><div class="sc-lbl">Completed (30d)</div><div class="sc-val" id="opsDone" style="color:#22c55e">—</div></div>
         <div class="sc"><div class="sc-lbl">Next Inspection</div><div class="sc-val" id="opsNextInsp" style="font-size:.6rem">—</div></div>
       </div>
-
-      <!-- WORK ORDERS -->
       <div class="card g-full">
         <div class="ch">
           <span class="ct">Work Orders</span>
-          <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap">
-            <div class="fbar" style="margin:0">
-              <button class="fb active" onclick="filterWO('all',this)">All</button>
-              <button class="fb" onclick="filterWO('open',this)">Open</button>
-              <button class="fb" onclick="filterWO('in-progress',this)">In Progress</button>
-              <button class="fb" onclick="filterWO('scheduled',this)">Scheduled</button>
-              <button class="fb" onclick="filterWO('completed',this)">Completed</button>
-            </div>
+          <div class="fbar" style="margin:0">
+            <button class="fb active" onclick="filterWO('all',this)">All</button>
+            <button class="fb" onclick="filterWO('open',this)">Open</button>
+            <button class="fb" onclick="filterWO('in-progress',this)">In Progress</button>
+            <button class="fb" onclick="filterWO('scheduled',this)">Scheduled</button>
+            <button class="fb" onclick="filterWO('completed',this)">Completed</button>
           </div>
         </div>
         <div id="woList"><div class="empty" style="padding:1.5rem">Loading work orders…</div></div>
       </div>
-
-      <!-- NEW WORK ORDER FORM (hidden by default) -->
       <div id="newWOForm" class="card g-full" style="display:none">
         <div class="ch"><span class="ct">New Work Order</span><button class="btn sm ghost" onclick="hideNewWOForm()">✕ Cancel</button></div>
         <div class="cb" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
@@ -523,8 +534,7 @@
           <div>
             <div class="ic-lbl" style="margin-bottom:.4rem">Priority</div>
             <select id="woPriority" style="width:100%;background:var(--bg2);border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.7rem .9rem;outline:none;cursor:pointer">
-              <option value="normal">Normal</option>
-              <option value="urgent">Urgent</option>
+              <option value="normal">Normal</option><option value="urgent">Urgent</option>
             </select>
           </div>
           <div>
@@ -544,16 +554,10 @@
           </div>
         </div>
       </div>
-
-      <!-- VENDORS + INSPECTIONS -->
       <div class="g2">
         <div class="card">
-          <div class="ch">
-            <span class="ct">Vendor Directory</span>
-            <button class="btn sm ghost" onclick="showAddVendorForm()">+ Add</button>
-          </div>
+          <div class="ch"><span class="ct">Vendor Directory</span><button class="btn sm ghost" onclick="showAddVendorForm()">+ Add</button></div>
           <div id="vendorList"><div class="empty" style="padding:1rem">Loading vendors…</div></div>
-          <!-- Add vendor form -->
           <div id="addVendorForm" style="display:none;border-top:.5px solid var(--border);padding:1rem 1.4rem">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.7rem">
               <input id="vName" placeholder="Company name" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.6rem .8rem;outline:none;width:100%"/>
@@ -567,24 +571,17 @@
             </div>
           </div>
         </div>
-
         <div class="card">
-          <div class="ch">
-            <span class="ct">Inspections</span>
-            <button class="btn sm ghost" onclick="showAddInspForm()">+ Schedule</button>
-          </div>
+          <div class="ch"><span class="ct">Inspections</span><button class="btn sm ghost" onclick="showAddInspForm()">+ Schedule</button></div>
           <div id="inspList"><div class="empty" style="padding:1rem">Loading inspections…</div></div>
-          <!-- Add inspection form -->
           <div id="addInspForm" style="display:none;border-top:.5px solid var(--border);padding:1rem 1.4rem">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.7rem">
               <input id="iProperty" placeholder="Property address" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.6rem .8rem;outline:none;width:100%"/>
               <input id="iType" placeholder="Inspection type" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;padding:.6rem .8rem;outline:none;width:100%"/>
               <input id="iDate" type="date" style="background:transparent;border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;padding:.6rem .8rem;outline:none;width:100%;letter-spacing:.1em"/>
               <select id="iResult" style="background:var(--bg2);border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.6rem .8rem;outline:none;cursor:pointer;width:100%">
-                <option value="upcoming">Upcoming</option>
-                <option value="pass">Pass</option>
-                <option value="attention">Attention</option>
-                <option value="fail">Fail</option>
+                <option value="upcoming">Upcoming</option><option value="pass">Pass</option>
+                <option value="attention">Attention</option><option value="fail">Fail</option>
               </select>
             </div>
             <div style="display:flex;gap:.5rem">
@@ -625,38 +622,154 @@
         <div class="ic"><div class="ic-lbl">Division</div><div class="ic-val">Vindex · Real Estate</div></div>
         <div class="ic"><div class="ic-lbl">Role</div><div class="ic-val" id="acRole">—</div></div>
         <div class="ic"><div class="ic-lbl">Member Since</div><div class="ic-val" id="acJoined">—</div></div>
-        <div class="ic"><div class="ic-lbl">Portal</div><div class="ic-val">Vindex Dashboard v2.2</div></div>
+        <div class="ic"><div class="ic-lbl">Portal</div><div class="ic-val">Vindex Dashboard v2.3</div></div>
       </div>
-      <div class="card" id="clerkProfileCard" style="overflow:visible">
+      <div class="card" style="overflow:visible">
         <div class="ch"><span class="ct">Manage Account</span></div>
         <div class="cb" id="clerkProfile" style="overflow:visible;min-height:200px"></div>
       </div>
     </div>
 
-    <!-- ADMIN -->
+    <!-- ══ ADMIN ══ -->
     <div class="panel" id="p-admin">
-      <div class="ph"><div class="ph-left"><div class="ph-eyebrow" style="color:var(--gold)">Executive</div><div class="ph-title">Admin Panel</div></div><div class="ph-rule"></div></div>
+      <div class="ph">
+        <div class="ph-left">
+          <div class="ph-eyebrow" style="color:var(--gold)">Executive</div>
+          <div class="ph-title">Admin Panel</div>
+          <div class="ph-sub">Full control over Vindex operations.</div>
+        </div>
+        <div class="ph-rule"></div>
+      </div>
+
       <div class="stat-bar" style="margin-bottom:1.5rem">
         <div class="sc"><div class="sc-lbl">Total Members</div><div class="sc-val" id="admTotal">—</div></div>
-        <div class="sc"><div class="sc-lbl">Division</div><div class="sc-val">Vindex</div></div>
+        <div class="sc"><div class="sc-lbl">Announcements</div><div class="sc-val" id="admAnnCount">—</div></div>
         <div class="sc"><div class="sc-lbl">Your Standing</div><div class="sc-val" id="admMyTier">—</div></div>
-        <div class="sc"><div class="sc-lbl">Version</div><div class="sc-val">2.2 · 2026</div></div>
+        <div class="sc"><div class="sc-lbl">Version</div><div class="sc-val">2.3 · 2026</div></div>
       </div>
-      <div class="card" style="margin-bottom:1.2rem">
-        <div class="ch"><span class="ct">Member Tier Management</span></div>
-        <div class="cb">
-          <div style="margin-bottom:1rem;display:flex;gap:.8rem;flex-wrap:wrap;align-items:center">
-            <input id="memberSearch" placeholder="Search by name or email…" style="max-width:280px;background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.9rem;padding:.7rem .9rem;outline:none;width:100%" oninput="filterMembers()"/>
-            <span style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;color:var(--dim);text-transform:uppercase" id="memberCount"></span>
+
+      <!-- TABS -->
+      <div class="adm-tabs">
+        <button class="adm-tab active" onclick="switchAdmTab('announcements',this)">Announcements</button>
+        <button class="adm-tab" onclick="switchAdmTab('members',this)">Members</button>
+        <button class="adm-tab" onclick="switchAdmTab('fieldops',this)">Field Ops</button>
+        <button class="adm-tab" onclick="switchAdmTab('activity',this)">Activity</button>
+      </div>
+
+      <!-- TAB: ANNOUNCEMENTS -->
+      <div class="adm-section active" id="adm-announcements">
+        <div class="g2" style="margin-bottom:1.5rem">
+          <div class="card">
+            <div class="ch"><span class="ct">Post Announcement</span></div>
+            <div class="cb">
+              <div class="ann-form">
+                <div class="form-group">
+                  <label class="form-label">Title</label>
+                  <input class="form-input" id="annTitle" placeholder="Announcement title…" type="text"/>
+                </div>
+                <div class="ann-form-row">
+                  <div class="form-group">
+                    <label class="form-label">Division</label>
+                    <select class="form-select" id="annDivision">
+                      <option value="All">All Divisions</option>
+                      <option value="Vindex" selected>Vindex</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Author</label>
+                    <input class="form-input" id="annAuthor" placeholder="LVO Administration" type="text"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Body</label>
+                  <textarea class="form-textarea" id="annBody" placeholder="Announcement content…"></textarea>
+                </div>
+                <div class="btn-row">
+                  <button class="btn" onclick="postAnnouncement()">Post Announcement →</button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div id="admList"><div class="empty">Loading members…</div></div>
+          <div class="card">
+            <div class="ch"><span class="ct">Live Preview</span></div>
+            <div id="annPreview" style="padding:1.2rem 1.4rem">
+              <div class="ann-body" style="color:var(--dim)">Fill in the form to preview your announcement.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="ct">Manage Announcements</span><button class="btn sm ghost" onclick="loadAdminAnn()">↺ Refresh</button></div>
+          <div id="admAnnList"><div class="empty" style="padding:1.5rem">Loading…</div></div>
         </div>
       </div>
-      <div class="card">
-        <div class="ch"><span class="ct">Activity Log</span></div>
-        <div class="act-list" id="admFeed"><div class="empty">No activity.</div></div>
+
+      <!-- TAB: MEMBERS -->
+      <div class="adm-section" id="adm-members">
+        <div class="card">
+          <div class="ch">
+            <span class="ct">Member Tier Management</span>
+            <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap">
+              <input id="memberSearch" placeholder="Search name or email…" style="background:transparent;border:.5px solid var(--border);color:var(--white);font-family:'Cormorant Garamond',serif;font-size:.9rem;padding:.5rem .8rem;outline:none;width:220px" oninput="filterMembers()"/>
+              <span class="cm" id="memberCount"></span>
+              <button class="btn sm ghost" onclick="loadAdminMembers()">↺ Refresh</button>
+            </div>
+          </div>
+          <div class="cb" id="admList"><div class="empty">Loading members…</div></div>
+        </div>
       </div>
-    </div>
+
+      <!-- TAB: FIELD OPS ADMIN -->
+      <div class="adm-section" id="adm-fieldops">
+        <div class="g2">
+          <div class="card">
+            <div class="ch"><span class="ct">All Work Orders</span><button class="btn sm ghost" onclick="fetchFieldOps(true)">↺</button></div>
+            <div id="admWoList"><div class="empty" style="padding:1.5rem">Loading…</div></div>
+          </div>
+          <div class="card">
+            <div class="ch"><span class="ct">Update Order Status</span></div>
+            <div class="cb">
+              <div style="margin-bottom:.8rem">
+                <div class="form-label" style="margin-bottom:.4rem">Work Order ID</div>
+                <input class="form-input" id="admWoId" placeholder="WO-2026-XXX"/>
+              </div>
+              <div style="margin-bottom:.8rem">
+                <div class="form-label" style="margin-bottom:.4rem">New Status</div>
+                <select class="form-select" id="admWoStatus">
+                  <option value="open">Open</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="scheduled">Scheduled</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+              <div style="margin-bottom:.8rem">
+                <div class="form-label" style="margin-bottom:.4rem">Notes (optional)</div>
+                <textarea class="form-textarea" id="admWoNotes" placeholder="Status update notes…" style="min-height:70px"></textarea>
+              </div>
+              <button class="btn sm" onclick="adminUpdateWO()">Update Status</button>
+            </div>
+          </div>
+        </div>
+        <div class="g2">
+          <div class="card">
+            <div class="ch"><span class="ct">Vendor Directory</span></div>
+            <div id="admVendorList"><div class="empty" style="padding:1rem">Loading…</div></div>
+          </div>
+          <div class="card">
+            <div class="ch"><span class="ct">Inspections</span></div>
+            <div id="admInspList"><div class="empty" style="padding:1rem">Loading…</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: ACTIVITY -->
+      <div class="adm-section" id="adm-activity">
+        <div class="card">
+          <div class="ch"><span class="ct">Activity Log</span><button class="btn sm ghost" onclick="renderAct()">↺ Refresh</button></div>
+          <div class="act-list" id="admFeed"><div class="empty">No activity.</div></div>
+        </div>
+      </div>
+
+    </div><!-- /p-admin -->
 
   </main>
 </div>
@@ -673,7 +786,6 @@
     <div class="bn-item" id="bnAdminItem" data-p="admin" onclick="goTo('admin')" style="display:none"><span class="bn-ico">⬡</span><span class="bn-lbl">Admin</span></div>
   </div>
 </div>
-
 <div id="toasts"></div>
 
 <script>
@@ -684,75 +796,72 @@ const SB_H={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'a
 const TIER_LABELS={1:'Tier I — Principal',2:'Tier II — Associate',3:'Tier III — Partner',4:'Tier IV — Member'};
 
 /* ── STATE ── */
-let _U=null,_ann=[],_annFilter='all',_annTimer=null,_annSec=900,_activity=[],_members=[];
-let _clerkProfileMounted=false,_dashboardPopulated=false;
+let _U=null,_ann=[],_annFilter='all',_annTimer=null,_annSec=900,_activity=[];
+let _members=[],_clerkProfileMounted=false,_dashboardPopulated=false;
 let _workOrders=[],_vendors=[],_inspections=[],_woFilter='all';
 
 /* ── UTILS ── */
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function toast(msg,err=false){const z=document.getElementById('toasts');if(!z)return;const el=document.createElement('div');el.className='tst'+(err?' err':'');el.textContent=msg;z.appendChild(el);setTimeout(()=>el.remove(),3200)}
+function toast(msg,type=''){const z=document.getElementById('toasts');const el=document.createElement('div');el.className='tst'+(type?' '+type:'');el.textContent=msg;z.appendChild(el);setTimeout(()=>el.remove(),3200)}
 function setLoad(msg){const el=document.getElementById('loadStatus');if(el)el.textContent=msg}
-function showError(msg,detail=''){const ls=document.getElementById('loadScreen');if(ls){ls.classList.add('out');setTimeout(()=>ls.remove(),700);}const em=document.getElementById('errMsg');const ed=document.getElementById('errDetail');const es=document.getElementById('errorScreen');if(em)em.textContent=msg;if(ed)ed.textContent=detail;if(es)es.classList.add('show')}
+function showError(msg){document.getElementById('loadScreen')?.classList.add('out');const es=document.getElementById('errorScreen');if(es){document.getElementById('errMsg').textContent=msg;es.classList.add('show');}}
 function setSbStatus(ok,msg){const el=document.getElementById('sbStatus');if(!el)return;el.className='sb-status '+(ok?'ok':'err');el.textContent=(ok?'● ':'○ ')+msg}
 function logAct(action,isAdmin=false){_activity.unshift({action,isAdmin,time:new Date().toISOString()});_activity=_activity.slice(0,50);renderAct()}
-function setText(id,val){const el=document.getElementById(id);if(el)el.textContent=val}
-function setDisplay(id,val){const el=document.getElementById(id);if(el)el.style.display=val}
+function setText(id,v){const el=document.getElementById(id);if(el)el.textContent=v}
+function setDisplay(id,v){const el=document.getElementById(id);if(el)el.style.display=v}
 function genWOId(){return'WO-'+new Date().getFullYear()+'-'+String(Math.floor(Math.random()*900)+100)}
 
-/* ── localStorage ── */
-function lsGet(key,fb='{}'){try{return JSON.parse(localStorage.getItem(key)||fb)}catch(e){return JSON.parse(fb)}}
-function lsSet(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch(e){}}
-function getMemberMeta(uid){return lsGet('lvo_vindex_members')[uid]||null}
-function setMemberMeta(uid,data){const d=lsGet('lvo_vindex_members');d[uid]=data;lsSet('lvo_vindex_members',d)}
+function sbFetch(path,opts={}){
+  return fetch(SB_URL+path,{...opts,headers:{...SB_H,...(opts.headers||{})}});
+}
 
 /* ── NAVIGATION ── */
 function goTo(id){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.p===id));
   document.querySelectorAll('.bn-item').forEach(n=>n.classList.toggle('active',n.dataset.p===id));
   document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='p-'+id));
-  if(id==='announcements'){setDisplay('annBadge','none');const d=document.getElementById('bnAnnDot');if(d)d.classList.remove('show');}
-  if(id==='properties'){const d=document.getElementById('bnPropDot');if(d)d.classList.remove('show');}
-  if(id==='fieldops'){const d=document.getElementById('bnOpsDot');if(d)d.classList.remove('show');setDisplay('opsBadge','none');}
-  if(id==='admin')renderAdminPanel();
-  const m=document.getElementById('main');if(m)m.scrollTop=0;
+  if(id==='announcements'){setDisplay('annBadge','none');document.getElementById('bnAnnDot')?.classList.remove('show');}
+  if(id==='properties')document.getElementById('bnPropDot')?.classList.remove('show');
+  if(id==='fieldops'){document.getElementById('bnOpsDot')?.classList.remove('show');setDisplay('opsBadge','none');}
+  if(id==='admin')initAdminPanel();
+  document.getElementById('main').scrollTop=0;
+}
+
+function switchAdmTab(name,btn){
+  document.querySelectorAll('.adm-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.adm-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('adm-'+name).classList.add('active');
+  if(name==='members')loadAdminMembers();
+  if(name==='announcements')loadAdminAnn();
+  if(name==='fieldops')renderAdminFieldOps();
+  if(name==='activity')renderAct();
 }
 
 /* ── POPULATE ── */
 function populateDash(user){
   const meta=user.publicMetadata||{};
-  const lsMeta=getMemberMeta(user.id)||{};
   const name=user.fullName||user.firstName||'Member';
   const email=user.primaryEmailAddress?.emailAddress||'—';
   const isAdmin=meta.role==='admin';
-  const tier=parseInt(lsMeta.tier)||parseInt(meta.tier)||4;
-  const role=meta.role||lsMeta.role||'—';
+  const tier=parseInt(meta.tier)||4;
+  const role=meta.role||'member';
   const joined=user.createdAt?new Date(user.createdAt).toLocaleDateString('en-US',{month:'long',year:'numeric'}):'—';
   const props=Array.isArray(meta.active_deals)?meta.active_deals:[];
 
-  if(!getMemberMeta(user.id)){setMemberMeta(user.id,{name,email,tier,role,joinedRaw:user.createdAt});}
-
   _U={uid:user.id,name,email,isAdmin,tier,role,joined,props};
 
-  setText('tbName',name);
-  setText('tbTier',TIER_LABELS[tier]||TIER_LABELS[4]);
+  setText('tbName',name);setText('tbTier',TIER_LABELS[tier]||TIER_LABELS[4]);
   setText('ovTitle',`Welcome, ${name.split(' ')[0]}`);
-  setText('sTier',TIER_LABELS[tier]||TIER_LABELS[4]);
-  setText('sJoined',joined);
-  setText('acTier',TIER_LABELS[tier]||TIER_LABELS[4]);
-  setText('acName',name);
-  setText('acEmail',email);
-  setText('acRole',role!=='admin'?role:'Administrator');
-  setText('acJoined',joined);
-  setText('admMyTier',TIER_LABELS[tier]||TIER_LABELS[4]);
+  setText('sTier',TIER_LABELS[tier]||TIER_LABELS[4]);setText('sJoined',joined);
+  setText('acTier',TIER_LABELS[tier]||TIER_LABELS[4]);setText('acName',name);
+  setText('acEmail',email);setText('acRole',role!=='admin'?role:'Administrator');
+  setText('acJoined',joined);setText('admMyTier',TIER_LABELS[tier]||TIER_LABELS[4]);
   setText('finMonth',new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'}));
-
   setDisplay('admBadgeWrap',isAdmin?'block':'none');
   setDisplay('adminNav',isAdmin?'flex':'none');
   setDisplay('bnAdminItem',isAdmin?'flex':'none');
-
-  const tn=document.getElementById('tierNote');
-  if(tn)tn.style.display=(!isAdmin&&tier>=3)?'block':'none';
-
+  const tn=document.getElementById('tierNote');if(tn)tn.style.display=(!isAdmin&&tier>=3)?'block':'none';
   renderProps(props,tier,isAdmin);
   renderFin(props,tier,isAdmin);
 }
@@ -761,13 +870,13 @@ function populateDash(user){
 function propHTML(d,isAdmin,tier){
   const sc=(d.status||'active').toLowerCase().replace(/\s+/g,'-');
   const showCap=isAdmin||tier<=1;
-  const propType=d.type||d.division||'';
-  const typeClass=propType.toLowerCase().includes('commercial')?'commercial':propType.toLowerCase().includes('mixed')?'mixed':'residential';
+  const pt=d.type||d.division||'';
+  const tc=pt.toLowerCase().includes('commercial')?'commercial':pt.toLowerCase().includes('mixed')?'mixed':'residential';
   return`<div class="deal">
     <div class="deal-hd">
-      <span class="deal-name">${esc(d.name||'Unnamed Property')}</span>
+      <span class="deal-name">${esc(d.name||'Unnamed')}</span>
       <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
-        ${propType?`<span class="prop-tag ${typeClass}">${esc(propType)}</span>`:''}
+        ${pt?`<span class="prop-tag ${tc}">${esc(pt)}</span>`:''}
         <span class="deal-st ${sc}">${esc(d.status||'Active')}</span>
       </div>
     </div>
@@ -784,21 +893,11 @@ function renderProps(props,tier,isAdmin){
   const canSee=isAdmin||tier<=3;
   setText('sProps',canSee?String(props.length):'—');
   setText('ovPropCount',canSee?`${props.length} propert${props.length!==1?'ies':'y'}`:'Restricted');
-  if(props.length&&canSee){
-    const pb=document.getElementById('propBadge');if(pb){pb.style.display='block';pb.textContent=props.length;}
-    const dot=document.getElementById('bnPropDot');if(dot)dot.classList.add('show');
-  }
+  if(props.length&&canSee){const pb=document.getElementById('propBadge');if(pb){pb.style.display='block';pb.textContent=props.length;}document.getElementById('bnPropDot')?.classList.add('show');}
   const ovEl=document.getElementById('ovProps');
-  if(!canSee){
-    if(ovEl)ovEl.innerHTML='<div class="empty">Unlocked at Tier III+</div>';
-    setDisplay('propsLocked','block');
-    const pc=document.getElementById('propsContent');if(pc)pc.innerHTML='';return;
-  }
+  if(!canSee){if(ovEl)ovEl.innerHTML='<div class="empty">Unlocked at Tier III+</div>';setDisplay('propsLocked','block');const pc=document.getElementById('propsContent');if(pc)pc.innerHTML='';return;}
   setDisplay('propsLocked','none');
-  if(!props.length){
-    if(ovEl)ovEl.innerHTML='<div class="empty">No properties assigned.</div>';
-    const pc=document.getElementById('propsContent');if(pc)pc.innerHTML='<div class="empty" style="padding:1.5rem">No properties assigned to your account yet.</div>';return;
-  }
+  if(!props.length){if(ovEl)ovEl.innerHTML='<div class="empty">No properties assigned.</div>';const pc=document.getElementById('propsContent');if(pc)pc.innerHTML='<div class="empty" style="padding:1.5rem">No properties assigned to your account yet.</div>';return;}
   if(ovEl)ovEl.innerHTML=props.slice(0,2).map(d=>propHTML(d,isAdmin,tier)).join('');
   const pc=document.getElementById('propsContent');if(pc)pc.innerHTML=`<div class="card">${props.map(d=>propHTML(d,isAdmin,tier)).join('')}</div>`;
 }
@@ -806,8 +905,7 @@ function renderProps(props,tier,isAdmin){
 /* ── FINANCIALS ── */
 function renderFin(props,tier,isAdmin){
   const canSee=isAdmin||tier<=3;
-  setDisplay('finLocked',canSee?'none':'block');
-  setDisplay('finContent',canSee?'block':'none');
+  setDisplay('finLocked',canSee?'none':'block');setDisplay('finContent',canSee?'block':'none');
   if(!canSee)return;
   const showCap=isAdmin||tier<=1;
   let total=0;props.forEach(d=>{if(!d.capital)return;const n=parseFloat(String(d.capital).replace(/[$,\s~+]/g,''));if(!isNaN(n))total+=n;});
@@ -818,45 +916,30 @@ function renderFin(props,tier,isAdmin){
   if(!props.length){tb.innerHTML='<tr><td colspan="5"><div class="empty">No property positions on file.</div></td></tr>';return;}
   tb.innerHTML=props.map(d=>{
     const sc=(d.status||'active').toLowerCase().replace(/\s+/g,'-');
-    const propType=d.type||d.division||'—';
-    return`<tr><td><span class="ft-lbl">Property</span>${esc(d.name||'—')}</td><td><span class="ft-lbl">Type</span>${esc(propType)}</td><td><span class="ft-lbl">Position</span>${esc(d.position||'—')}</td><td><span class="deal-st ${sc}" style="display:inline-block">${esc(d.status||'Active')}</span></td><td>${showCap?esc(d.capital||'—'):'—'}</td></tr>`;
+    const pt=d.type||d.division||'—';
+    return`<tr><td><span class="ft-lbl">Property</span>${esc(d.name||'—')}</td><td><span class="ft-lbl">Type</span>${esc(pt)}</td><td><span class="ft-lbl">Position</span>${esc(d.position||'—')}</td><td><span class="deal-st ${sc}" style="display:inline-block">${esc(d.status||'Active')}</span></td><td>${showCap?esc(d.capital||'—'):'—'}</td></tr>`;
   }).join('');
 }
 
-/* ══════════════════════════════════
-   FIELD OPS — Supabase integration
-   Tables needed:
-     lvo_work_orders  — id, wo_id, title, property, type, priority, status, vendor, cost, notes, created_at, updated_at
-     lvo_vendors      — id, name, trade, phone, email, rating, active, created_at
-     lvo_inspections  — id, property, type, date, result, created_at
-   ══════════════════════════════════ */
-
+/* ── FIELD OPS ── */
 async function fetchFieldOps(manual=false){
   try{
     const [woRes,vRes,iRes]=await Promise.all([
-      fetch(`${SB_URL}/rest/v1/lvo_work_orders?select=*&order=created_at.desc`,{headers:SB_H}),
-      fetch(`${SB_URL}/rest/v1/lvo_vendors?select=*&order=name.asc`,{headers:SB_H}),
-      fetch(`${SB_URL}/rest/v1/lvo_inspections?select=*&order=date.desc`,{headers:SB_H})
+      sbFetch('/rest/v1/lvo_work_orders?select=*&order=created_at.desc'),
+      sbFetch('/rest/v1/lvo_vendors?select=*&order=name.asc'),
+      sbFetch('/rest/v1/lvo_inspections?select=*&order=date.desc')
     ]);
-
-    if(woRes.ok) _workOrders=await woRes.json(); else _workOrders=[];
-    if(vRes.ok)  _vendors=await vRes.json();     else _vendors=[];
-    if(iRes.ok)  _inspections=await iRes.json(); else _inspections=[];
-
-    renderWorkOrders();
-    renderVendors();
-    renderInspections();
-    updateOpsStats();
+    if(woRes.ok)_workOrders=await woRes.json();else _workOrders=[];
+    if(vRes.ok) _vendors=await vRes.json();    else _vendors=[];
+    if(iRes.ok) _inspections=await iRes.json();else _inspections=[];
+    renderWorkOrders();renderVendors();renderInspections();updateOpsStats();
     setSbStatus(true,'Database Online · 15 Min Timer');
-    if(manual)toast('Field Ops refreshed');
+    if(manual)toast('Field Ops refreshed','ok');
+    if(document.getElementById('adm-fieldops')?.classList.contains('active'))renderAdminFieldOps();
   }catch(e){
-    console.error('fetchFieldOps',e);
-    setSbStatus(false,'Supabase error');
+    console.error(e);setSbStatus(false,'Supabase error');
     if(manual)toast('Refresh failed',true);
-    // Graceful fallback: show empty state instead of broken UI
-    renderWorkOrdersFallback();
-    renderVendorsFallback();
-    renderInspectionsFallback();
+    document.getElementById('woList').innerHTML='<div class="empty" style="padding:1.5rem">Unable to load. Check Supabase table lvo_work_orders.</div>';
   }
 }
 
@@ -865,25 +948,12 @@ function updateOpsStats(){
   const inProg=_workOrders.filter(w=>w.status==='in-progress').length;
   const thirty=new Date();thirty.setDate(thirty.getDate()-30);
   const done=_workOrders.filter(w=>w.status==='completed'&&new Date(w.updated_at||w.created_at)>=thirty).length;
-  setText('opsOpen',String(open||'0'));
-  setText('opsInProg',String(inProg||'0'));
-  setText('opsDone',String(done||'0'));
-
-  // Next upcoming inspection
+  setText('opsOpen',String(open||'0'));setText('opsInProg',String(inProg||'0'));setText('opsDone',String(done||'0'));
   const upcoming=_inspections.filter(i=>i.result==='upcoming'&&i.date).sort((a,b)=>new Date(a.date)-new Date(b.date));
-  if(upcoming.length){
-    const d=new Date(upcoming[0].date);
-    setText('opsNextInsp',d.toLocaleDateString('en-US',{month:'short',day:'numeric'}));
-  }else setText('opsNextInsp','None');
-
-  // Badge for open urgent orders
-  if(open>0){
-    const ob=document.getElementById('opsBadge');if(ob)ob.style.display='block';
-    const dot=document.getElementById('bnOpsDot');if(dot)dot.classList.add('show');
-  }
+  setText('opsNextInsp',upcoming.length?new Date(upcoming[0].date).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'None');
+  if(open>0){const ob=document.getElementById('opsBadge');if(ob)ob.style.display='block';document.getElementById('bnOpsDot')?.classList.add('show');}
 }
 
-/* ── WORK ORDERS ── */
 function filterWO(status,btn){
   _woFilter=status;
   document.querySelectorAll('#p-fieldops .fb').forEach(b=>b.classList.remove('active'));
@@ -891,100 +961,97 @@ function filterWO(status,btn){
   renderWorkOrders();
 }
 
+function woCardHTML(w){
+  const sc=(w.status||'open').toLowerCase().replace(/\s+/g,'-');
+  const isUrgent=w.priority==='urgent';
+  return`<div class="wo ${sc}">
+    <div class="wo-id">${esc(w.wo_id||'WO-—')}</div>
+    <div class="wo-hd">
+      <div class="wo-title">${esc(w.title||'Untitled')}</div>
+      <div class="wo-badges">
+        ${isUrgent?'<span class="wo-badge urgent">⬡ Urgent</span>':''}
+        ${w.type?`<span class="wo-badge type">${esc(w.type)}</span>`:''}
+        <span class="wo-badge ${sc}">${esc(w.status||'Open')}</span>
+      </div>
+    </div>
+    <div class="wo-meta">
+      ${w.property?`<div><div class="wm-lbl">Property</div><div class="wm-val">${esc(w.property)}</div></div>`:''}
+      <div><div class="wm-lbl">Reported</div><div class="wm-val">${w.created_at?new Date(w.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—'}</div></div>
+      <div><div class="wm-lbl">Assigned To</div><div class="wm-val">${esc(w.vendor||'Unassigned')}</div></div>
+      ${w.cost?`<div><div class="wm-lbl">Est. Cost</div><div class="wm-val">${esc(w.cost)}</div></div>`:''}
+    </div>
+    ${w.notes?`<div class="wo-note">${esc(w.notes)}</div>`:''}
+  </div>`;
+}
+
 function renderWorkOrders(){
   const el=document.getElementById('woList');if(!el)return;
   let data=[..._workOrders];
   if(_woFilter!=='all')data=data.filter(w=>w.status===_woFilter);
-  if(!data.length){el.innerHTML='<div class="empty" style="padding:1.5rem">No work orders found.</div>';return;}
-  el.innerHTML=data.map(w=>{
-    const sc=(w.status||'open').toLowerCase().replace(/\s+/g,'-');
-    const isUrgent=w.priority==='urgent';
-    return`<div class="wo ${sc}">
-      <div class="wo-id">${esc(w.wo_id||'WO-—')}</div>
-      <div class="wo-hd">
-        <div class="wo-title">${esc(w.title||'Untitled')}</div>
-        <div class="wo-badges">
-          ${isUrgent?'<span class="wo-badge urgent">⬡ Urgent</span>':''}
-          ${w.type?`<span class="wo-badge type">${esc(w.type)}</span>`:''}
-          <span class="wo-badge ${sc}">${esc(w.status||'Open')}</span>
-        </div>
-      </div>
-      <div class="wo-meta">
-        ${w.property?`<div><div class="wm-lbl">Property</div><div class="wm-val">${esc(w.property)}</div></div>`:''}
-        <div><div class="wm-lbl">Reported</div><div class="wm-val">${w.created_at?new Date(w.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—'}</div></div>
-        <div><div class="wm-lbl">Assigned To</div><div class="wm-val">${esc(w.vendor||'Unassigned')}</div></div>
-        ${w.cost?`<div><div class="wm-lbl">Est. Cost</div><div class="wm-val">${esc(w.cost)}</div></div>`:''}
-      </div>
-      ${w.notes?`<div class="wo-note">${esc(w.notes)}</div>`:''}
-    </div>`;
-  }).join('');
+  el.innerHTML=data.length?data.map(woCardHTML).join(''):'<div class="empty" style="padding:1.5rem">No work orders found.</div>';
 }
 
-function renderWorkOrdersFallback(){
-  const el=document.getElementById('woList');
-  if(el)el.innerHTML='<div class="empty" style="padding:1.5rem">Unable to load work orders. Check Supabase table <strong>lvo_work_orders</strong> exists.</div>';
+function renderAdminFieldOps(){
+  const el=document.getElementById('admWoList');
+  if(el)el.innerHTML=_workOrders.length?_workOrders.map(woCardHTML).join(''):'<div class="empty" style="padding:1.5rem">No work orders.</div>';
+  const vEl=document.getElementById('admVendorList');
+  if(vEl)vEl.innerHTML=_vendors.length?_vendors.map(v=>{
+    const stars=[1,2,3,4,5].map(i=>`<div class="vn-star${i>(v.rating||0)?' empty':''}"></div>`).join('');
+    return`<div class="vendor-row"><div><div class="vn-name">${esc(v.name||'—')}</div><div class="vn-trade">${esc(v.trade||'—')}</div><div class="vn-contact">${[v.phone,v.email].filter(Boolean).map(esc).join(' · ')||'—'}</div></div><div style="text-align:right"><div class="vn-stars">${stars}</div><div class="${v.active!==false?'vn-status-ok':'vn-status-na'}">${v.active!==false?'Active':'Inactive'}</div></div></div>`;
+  }).join(''):'<div class="empty" style="padding:1rem">No vendors.</div>';
+  const iEl=document.getElementById('admInspList');
+  if(iEl)iEl.innerHTML=_inspections.length?_inspections.map(i=>{
+    const d=i.date?new Date(i.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+    const result=(i.result||'upcoming').toLowerCase();
+    return`<div class="insp-row"><div><div class="insp-prop">${esc(i.property||'—')}</div><div class="insp-type">${esc(i.type||'General')}</div><div class="insp-date">${d}</div></div><span class="insp-badge ${result}">${result==='pass'?'Pass':result==='attention'?'Attention':result==='fail'?'Fail':'Upcoming'}</span></div>`;
+  }).join(''):'<div class="empty" style="padding:1rem">No inspections.</div>';
 }
 
-/* NEW WORK ORDER */
+async function adminUpdateWO(){
+  const woId=document.getElementById('admWoId')?.value?.trim();
+  const status=document.getElementById('admWoStatus')?.value;
+  const notes=document.getElementById('admWoNotes')?.value?.trim();
+  if(!woId){toast('Work order ID required','err');return;}
+  try{
+    const patch={status,updated_at:new Date().toISOString()};
+    if(notes)patch.notes=notes;
+    const res=await sbFetch(`/rest/v1/lvo_work_orders?wo_id=eq.${encodeURIComponent(woId)}`,{method:'PATCH',body:JSON.stringify(patch)});
+    if(!res.ok)throw new Error(await res.text());
+    toast(`${woId} → ${status}`,'ok');
+    logAct(`Updated work order ${woId} → ${status}`,true);
+    await fetchFieldOps();
+  }catch(e){toast('Update failed: '+e.message,'err');}
+}
+
 function showNewWOForm(){setDisplay('newWOForm','block');const m=document.getElementById('main');if(m)setTimeout(()=>m.scrollTo({top:m.scrollHeight,behavior:'smooth'}),100);}
 function hideNewWOForm(){setDisplay('newWOForm','none')}
 
 async function submitWO(){
   const title=document.getElementById('woTitle')?.value?.trim();
-  const property=document.getElementById('woProperty')?.value?.trim();
-  const type=document.getElementById('woType')?.value;
-  const priority=document.getElementById('woPriority')?.value||'normal';
-  const vendor=document.getElementById('woVendor')?.value?.trim();
-  const cost=document.getElementById('woCost')?.value?.trim();
-  const notes=document.getElementById('woNotes')?.value?.trim();
-  if(!title){toast('Title is required',true);return;}
+  if(!title){toast('Title is required','err');return;}
   const btn=document.getElementById('woSubmitBtn');
   if(btn){btn.disabled=true;btn.textContent='Submitting…';}
   try{
-    const payload={wo_id:genWOId(),title,property,type,priority,status:'open',vendor:vendor||null,cost:cost||null,notes:notes||null,created_at:new Date().toISOString(),updated_at:new Date().toISOString()};
-    const res=await fetch(`${SB_URL}/rest/v1/lvo_work_orders`,{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
-    if(!res.ok){const t=await res.text();throw new Error(t);}
+    const payload={wo_id:genWOId(),title,property:document.getElementById('woProperty')?.value?.trim()||null,type:document.getElementById('woType')?.value||null,priority:document.getElementById('woPriority')?.value||'normal',status:'open',vendor:document.getElementById('woVendor')?.value?.trim()||null,cost:document.getElementById('woCost')?.value?.trim()||null,notes:document.getElementById('woNotes')?.value?.trim()||null,created_at:new Date().toISOString(),updated_at:new Date().toISOString()};
+    const res=await sbFetch('/rest/v1/lvo_work_orders',{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    if(!res.ok)throw new Error(await res.text());
     const created=await res.json();
     _workOrders.unshift(Array.isArray(created)?created[0]:created);
-    renderWorkOrders();
-    updateOpsStats();
-    hideNewWOForm();
-    // Clear fields
+    renderWorkOrders();updateOpsStats();hideNewWOForm();
     ['woTitle','woProperty','woVendor','woCost','woNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-    document.getElementById('woType').value='';
-    document.getElementById('woPriority').value='normal';
-    toast('Work order created');
-    logAct(`New work order: ${title}`);
-  }catch(e){
-    console.error(e);toast('Failed to create work order',true);
-  }finally{
-    if(btn){btn.disabled=false;btn.textContent='Submit Work Order';}
-  }
+    document.getElementById('woType').value='';document.getElementById('woPriority').value='normal';
+    toast('Work order created','ok');logAct(`New work order: ${title}`);
+  }catch(e){toast('Failed to create','err');}
+  finally{if(btn){btn.disabled=false;btn.textContent='Submit Work Order';}}
 }
 
-/* ── VENDORS ── */
 function renderVendors(){
   const el=document.getElementById('vendorList');if(!el)return;
   if(!_vendors.length){el.innerHTML='<div class="empty" style="padding:1rem">No vendors on file.</div>';return;}
   el.innerHTML=_vendors.map(v=>{
     const stars=[1,2,3,4,5].map(i=>`<div class="vn-star${i>(v.rating||0)?' empty':''}"></div>`).join('');
-    return`<div class="vendor-row">
-      <div>
-        <div class="vn-name">${esc(v.name||'—')}</div>
-        <div class="vn-trade">${esc(v.trade||'—')}</div>
-        <div class="vn-contact">${[v.phone,v.email].filter(Boolean).map(esc).join(' · ')||'—'}</div>
-      </div>
-      <div style="text-align:right">
-        <div class="vn-stars">${stars}</div>
-        <div class="${v.active!==false?'vn-status-ok':'vn-status-na'}">${v.active!==false?'Active':'Inactive'}</div>
-      </div>
-    </div>`;
+    return`<div class="vendor-row"><div><div class="vn-name">${esc(v.name||'—')}</div><div class="vn-trade">${esc(v.trade||'—')}</div><div class="vn-contact">${[v.phone,v.email].filter(Boolean).map(esc).join(' · ')||'—'}</div></div><div style="text-align:right"><div class="vn-stars">${stars}</div><div class="${v.active!==false?'vn-status-ok':'vn-status-na'}">${v.active!==false?'Active':'Inactive'}</div></div></div>`;
   }).join('');
-}
-
-function renderVendorsFallback(){
-  const el=document.getElementById('vendorList');
-  if(el)el.innerHTML='<div class="empty" style="padding:1rem">Unable to load. Check table <strong>lvo_vendors</strong>.</div>';
 }
 
 function showAddVendorForm(){setDisplay('addVendorForm','block')}
@@ -992,47 +1059,28 @@ function hideAddVendorForm(){setDisplay('addVendorForm','none')}
 
 async function submitVendor(){
   const name=document.getElementById('vName')?.value?.trim();
-  const trade=document.getElementById('vTrade')?.value?.trim();
-  const phone=document.getElementById('vPhone')?.value?.trim();
-  const email=document.getElementById('vEmail')?.value?.trim();
-  if(!name){toast('Vendor name required',true);return;}
+  if(!name){toast('Vendor name required','err');return;}
   try{
-    const payload={name,trade:trade||null,phone:phone||null,email:email||null,rating:0,active:true,created_at:new Date().toISOString()};
-    const res=await fetch(`${SB_URL}/rest/v1/lvo_vendors`,{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    const payload={name,trade:document.getElementById('vTrade')?.value?.trim()||null,phone:document.getElementById('vPhone')?.value?.trim()||null,email:document.getElementById('vEmail')?.value?.trim()||null,rating:0,active:true,created_at:new Date().toISOString()};
+    const res=await sbFetch('/rest/v1/lvo_vendors',{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
     if(!res.ok)throw new Error(await res.text());
     const created=await res.json();
     _vendors.push(Array.isArray(created)?created[0]:created);
     _vendors.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
-    renderVendors();
-    hideAddVendorForm();
+    renderVendors();hideAddVendorForm();
     ['vName','vTrade','vPhone','vEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-    toast(`${name} added to vendor directory`);
-    logAct(`Added vendor: ${name}`);
-  }catch(e){console.error(e);toast('Failed to add vendor',true);}
+    toast(`${name} added`,'ok');logAct(`Added vendor: ${name}`);
+  }catch(e){toast('Failed to add vendor','err');}
 }
 
-/* ── INSPECTIONS ── */
 function renderInspections(){
   const el=document.getElementById('inspList');if(!el)return;
   if(!_inspections.length){el.innerHTML='<div class="empty" style="padding:1rem">No inspections on file.</div>';return;}
   el.innerHTML=_inspections.slice(0,8).map(i=>{
     const d=i.date?new Date(i.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
     const result=(i.result||'upcoming').toLowerCase();
-    const badge=result==='upcoming'?'Upcoming':result==='pass'?'Pass':result==='attention'?'Attention':'Fail';
-    return`<div class="insp-row">
-      <div>
-        <div class="insp-prop">${esc(i.property||'—')}</div>
-        <div class="insp-type">${esc(i.type||'General')}</div>
-        <div class="insp-date">${d}</div>
-      </div>
-      <span class="insp-badge ${result}">${badge}</span>
-    </div>`;
+    return`<div class="insp-row"><div><div class="insp-prop">${esc(i.property||'—')}</div><div class="insp-type">${esc(i.type||'General')}</div><div class="insp-date">${d}</div></div><span class="insp-badge ${result}">${result==='pass'?'Pass':result==='attention'?'Attention':result==='fail'?'Fail':'Upcoming'}</span></div>`;
   }).join('');
-}
-
-function renderInspectionsFallback(){
-  const el=document.getElementById('inspList');
-  if(el)el.innerHTML='<div class="empty" style="padding:1rem">Unable to load. Check table <strong>lvo_inspections</strong>.</div>';
 }
 
 function showAddInspForm(){setDisplay('addInspForm','block')}
@@ -1040,46 +1088,38 @@ function hideAddInspForm(){setDisplay('addInspForm','none')}
 
 async function submitInsp(){
   const property=document.getElementById('iProperty')?.value?.trim();
-  const type=document.getElementById('iType')?.value?.trim();
   const date=document.getElementById('iDate')?.value;
-  const result=document.getElementById('iResult')?.value||'upcoming';
-  if(!property||!date){toast('Property and date required',true);return;}
+  if(!property||!date){toast('Property and date required','err');return;}
   try{
-    const payload={property,type:type||'General',date,result,created_at:new Date().toISOString()};
-    const res=await fetch(`${SB_URL}/rest/v1/lvo_inspections`,{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    const payload={property,type:document.getElementById('iType')?.value?.trim()||'General',date,result:document.getElementById('iResult')?.value||'upcoming',created_at:new Date().toISOString()};
+    const res=await sbFetch('/rest/v1/lvo_inspections',{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
     if(!res.ok)throw new Error(await res.text());
     const created=await res.json();
     _inspections.unshift(Array.isArray(created)?created[0]:created);
-    renderInspections();
-    updateOpsStats();
-    hideAddInspForm();
+    renderInspections();updateOpsStats();hideAddInspForm();
     ['iProperty','iType','iDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
     document.getElementById('iResult').value='upcoming';
-    toast('Inspection scheduled');
-    logAct(`Scheduled inspection: ${property}`);
-  }catch(e){console.error(e);toast('Failed to save inspection',true);}
+    toast('Inspection scheduled','ok');logAct(`Scheduled inspection: ${property}`);
+  }catch(e){toast('Failed to save inspection','err');}
 }
 
 /* ── ANNOUNCEMENTS ── */
 async function fetchAnn(manual=false){
   _annSec=900;
   try{
-    const res=await fetch(`${SB_URL}/rest/v1/lvo_announcements?select=*&order=pinned.desc,created_at.desc`,{headers:SB_H});
-    if(!res.ok){const txt=await res.text();throw new Error(`${res.status}: ${txt}`);}
+    const res=await sbFetch('/rest/v1/lvo_announcements?select=*&order=pinned.desc,created_at.desc');
+    if(!res.ok)throw new Error(`${res.status}`);
     _ann=await res.json();
     renderAnnList();renderOvAnn();
     const pinned=_ann.filter(a=>a.pinned&&(a.division==='Vindex'||a.division==='All'));
-    if(pinned.length){const ab=document.getElementById('annBadge');if(ab)ab.style.display='block';const dot=document.getElementById('bnAnnDot');if(dot)dot.classList.add('show');}
+    if(pinned.length){const ab=document.getElementById('annBadge');if(ab)ab.style.display='block';document.getElementById('bnAnnDot')?.classList.add('show');}
     setSbStatus(true,'Database Online · 15 Min Timer');
-    const t=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-    setText('ovAnnTime',`Updated ${t}`);
-    if(manual)toast('Announcements refreshed');
+    setText('ovAnnTime',`Updated ${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}`);
+    if(manual)toast('Announcements refreshed','ok');
+    if(document.getElementById('adm-announcements')?.classList.contains('active'))loadAdminAnn();
   }catch(e){
     console.error(e);setSbStatus(false,'Supabase error');
-    if(e.message?.includes('42P01')||e.message?.includes('404')){
-      const al=document.getElementById('annList');if(al)al.innerHTML='<div class="empty" style="padding:2rem">Table not found in Supabase.</div>';
-      const oa=document.getElementById('ovAnn');if(oa)oa.innerHTML='<div class="empty">Table not set up.</div>';
-    }else if(manual)toast('Refresh failed',true);
+    if(manual)toast('Refresh failed','err');
   }
 }
 
@@ -1088,13 +1128,13 @@ function renderOvAnn(){
   const items=_ann.filter(a=>a.division==='Vindex'||a.division==='All').slice(0,3);
   if(!items.length){el.innerHTML='<div class="empty">No announcements yet.</div>';return;}
   el.innerHTML=items.map(a=>{
-    const previewBody=(a.body||'').slice(0,100)+((a.body||'').length>100?'…':'');
+    const preview=(a.body||'').slice(0,100)+((a.body||'').length>100?'…':'');
     return`<div style="padding:.75rem 1.4rem;border-bottom:.5px solid var(--border)">
       <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.3rem">
         ${a.pinned?'<span class="ann-pin-badge">★</span>':''}
-        <div style="font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.1em;color:var(--chrome)">${esc(a.title||'')}</div>
+        <div style="font-family:\'Cinzel\',serif;font-size:.52rem;letter-spacing:.1em;color:var(--chrome)">${esc(a.title||'')}</div>
       </div>
-      ${previewBody?`<div style="font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.5">${esc(previewBody)}</div>`:''}
+      ${preview?`<div style="font-size:.8rem;font-style:italic;color:var(--dim2);line-height:1.5">${esc(preview)}</div>`:''}
     </div>`;
   }).join('');
   const last=el.querySelector('div:last-child');if(last)last.style.borderBottom='none';
@@ -1114,71 +1154,183 @@ function renderAnnList(){
     </div>
     <div class="ann-body">${esc(a.body||'')}</div>
     <div class="ann-ft">
-      <span class="ann-author">${esc(a.author||'LVO Administration')}</span>
-      <span class="ann-time">${new Date(a.created_at).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</span>
+      <div style="display:flex;gap:.6rem;align-items:center">
+        <span class="ann-author">${esc(a.author||'LVO Administration')}</span>
+        <span class="ann-time">· ${new Date(a.created_at).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</span>
+      </div>
+      ${_U?.isAdmin?`<div class="ann-actions"><button class="ann-action-btn del" onclick="deleteAnn('${a.id}')">Delete</button></div>`:''}
     </div>
   </div>`).join('');
 }
 
-function filterAnn(type,btn){_annFilter=type;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAnnList()}
+function filterAnn(type,btn){_annFilter=type;document.querySelectorAll('#p-announcements .fb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAnnList();}
 
 function startCountdown(){
   clearInterval(_annTimer);
   _annTimer=setInterval(()=>{
     _annSec--;const m=Math.floor(_annSec/60),s=_annSec%60;
-    const rl=document.getElementById('refreshLabel');if(rl)rl.textContent=`${m}:${String(s).padStart(2,'0')}`;
+    setText('refreshLabel',`${m}:${String(s).padStart(2,'0')}`);
     if(_annSec<=0)fetchAnn();
   },1000);
 }
 
 /* ── ACTIVITY ── */
 function renderAct(){
-  const el=document.getElementById('actList');if(!el)return;
-  if(!_activity.length){el.innerHTML='<div class="empty">No activity yet.</div>';return;}
-  const html=_activity.slice(0,10).map(a=>`<div class="act-item"><div class="act-dot${a.isAdmin?' red':''}"></div><div><div class="act-time">${new Date(a.time).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</div><div class="act-txt">${esc(a.action)}</div></div></div>`).join('');
-  el.innerHTML=html;
-  const af=document.getElementById('admFeed');if(af)af.innerHTML=html;
+  const html=_activity.slice(0,12).map(a=>`<div class="act-item"><div class="act-dot${a.isAdmin?' red':''}"></div><div><div class="act-time">${new Date(a.time).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</div><div class="act-txt">${esc(a.action)}</div></div></div>`).join('');
+  const fallback='<div class="empty">No activity yet.</div>';
+  const al=document.getElementById('actList');if(al)al.innerHTML=html||fallback;
+  const af=document.getElementById('admFeed');if(af)af.innerHTML=html||fallback;
 }
 
-/* ── ADMIN ── */
-function renderAdminPanel(){
-  if(!_U?.isAdmin&&_U?.tier!==1)return;
-  const allMeta=lsGet('lvo_vindex_members');const ids=Object.keys(allMeta);
-  setText('admTotal',String(ids.length||1));
-  _members=ids.map(id=>({clerk_id:id,...allMeta[id]}));
-  renderMemberList(_members);
+/* ── ADMIN PANEL ── */
+function initAdminPanel(){
+  if(!_U?.isAdmin)return;
+  setText('admMyTier',TIER_LABELS[_U.tier]||TIER_LABELS[4]);
+  loadAdminAnn();
+  setupAnnPreview();
 }
 
-function filterMembers(){const q=document.getElementById('memberSearch')?.value?.toLowerCase()||'';renderMemberList(q?_members.filter(m=>(m.name||'').toLowerCase().includes(q)||(m.email||'').toLowerCase().includes(q)):_members)}
+/* ── ADMIN: ANNOUNCEMENTS ── */
+async function loadAdminAnn(){
+  const el=document.getElementById('admAnnList');
+  if(!el)return;
+  el.innerHTML='<div class="empty" style="padding:1.5rem">Loading…</div>';
+  try{
+    const res=await sbFetch('/rest/v1/lvo_announcements?select=*&order=pinned.desc,created_at.desc');
+    if(!res.ok)throw new Error(`${res.status}`);
+    const list=await res.json();
+    setText('admAnnCount',list.length);
+    if(!list.length){el.innerHTML='<div class="empty" style="padding:1.5rem">No announcements yet.</div>';return;}
+    el.innerHTML=list.map(a=>`<div class="adm-ann${a.pinned?' pinned':''}">
+      <div class="adm-ann-info">
+        <div class="adm-ann-title">${a.pinned?'★ ':''}<span>${esc(a.title)}</span></div>
+        <div class="adm-ann-meta">${esc(a.division)} · ${esc(a.author||'LVO Administration')} · ${new Date(a.created_at).toLocaleDateString('en-US',{dateStyle:'medium'})}</div>
+      </div>
+      <div class="adm-ann-actions">
+        <button class="btn xs${a.pinned?' ghost':''}" onclick="toggleGlobalPin('${a.id}',${!a.pinned})">${a.pinned?'Unpin':'Pin'}</button>
+        <button class="btn xs danger" onclick="deleteAnn('${a.id}')">Delete</button>
+      </div>
+    </div>`).join('');
+  }catch(e){el.innerHTML=`<div class="empty" style="padding:1.5rem;color:var(--red-hi)">Error: ${esc(e.message)}</div>`;}
+}
+
+async function postAnnouncement(){
+  const title=document.getElementById('annTitle')?.value?.trim();
+  const body=document.getElementById('annBody')?.value?.trim();
+  const division=document.getElementById('annDivision')?.value||'Vindex';
+  const author=document.getElementById('annAuthor')?.value?.trim()||_U?.name||'LVO Administration';
+  if(!title||!body){toast('Title and body required','err');return;}
+  try{
+    const res=await sbFetch('/rest/v1/lvo_announcements',{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify({title,body,division,author,pinned:false,created_at:new Date().toISOString()})});
+    if(!res.ok)throw new Error(await res.text());
+    document.getElementById('annTitle').value='';document.getElementById('annBody').value='';
+    toast('Announcement posted','ok');logAct(`Posted announcement: "${title}"`,true);
+    await fetchAnn();await loadAdminAnn();
+  }catch(e){toast('Failed to post: '+e.message,'err');}
+}
+
+async function toggleGlobalPin(id,pin){
+  try{
+    const res=await sbFetch(`/rest/v1/lvo_announcements?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({pinned:pin})});
+    if(!res.ok)throw new Error(`${res.status}`);
+    toast(pin?'★ Pinned globally':'Unpinned','ok');
+    logAct(`${pin?'Pinned':'Unpinned'} an announcement`,true);
+    await fetchAnn();await loadAdminAnn();
+  }catch(e){toast('Failed','err');}
+}
+
+async function deleteAnn(id){
+  if(!confirm('Delete this announcement?'))return;
+  try{
+    const res=await sbFetch(`/rest/v1/lvo_announcements?id=eq.${id}`,{method:'DELETE'});
+    if(!res.ok)throw new Error(`${res.status}`);
+    toast('Deleted','ok');logAct('Deleted an announcement',true);
+    await fetchAnn();await loadAdminAnn();
+  }catch(e){toast('Failed','err');}
+}
+
+function setupAnnPreview(){
+  const update=()=>{
+    const title=document.getElementById('annTitle')?.value||'';
+    const body=document.getElementById('annBody')?.value||'';
+    const div=document.getElementById('annDivision')?.value||'Vindex';
+    const author=document.getElementById('annAuthor')?.value||_U?.name||'LVO Administration';
+    const el=document.getElementById('annPreview');if(!el)return;
+    if(!title&&!body){el.innerHTML='<div class="ann-body" style="color:var(--dim)">Fill in the form to preview your announcement.</div>';return;}
+    el.innerHTML=`<div class="ann"><div class="ann-hd"><span class="ann-title">${esc(title)||'Untitled'}</span><span class="ann-div">${esc(div)}</span></div>${body?`<div class="ann-body">${esc(body)}</div>`:''}<div class="ann-ft"><span class="ann-author">${esc(author)}</span><span class="ann-time">· Just now</span></div></div>`;
+  };
+  ['annTitle','annBody','annDivision','annAuthor'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',update);});
+}
+
+/* ── ADMIN: MEMBERS ── */
+async function loadAdminMembers(){
+  const el=document.getElementById('admList');
+  if(!el)return;
+  el.innerHTML='<div class="empty">Loading…</div>';
+  try{
+    // Fetch from Supabase members table if it exists, else fall back to localStorage
+    let list=[];
+    try{
+      const res=await sbFetch('/rest/v1/lvo_members?select=*&order=name.asc');
+      if(res.ok){list=await res.json();}
+    }catch{}
+    // Fallback: local cache from Clerk sessions
+    if(!list.length){
+      const raw=localStorage.getItem('lvo_vindex_members');
+      const stored=raw?JSON.parse(raw):{};
+      list=Object.entries(stored).map(([uid,d])=>({uid,...d}));
+    }
+    _members=list;
+    setText('admTotal',list.length);
+    renderMemberList(list);
+  }catch(e){el.innerHTML=`<div class="empty" style="color:var(--red-hi)">Error: ${esc(e.message)}</div>`;}
+}
+
+function filterMembers(){
+  const q=document.getElementById('memberSearch')?.value?.toLowerCase()||'';
+  renderMemberList(q?_members.filter(m=>(m.name||'').toLowerCase().includes(q)||(m.email||'').toLowerCase().includes(q)):_members);
+}
 
 function renderMemberList(list){
   const el=document.getElementById('admList');if(!el)return;
   const countEl=document.getElementById('memberCount');if(countEl)countEl.textContent=`${list.length} member${list.length!==1?'s':''}`;
   if(!list.length){el.innerHTML='<div class="empty">No members found.</div>';return;}
   el.innerHTML=list.map(m=>{
-    const tv=parseInt(m.tier)||4;const safeName=esc(m.name||'Unknown');const safeId=m.clerk_id||'';
-    return`<div class="adm-row" id="ar-${safeId}">
-      <div><div style="font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:.14em;color:var(--chrome)">${safeName}</div><div style="font-size:.78rem;font-style:italic;color:var(--dim);margin-top:.15rem">${esc(m.email||'')} · ${esc(m.role||'—')}</div></div>
-      <select id="ts-${safeId}" style="background:transparent;border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.42rem .65rem;cursor:pointer;outline:none;width:100%" ${safeId===_U.uid?'disabled':''}>
+    const tv=parseInt(m.tier)||4;
+    const uid=m.uid||m.clerk_id||'';
+    const safeName=esc(m.name||'Unknown');
+    return`<div class="member-row" id="mr-${uid}">
+      <div>
+        <div class="member-name">${safeName}</div>
+        <div class="member-email">${esc(m.email||'')} · ${esc(m.role||'member')}</div>
+      </div>
+      <select id="ts-${uid}" style="background:var(--bg2);border:.5px solid var(--border);color:var(--gold);font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;padding:.42rem .65rem;cursor:pointer;outline:none;width:100%" ${uid===_U?.uid?'disabled':''}>
         <option value="1" ${tv===1?'selected':''}>Tier I</option>
         <option value="2" ${tv===2?'selected':''}>Tier II</option>
         <option value="3" ${tv===3?'selected':''}>Tier III</option>
         <option value="4" ${tv===4?'selected':''}>Tier IV</option>
       </select>
-      <button class="btn sm" onclick="saveTier('${safeId}','${safeName}')" ${safeId===_U.uid?'disabled':''}>Save</button>
+      <button class="btn sm" onclick="saveTier('${uid}','${safeName}')" ${uid===_U?.uid?'disabled':''}>Save</button>
     </div>`;
   }).join('');
-  const rows=el.querySelectorAll('.adm-row');if(rows.length)rows[rows.length-1].style.borderBottom='none';
 }
 
-function saveTier(clerkId,memberName){
-  const sel=document.getElementById('ts-'+clerkId);if(!sel)return;
+async function saveTier(uid,memberName){
+  const sel=document.getElementById('ts-'+uid);if(!sel)return;
   const newTier=parseInt(sel.value);
-  const meta=getMemberMeta(clerkId)||{};meta.tier=newTier;setMemberMeta(clerkId,meta);
-  const btn=document.querySelector(`#ar-${clerkId} .btn`);
-  if(btn){btn.textContent='Saved ✓';btn.style.color='#22c55e';setTimeout(()=>{btn.textContent='Save';btn.style.color='';},2000);}
+  // Try Supabase first, fall back to localStorage
+  try{
+    await sbFetch(`/rest/v1/lvo_members?uid=eq.${uid}`,{method:'PATCH',body:JSON.stringify({tier:newTier})});
+  }catch{}
+  // Always update localStorage cache
+  const raw=localStorage.getItem('lvo_vindex_members');
+  const stored=raw?JSON.parse(raw):{};
+  if(stored[uid])stored[uid].tier=newTier;
+  localStorage.setItem('lvo_vindex_members',JSON.stringify(stored));
+  const btn=document.querySelector(`#mr-${uid} .btn`);
+  if(btn){btn.textContent='Saved ✓';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='Save';btn.style.color='';},2200);}
+  toast(`${memberName} → ${TIER_LABELS[newTier]}`,'ok');
   logAct(`Updated ${memberName}'s tier to ${TIER_LABELS[newTier]}`,true);
-  toast(`${memberName} → ${TIER_LABELS[newTier]}`);
 }
 
 /* ── CLERK APPEARANCE ── */
@@ -1193,23 +1345,22 @@ const APPEARANCE={
     footerActionLink:{color:'#C8A96E'},
     avatarBox:{border:'.5px solid rgba(200,169,110,.4)',borderRadius:'50%'},
     userButtonPopoverCard:{background:'#080808',border:'.5px solid rgba(200,169,110,.25)',boxShadow:'0 8px 32px rgba(0,0,0,.8)'},
-    userButtonPopoverActionButton:{color:'#F0EEEC'},
-    userButtonPopoverActionButtonText:{color:'#F0EEEC'},
+    userButtonPopoverActionButton:{color:'#F0EEEC'},userButtonPopoverActionButtonText:{color:'#F0EEEC'},
     userButtonPopoverFooter:{background:'#080808'}
   }
 };
 
 /* ── INIT ── */
-window.addEventListener('load', async () => {
+window.addEventListener('load',async()=>{
   setLoad('Loading Clerk…');
-  const hardTimeout=setTimeout(()=>{showError('Authentication timed out.','The auth server did not respond. Try refreshing.');},15000);
+  const hardTimeout=setTimeout(()=>showError('Authentication timed out. Try refreshing.'),15000);
   let attempts=0;
   while(typeof Clerk==='undefined'&&attempts<40){await new Promise(r=>setTimeout(r,200));attempts++;}
-  if(typeof Clerk==='undefined'){clearTimeout(hardTimeout);showError('Clerk failed to load.','Check your network or publishable key.');return;}
+  if(typeof Clerk==='undefined'){clearTimeout(hardTimeout);showError('Clerk failed to load.');return;}
   try{
     setLoad('Authenticating…');
-    await Promise.race([Clerk.load(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('Clerk load timeout after 10s')),10000))]);
-  }catch(e){clearTimeout(hardTimeout);showError('Clerk initialization failed.',e.message||String(e));return;}
+    await Promise.race([Clerk.load(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),10000))]);
+  }catch(e){clearTimeout(hardTimeout);showError('Auth failed: '+e.message);return;}
 
   async function showDash(user){
     clearTimeout(hardTimeout);
@@ -1219,18 +1370,22 @@ window.addEventListener('load', async () => {
     setLoad('Building dashboard…');
     try{Clerk.mountUserButton(document.getElementById('clerkBtn'),{appearance:APPEARANCE});}catch(e){}
     if(!_clerkProfileMounted){
-      try{const profileEl=document.getElementById('clerkProfile');if(profileEl){Clerk.mountUserProfile(profileEl,{appearance:APPEARANCE});_clerkProfileMounted=true;}}catch(e){}
+      try{Clerk.mountUserProfile(document.getElementById('clerkProfile'),{appearance:APPEARANCE});_clerkProfileMounted=true;}catch(e){}
     }
-    populateDash(user);
-    _dashboardPopulated=true;
-    const topbar=document.getElementById('topbar');const shell=document.getElementById('shell');
-    if(topbar)topbar.style.display='flex';if(shell)shell.style.display='flex';
-    const loadScreen=document.getElementById('loadScreen');
-    if(loadScreen){loadScreen.classList.add('out');setTimeout(()=>loadScreen.remove(),700);}
-    await fetchAnn();
-    await fetchFieldOps();
-    startCountdown();
-    logAct(`Signed in · ${user.fullName||user.firstName||'Member'}`);
+    // Cache member in localStorage
+    const meta=user.publicMetadata||{};
+    const tier=parseInt(meta.tier)||4;
+    const role=meta.role||'member';
+    const stored=JSON.parse(localStorage.getItem('lvo_vindex_members')||'{}');
+    stored[user.id]={name:user.fullName||user.firstName||'Member',email:user.primaryEmailAddress?.emailAddress||'',tier,role,joinedRaw:user.createdAt};
+    localStorage.setItem('lvo_vindex_members',JSON.stringify(stored));
+
+    populateDash(user);_dashboardPopulated=true;
+    document.getElementById('topbar').style.display='flex';
+    document.getElementById('shell').style.display='flex';
+    const ls=document.getElementById('loadScreen');if(ls){ls.classList.add('out');setTimeout(()=>ls.remove(),700);}
+    await fetchAnn();await fetchFieldOps();
+    startCountdown();logAct(`Signed in · ${user.fullName||user.firstName||'Member'}`);
   }
 
   if(Clerk.user){await showDash(Clerk.user);return;}
@@ -1243,11 +1398,7 @@ window.addEventListener('load', async () => {
   else{clearTimeout(hardTimeout);setLoad('Redirecting…');setTimeout(()=>{window.location.href='https://vindex.wearelvo.com';},800);}
 
   Clerk.addListener(({user})=>{
-    if(!user){
-      _dashboardPopulated=false;_clerkProfileMounted=false;
-      clearInterval(_annTimer);
-      window.location.href='https://vindex.wearelvo.com';
-    }
+    if(!user){_dashboardPopulated=false;_clerkProfileMounted=false;clearInterval(_annTimer);window.location.href='https://vindex.wearelvo.com';}
   });
 });
 </script>
