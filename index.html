@@ -790,9 +790,7 @@
 
 <script>
 /* ── CONFIG ── */
-const SB_URL='https://pumteihkiaftgwbexaid.supabase.co';
-const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1bXRlaWhraWFmdGd3YmV4YWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NjAyMjYsImV4cCI6MjA5MzEzNjIyNn0.6JqNyNH_BBs-CsvAT41L_7Ku8G4CN_ymb9fXVYJEvf4';
-const SB_H={'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json'};
+const WORKER='https://lvo-worker.lvoholdings00.workers.dev';
 const TIER_LABELS={1:'Tier I — Principal',2:'Tier II — Associate',3:'Tier III — Partner',4:'Tier IV — Member'};
 
 /* ── STATE ── */
@@ -811,8 +809,14 @@ function setText(id,v){const el=document.getElementById(id);if(el)el.textContent
 function setDisplay(id,v){const el=document.getElementById(id);if(el)el.style.display=v}
 function genWOId(){return'WO-'+new Date().getFullYear()+'-'+String(Math.floor(Math.random()*900)+100)}
 
-function sbFetch(path,opts={}){
-  return fetch(SB_URL+path,{...opts,headers:{...SB_H,...(opts.headers||{})}});
+/* ── FETCH HELPERS (Cloudflare Worker) ── */
+function workerFetch(path, opts={}){
+  const headers={'Content-Type':'application/json', ...(opts.headers||{})};
+  return fetch(WORKER+path,{...opts,headers});
+}
+function adminFetch(path, opts={}){
+  const role=_U?.isAdmin?'admin':'';
+  return workerFetch(path,{...opts,headers:{...(opts.headers||{}),'X-Clerk-Role':role}});
 }
 
 /* ── NAVIGATION ── */
@@ -864,6 +868,8 @@ function populateDash(user){
   const tn=document.getElementById('tierNote');if(tn)tn.style.display=(!isAdmin&&tier>=3)?'block':'none';
   renderProps(props,tier,isAdmin);
   renderFin(props,tier,isAdmin);
+
+  workerFetch('/members',{method:'POST',body:JSON.stringify({uid:user.id,name,email,tier,division:'Vindex',role,joined:user.createdAt,deals:props})}).catch(e=>console.warn('Member sync failed:',e));
 }
 
 /* ── PROPERTIES ── */
@@ -925,21 +931,21 @@ function renderFin(props,tier,isAdmin){
 async function fetchFieldOps(manual=false){
   try{
     const [woRes,vRes,iRes]=await Promise.all([
-      sbFetch('/rest/v1/lvo_work_orders?select=*&order=created_at.desc'),
-      sbFetch('/rest/v1/lvo_vendors?select=*&order=name.asc'),
-      sbFetch('/rest/v1/lvo_inspections?select=*&order=date.desc')
+      workerFetch('/work-orders'),
+      workerFetch('/vendors'),
+      workerFetch('/inspections')
     ]);
     if(woRes.ok)_workOrders=await woRes.json();else _workOrders=[];
     if(vRes.ok) _vendors=await vRes.json();    else _vendors=[];
     if(iRes.ok) _inspections=await iRes.json();else _inspections=[];
     renderWorkOrders();renderVendors();renderInspections();updateOpsStats();
-    setSbStatus(true,'Database Online · 15 Min Timer');
+    setSbStatus(true,'Connected · Live');
     if(manual)toast('Field Ops refreshed','ok');
     if(document.getElementById('adm-fieldops')?.classList.contains('active'))renderAdminFieldOps();
   }catch(e){
-    console.error(e);setSbStatus(false,'Supabase error');
+    console.error(e);setSbStatus(false,'Worker error');
     if(manual)toast('Refresh failed',true);
-    document.getElementById('woList').innerHTML='<div class="empty" style="padding:1.5rem">Unable to load. Check Supabase table lvo_work_orders.</div>';
+    document.getElementById('woList').innerHTML='<div class="empty" style="padding:1.5rem">Unable to load. Check Worker connection.</div>';
   }
 }
 
@@ -997,7 +1003,7 @@ function renderAdminFieldOps(){
   const vEl=document.getElementById('admVendorList');
   if(vEl)vEl.innerHTML=_vendors.length?_vendors.map(v=>{
     const stars=[1,2,3,4,5].map(i=>`<div class="vn-star${i>(v.rating||0)?' empty':''}"></div>`).join('');
-    return`<div class="vendor-row"><div><div class="vn-name">${esc(v.name||'—')}</div><div class="vn-trade">${esc(v.trade||'—')}</div><div class="vn-contact">${[v.phone,v.email].filter(Boolean).map(esc).join(' · ')||'—'}</div></div><div style="text-align:right"><div class="vn-stars">${stars}</div><div class="${v.active!==false?'vn-status-ok':'vn-status-na'}">${v.active!==false?'Active':'Inactive'}</div></div></div>`;
+    return`<div class="vendor-row"><div><div class="vn-name">${esc(v.name||'—')}</div><div class="vn-trade">${esc(v.trade||'—')}</div><div class="vn-contact">${[v.phone,v.email].filter(Boolean).map(esc).join(' · ')||'—'}</div></div><div style="text-align:right"><div class="vn-stars">${stars}</div><div class="${v.active!=0?'vn-status-ok':'vn-status-na'}">${v.active!=0?'Active':'Inactive'}</div></div></div>`;
   }).join(''):'<div class="empty" style="padding:1rem">No vendors.</div>';
   const iEl=document.getElementById('admInspList');
   if(iEl)iEl.innerHTML=_inspections.length?_inspections.map(i=>{
@@ -1013,9 +1019,9 @@ async function adminUpdateWO(){
   const notes=document.getElementById('admWoNotes')?.value?.trim();
   if(!woId){toast('Work order ID required','err');return;}
   try{
-    const patch={status,updated_at:new Date().toISOString()};
+    const patch={status};
     if(notes)patch.notes=notes;
-    const res=await sbFetch(`/rest/v1/lvo_work_orders?wo_id=eq.${encodeURIComponent(woId)}`,{method:'PATCH',body:JSON.stringify(patch)});
+    const res=await adminFetch(`/work-orders/${encodeURIComponent(woId)}`,{method:'PATCH',body:JSON.stringify(patch)});
     if(!res.ok)throw new Error(await res.text());
     toast(`${woId} → ${status}`,'ok');
     logAct(`Updated work order ${woId} → ${status}`,true);
@@ -1032,11 +1038,11 @@ async function submitWO(){
   const btn=document.getElementById('woSubmitBtn');
   if(btn){btn.disabled=true;btn.textContent='Submitting…';}
   try{
-    const payload={wo_id:genWOId(),title,property:document.getElementById('woProperty')?.value?.trim()||null,type:document.getElementById('woType')?.value||null,priority:document.getElementById('woPriority')?.value||'normal',status:'open',vendor:document.getElementById('woVendor')?.value?.trim()||null,cost:document.getElementById('woCost')?.value?.trim()||null,notes:document.getElementById('woNotes')?.value?.trim()||null,created_at:new Date().toISOString(),updated_at:new Date().toISOString()};
-    const res=await sbFetch('/rest/v1/lvo_work_orders',{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    const payload={title,property:document.getElementById('woProperty')?.value?.trim()||null,type:document.getElementById('woType')?.value||null,priority:document.getElementById('woPriority')?.value||'normal',vendor:document.getElementById('woVendor')?.value?.trim()||null,cost:document.getElementById('woCost')?.value?.trim()||null,notes:document.getElementById('woNotes')?.value?.trim()||null,author:_U?.name||'Vindex Member'};
+    const res=await workerFetch('/work-orders',{method:'POST',body:JSON.stringify(payload)});
     if(!res.ok)throw new Error(await res.text());
     const created=await res.json();
-    _workOrders.unshift(Array.isArray(created)?created[0]:created);
+    _workOrders.unshift(created);
     renderWorkOrders();updateOpsStats();hideNewWOForm();
     ['woTitle','woProperty','woVendor','woCost','woNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
     document.getElementById('woType').value='';document.getElementById('woPriority').value='normal';
@@ -1050,7 +1056,7 @@ function renderVendors(){
   if(!_vendors.length){el.innerHTML='<div class="empty" style="padding:1rem">No vendors on file.</div>';return;}
   el.innerHTML=_vendors.map(v=>{
     const stars=[1,2,3,4,5].map(i=>`<div class="vn-star${i>(v.rating||0)?' empty':''}"></div>`).join('');
-    return`<div class="vendor-row"><div><div class="vn-name">${esc(v.name||'—')}</div><div class="vn-trade">${esc(v.trade||'—')}</div><div class="vn-contact">${[v.phone,v.email].filter(Boolean).map(esc).join(' · ')||'—'}</div></div><div style="text-align:right"><div class="vn-stars">${stars}</div><div class="${v.active!==false?'vn-status-ok':'vn-status-na'}">${v.active!==false?'Active':'Inactive'}</div></div></div>`;
+    return`<div class="vendor-row"><div><div class="vn-name">${esc(v.name||'—')}</div><div class="vn-trade">${esc(v.trade||'—')}</div><div class="vn-contact">${[v.phone,v.email].filter(Boolean).map(esc).join(' · ')||'—'}</div></div><div style="text-align:right"><div class="vn-stars">${stars}</div><div class="${v.active!=0?'vn-status-ok':'vn-status-na'}">${v.active!=0?'Active':'Inactive'}</div></div></div>`;
   }).join('');
 }
 
@@ -1061,11 +1067,11 @@ async function submitVendor(){
   const name=document.getElementById('vName')?.value?.trim();
   if(!name){toast('Vendor name required','err');return;}
   try{
-    const payload={name,trade:document.getElementById('vTrade')?.value?.trim()||null,phone:document.getElementById('vPhone')?.value?.trim()||null,email:document.getElementById('vEmail')?.value?.trim()||null,rating:0,active:true,created_at:new Date().toISOString()};
-    const res=await sbFetch('/rest/v1/lvo_vendors',{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    const payload={name,trade:document.getElementById('vTrade')?.value?.trim()||null,phone:document.getElementById('vPhone')?.value?.trim()||null,email:document.getElementById('vEmail')?.value?.trim()||null,author:_U?.name||'Vindex Member'};
+    const res=await workerFetch('/vendors',{method:'POST',body:JSON.stringify(payload)});
     if(!res.ok)throw new Error(await res.text());
     const created=await res.json();
-    _vendors.push(Array.isArray(created)?created[0]:created);
+    _vendors.push(created);
     _vendors.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
     renderVendors();hideAddVendorForm();
     ['vName','vTrade','vPhone','vEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -1091,11 +1097,11 @@ async function submitInsp(){
   const date=document.getElementById('iDate')?.value;
   if(!property||!date){toast('Property and date required','err');return;}
   try{
-    const payload={property,type:document.getElementById('iType')?.value?.trim()||'General',date,result:document.getElementById('iResult')?.value||'upcoming',created_at:new Date().toISOString()};
-    const res=await sbFetch('/rest/v1/lvo_inspections',{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify(payload)});
+    const payload={property,type:document.getElementById('iType')?.value?.trim()||'General',date,result:document.getElementById('iResult')?.value||'upcoming',author:_U?.name||'Vindex Member'};
+    const res=await workerFetch('/inspections',{method:'POST',body:JSON.stringify(payload)});
     if(!res.ok)throw new Error(await res.text());
     const created=await res.json();
-    _inspections.unshift(Array.isArray(created)?created[0]:created);
+    _inspections.unshift(created);
     renderInspections();updateOpsStats();hideAddInspForm();
     ['iProperty','iType','iDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
     document.getElementById('iResult').value='upcoming';
@@ -1107,18 +1113,18 @@ async function submitInsp(){
 async function fetchAnn(manual=false){
   _annSec=900;
   try{
-    const res=await sbFetch('/rest/v1/lvo_announcements?select=*&order=pinned.desc,created_at.desc');
+    const res=await workerFetch('/announcements');
     if(!res.ok)throw new Error(`${res.status}`);
     _ann=await res.json();
     renderAnnList();renderOvAnn();
     const pinned=_ann.filter(a=>a.pinned&&(a.division==='Vindex'||a.division==='All'));
     if(pinned.length){const ab=document.getElementById('annBadge');if(ab)ab.style.display='block';document.getElementById('bnAnnDot')?.classList.add('show');}
-    setSbStatus(true,'Database Online · 15 Min Timer');
+    setSbStatus(true,'Connected · Live');
     setText('ovAnnTime',`Updated ${new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}`);
     if(manual)toast('Announcements refreshed','ok');
     if(document.getElementById('adm-announcements')?.classList.contains('active'))loadAdminAnn();
   }catch(e){
-    console.error(e);setSbStatus(false,'Supabase error');
+    console.error(e);setSbStatus(false,'Worker error');
     if(manual)toast('Refresh failed','err');
   }
 }
@@ -1182,11 +1188,23 @@ function renderAct(){
   const af=document.getElementById('admFeed');if(af)af.innerHTML=html||fallback;
 }
 
+async function loadAdminActivity(){
+  try{
+    const res=await adminFetch('/activity');
+    if(!res.ok)return;
+    const log=await res.json();
+    const af=document.getElementById('admFeed');if(!af)return;
+    if(!log.length){af.innerHTML='<div class="empty">No activity.</div>';return;}
+    af.innerHTML=log.slice(0,40).map(a=>`<div class="act-item"><div class="act-dot${a.is_admin_action?' red':''}"></div><div><div class="act-time">${new Date(a.time).toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'})}</div><div class="act-txt">${esc(a.action)}${a.actor?' · '+esc(a.actor):''}</div></div></div>`).join('');
+  }catch(e){}
+}
+
 /* ── ADMIN PANEL ── */
 function initAdminPanel(){
   if(!_U?.isAdmin)return;
   setText('admMyTier',TIER_LABELS[_U.tier]||TIER_LABELS[4]);
   loadAdminAnn();
+  loadAdminActivity();
   setupAnnPreview();
 }
 
@@ -1196,7 +1214,7 @@ async function loadAdminAnn(){
   if(!el)return;
   el.innerHTML='<div class="empty" style="padding:1.5rem">Loading…</div>';
   try{
-    const res=await sbFetch('/rest/v1/lvo_announcements?select=*&order=pinned.desc,created_at.desc');
+    const res=await workerFetch('/announcements');
     if(!res.ok)throw new Error(`${res.status}`);
     const list=await res.json();
     setText('admAnnCount',list.length);
@@ -1221,7 +1239,7 @@ async function postAnnouncement(){
   const author=document.getElementById('annAuthor')?.value?.trim()||_U?.name||'LVO Administration';
   if(!title||!body){toast('Title and body required','err');return;}
   try{
-    const res=await sbFetch('/rest/v1/lvo_announcements',{method:'POST',headers:{...SB_H,'Prefer':'return=representation'},body:JSON.stringify({title,body,division,author,pinned:false,created_at:new Date().toISOString()})});
+    const res=await adminFetch('/announcements',{method:'POST',body:JSON.stringify({title,body,division,author})});
     if(!res.ok)throw new Error(await res.text());
     document.getElementById('annTitle').value='';document.getElementById('annBody').value='';
     toast('Announcement posted','ok');logAct(`Posted announcement: "${title}"`,true);
@@ -1231,7 +1249,7 @@ async function postAnnouncement(){
 
 async function toggleGlobalPin(id,pin){
   try{
-    const res=await sbFetch(`/rest/v1/lvo_announcements?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({pinned:pin})});
+    const res=await adminFetch(`/announcements/${id}/pin`,{method:'PUT',body:JSON.stringify({pinned:pin})});
     if(!res.ok)throw new Error(`${res.status}`);
     toast(pin?'★ Pinned globally':'Unpinned','ok');
     logAct(`${pin?'Pinned':'Unpinned'} an announcement`,true);
@@ -1242,7 +1260,7 @@ async function toggleGlobalPin(id,pin){
 async function deleteAnn(id){
   if(!confirm('Delete this announcement?'))return;
   try{
-    const res=await sbFetch(`/rest/v1/lvo_announcements?id=eq.${id}`,{method:'DELETE'});
+    const res=await adminFetch(`/announcements/${id}`,{method:'DELETE'});
     if(!res.ok)throw new Error(`${res.status}`);
     toast('Deleted','ok');logAct('Deleted an announcement',true);
     await fetchAnn();await loadAdminAnn();
@@ -1268,18 +1286,9 @@ async function loadAdminMembers(){
   if(!el)return;
   el.innerHTML='<div class="empty">Loading…</div>';
   try{
-    // Fetch from Supabase members table if it exists, else fall back to localStorage
-    let list=[];
-    try{
-      const res=await sbFetch('/rest/v1/lvo_members?select=*&order=name.asc');
-      if(res.ok){list=await res.json();}
-    }catch{}
-    // Fallback: local cache from Clerk sessions
-    if(!list.length){
-      const raw=localStorage.getItem('lvo_vindex_members');
-      const stored=raw?JSON.parse(raw):{};
-      list=Object.entries(stored).map(([uid,d])=>({uid,...d}));
-    }
+    const res=await adminFetch('/members');
+    if(!res.ok)throw new Error(`${res.status}`);
+    const list=await res.json();
     _members=list;
     setText('admTotal',list.length);
     renderMemberList(list);
@@ -1297,7 +1306,7 @@ function renderMemberList(list){
   if(!list.length){el.innerHTML='<div class="empty">No members found.</div>';return;}
   el.innerHTML=list.map(m=>{
     const tv=parseInt(m.tier)||4;
-    const uid=m.uid||m.clerk_id||'';
+    const uid=m.uid||'';
     const safeName=esc(m.name||'Unknown');
     return`<div class="member-row" id="mr-${uid}">
       <div>
@@ -1318,19 +1327,14 @@ function renderMemberList(list){
 async function saveTier(uid,memberName){
   const sel=document.getElementById('ts-'+uid);if(!sel)return;
   const newTier=parseInt(sel.value);
-  // Try Supabase first, fall back to localStorage
   try{
-    await sbFetch(`/rest/v1/lvo_members?uid=eq.${uid}`,{method:'PATCH',body:JSON.stringify({tier:newTier})});
-  }catch{}
-  // Always update localStorage cache
-  const raw=localStorage.getItem('lvo_vindex_members');
-  const stored=raw?JSON.parse(raw):{};
-  if(stored[uid])stored[uid].tier=newTier;
-  localStorage.setItem('lvo_vindex_members',JSON.stringify(stored));
-  const btn=document.querySelector(`#mr-${uid} .btn`);
-  if(btn){btn.textContent='Saved ✓';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='Save';btn.style.color='';},2200);}
-  toast(`${memberName} → ${TIER_LABELS[newTier]}`,'ok');
-  logAct(`Updated ${memberName}'s tier to ${TIER_LABELS[newTier]}`,true);
+    const res=await adminFetch(`/members/${uid}`,{method:'PUT',body:JSON.stringify({tier:newTier})});
+    if(!res.ok)throw new Error(`${res.status}`);
+    const btn=document.querySelector(`#mr-${uid} .btn`);
+    if(btn){btn.textContent='Saved ✓';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='Save';btn.style.color='';},2200);}
+    toast(`${memberName} → ${TIER_LABELS[newTier]}`,'ok');
+    logAct(`Updated ${memberName}'s tier to ${TIER_LABELS[newTier]}`,true);
+  }catch(e){toast('Failed to save','err');}
 }
 
 /* ── CLERK APPEARANCE ── */
@@ -1372,13 +1376,6 @@ window.addEventListener('load',async()=>{
     if(!_clerkProfileMounted){
       try{Clerk.mountUserProfile(document.getElementById('clerkProfile'),{appearance:APPEARANCE});_clerkProfileMounted=true;}catch(e){}
     }
-    // Cache member in localStorage
-    const meta=user.publicMetadata||{};
-    const tier=parseInt(meta.tier)||4;
-    const role=meta.role||'member';
-    const stored=JSON.parse(localStorage.getItem('lvo_vindex_members')||'{}');
-    stored[user.id]={name:user.fullName||user.firstName||'Member',email:user.primaryEmailAddress?.emailAddress||'',tier,role,joinedRaw:user.createdAt};
-    localStorage.setItem('lvo_vindex_members',JSON.stringify(stored));
 
     populateDash(user);_dashboardPopulated=true;
     document.getElementById('topbar').style.display='flex';
