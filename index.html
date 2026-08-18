@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LVO Holdings | Systems Down</title>
+
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+SC:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white: #fff;
+      --dim: rgba(255,255,255,.52);
+      --dimmer: rgba(255,255,255,.25);
+      --purple: #7F77DD;
+      --red: #9f4a42;
+      --line: rgba(255,255,255,.16);
+    }
+
+    html, body {
+      min-height: 100%;
+      background: #000;
+      color: var(--white);
+      font-family: "Times New Roman", Georgia, serif;
+    }
+
+    body {
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(127,119,221,.08), transparent 32%),
+        radial-gradient(circle at 12% 15%, rgba(127,119,221,.07), transparent 25%),
+        #000;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .13;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 70px 70px;
+      mask-image: radial-gradient(circle at center, black, transparent 82%);
+    }
+
+    .top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 26px 40px;
+    }
+
+    .brand {
+      color: #fff;
+      text-decoration: none;
+      font-family: Cinzel, serif;
+      font-size: 11px;
+      letter-spacing: .30em;
+      text-transform: uppercase;
+    }
+
+    .brand span {
+      display: inline-block;
+      width: 42px;
+      height: 1px;
+      background: rgba(255,255,255,.5);
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
+    .clock {
+      color: var(--dimmer);
+      font-family: Cormorant SC, serif;
+      font-size: 10px;
+      letter-spacing: .28em;
+    }
+
+    main {
+      width: min(1080px, calc(100% - 40px));
+      min-height: 100vh;
+      margin: auto;
+      padding: 130px 0 90px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 55px;
+    }
+
+    .logo {
+      width: 112px;
+      height: 112px;
+      object-fit: contain;
+      margin-bottom: 30px;
+      filter:
+        drop-shadow(0 0 28px rgba(127,119,221,.22))
+        drop-shadow(0 0 10px rgba(0,0,0,.9));
+      opacity: .95;
+    }
+
+    .eyebrow {
+      color: var(--dim);
+      font-family: Cormorant SC, serif;
+      font-size: 11px;
+      letter-spacing: .55em;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      font-family: Cinzel, serif;
+      font-weight: 400;
+      font-size: clamp(38px, 6vw, 76px);
+      letter-spacing: .14em;
+      line-height: 1;
+      text-transform: uppercase;
+      text-shadow: 0 0 35px rgba(0,0,0,.9);
+    }
+
+    .subtitle {
+      margin-top: 18px;
+      color: var(--dim);
+      font-family: "IM Fell English", Georgia, serif;
+      font-style: italic;
+      font-size: 18px;
+      letter-spacing: .03em;
+    }
+
+    .rule {
+      width: min(620px, 80%);
+      height: 1px;
+      margin: 28px auto 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(127,119,221,.5),
+        rgba(255,255,255,.25),
+        rgba(127,119,221,.5),
+        transparent
+      );
+    }
+
+    .index {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .index-head {
+      display: grid;
+      grid-template-columns: 80px 1fr 145px;
+      align-items: center;
+      padding: 16px 18px;
+      color: var(--dimmer);
+      font-family: Cormorant SC, serif;
+      font-size: 9px;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+    }
+
+    .system {
+      position: relative;
+      display: grid;
+      grid-template-columns: 80px 1fr 145px;
+      align-items: center;
+      min-height: 74px;
+      padding: 0 18px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      transition: background .3s ease;
+    }
+
+    .system:hover {
+      background: rgba(127,119,221,.045);
+    }
+
+    .number {
+      color: var(--dimmer);
+      font-family: Cinzel, serif;
+      font-size: 10px;
+      letter-spacing: .18em;
+    }
+
+    .name {
+      font-family: Cinzel, serif;
+      font-size: clamp(12px, 1.5vw, 15px);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .detail {
+      display: block;
+      color: var(--dimmer);
+      font-family: Cormorant SC, serif;
+      font-size: 9px;
+      letter-spacing: .22em;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+
+    .status {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--red);
+      font-family: Cinzel, serif;
+      font-size: 9px;
+      letter-spacing: .20em;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 0 rgba(159,74,66,.7);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(159,74,66,.65); opacity: 1; }
+      70%  { box-shadow: 0 0 0 8px rgba(159,74,66,0); opacity: .72; }
+      100% { box-shadow: 0 0 0 0 rgba(159,74,66,0); opacity: 1; }
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 42px;
+      color: var(--dimmer);
+      font-family: Cormorant SC, serif;
+      font-size: 9px;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+    }
+
+    .footer strong {
+      color: rgba(255,255,255,.58);
+      font-family: Cinzel, serif;
+      font-weight: 400;
+      letter-spacing: .35em;
+    }
+
+    .notice {
+      text-align: center;
+      margin-top: 34px;
+      color: rgba(255,255,255,.35);
+      font-family: "IM Fell English", Georgia, serif;
+      font-style: italic;
+      font-size: 14px;
+    }
+
+    @media (max-width: 700px) {
+      .top { padding: 20px; }
+      .brand { font-size: 10px; }
+      .clock { display: none; }
+
+      main {
+        width: min(100% - 28px, 600px);
+        padding-top: 105px;
+      }
+
+      .logo {
+        width: 82px;
+        height: 82px;
+        margin-bottom: 24px;
+      }
+
+      .hero { margin-bottom: 38px; }
+
+      .index-head {
+        grid-template-columns: 45px 1fr 95px;
+        padding: 14px 10px;
+      }
+
+      .system {
+        grid-template-columns: 45px 1fr 95px;
+        min-height: 72px;
+        padding: 0 10px;
+      }
+
+      .name {
+        font-size: 11px;
+        letter-spacing: .12em;
+      }
+
+      .detail {
+        font-size: 8px;
+        letter-spacing: .14em;
+      }
+
+      .status {
+        font-size: 8px;
+        letter-spacing: .12em;
+      }
+
+      .footer {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="top">
+    <a class="brand" href="https://wearelvo.com/">
+      Legion V. Omni-Operations
+      <span></span>
+    </a>
+
+    <div class="clock" id="clock">SYSTEM STATUS // LIVE</div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <img class="logo" src="assets/logo.png" alt="LVO">
+      <div class="eyebrow">LVO Holdings // Universal Systems Monitor</div>
+      <h1>Systems Down</h1>
+      <div class="subtitle">Universal systems are currently unavailable.</div>
+      <div class="rule"></div>
+    </section>
+
+    <section class="index" aria-label="Universal Systems Down Index">
+
+      <div class="index-head">
+        <span>Index</span>
+        <span>System</span>
+        <span style="text-align:right">Condition</span>
+      </div>
+
+      <div class="system">
+        <span class="number">01</span>
+        <div>
+          <span class="name">Vindex</span>
+          <span class="detail">Primary Network</span>
+        </div>
+        <span class="status"><i class="dot"></i>Offline</span>
+      </div>
+
+      <div class="system">
+        <span class="number">02</span>
+        <div>
+          <span class="name">Alliance</span>
+          <span class="detail">Alliance Network</span>
+        </div>
+        <span class="status"><i class="dot"></i>Offline</span>
+      </div>
+
+      <div class="system">
+        <span class="number">03</span>
+        <div>
+          <span class="name">Operations</span>
+          <span class="detail">Operations Network</span>
+        </div>
+        <span class="status"><i class="dot"></i>Offline</span>
+      </div>
+
+      <div class="system">
+        <span class="number">04</span>
+        <div>
+          <span class="name">Communications</span>
+          <span class="detail">External Connectivity</span>
+        </div>
+        <span class="status"><i class="dot"></i>Offline</span>
+      </div>
+
+      <div class="system">
+        <span class="number">05</span>
+        <div>
+          <span class="name">Infrastructure</span>
+          <span class="detail">Core Infrastructure</span>
+        </div>
+        <span class="status"><i class="dot"></i>Offline</span>
+      </div>
+
+    </section>
+
+    <div class="notice">
+      All monitored systems are experiencing an interruption. Please stand by.
+    </div>
+
+    <footer class="footer">
+      <span>Universal Systems Down Index</span>
+      <strong>L V O</strong>
+      <span>Legion V. Omni-Operations</span>
+    </footer>
+
+  </main>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+      document.getElementById("clock").textContent =
+        "SYSTEM STATUS // " + time;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+
+</body>
+</html>
