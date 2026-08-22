@@ -253,7 +253,7 @@
     .ln-text{font-family:'Cinzel',serif;font-size:.45rem;letter-spacing:.3em;color:var(--dim);text-transform:uppercase;line-height:1.9}
     .ln-text span{color:var(--red-hi)}
 
-    /* ── ADMIN TABS (new) ── */
+    /* ── ADMIN TABS ── */
     .adm-tabs{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:.5px solid var(--border)}
     .adm-tab{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;color:var(--dim2);padding:.75rem 1.2rem;cursor:pointer;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .2s;background:none;border-left:none;border-right:none;border-top:none}
     .adm-tab:hover{color:var(--chrome)}
@@ -724,6 +724,55 @@
 
       <!-- TAB: MEMBERS -->
       <div class="adm-section" id="adm-members">
+        <div class="card" style="margin-bottom:1.5rem">
+          <div class="ch"><span class="ct">Create Member</span></div>
+          <div class="cb">
+            <div class="ann-form">
+              <div class="ann-form-row">
+                <div class="form-group">
+                  <label class="form-label">First Name</label>
+                  <input class="form-input" id="newMemberFirst" placeholder="First name" type="text"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name</label>
+                  <input class="form-input" id="newMemberLast" placeholder="Last name" type="text"/>
+                </div>
+              </div>
+              <div class="ann-form-row">
+                <div class="form-group">
+                  <label class="form-label">Username</label>
+                  <input class="form-input" id="newMemberUsername" placeholder="username" type="text"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input class="form-input" id="newMemberEmail" placeholder="name@company.com" type="email"/>
+                </div>
+              </div>
+              <div class="ann-form-row">
+                <div class="form-group">
+                  <label class="form-label">Starting Tier</label>
+                  <select class="form-select" id="newMemberTier">
+                    <option value="4" selected>Tier IV — Member</option>
+                    <option value="3">Tier III — Partner</option>
+                    <option value="2">Tier II — Associate</option>
+                    <option value="1">Tier I — Principal</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Access Role</label>
+                  <select class="form-select" id="newMemberRole">
+                    <option value="member" selected>Member</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+              </div>
+              <div class="btn-row">
+                <button class="btn" onclick="createMember()">Create Account →</button>
+              </div>
+              <p style="font-size:.78rem;font-style:italic;color:var(--dim)">A temporary password is generated automatically and emailed to the member. No self-signup step required — the account is pre-verified. This mirrors the Alliance dashboard's invite-only flow.</p>
+            </div>
+          </div>
+        </div>
         <div class="card">
           <div class="ch">
             <span class="ct">Member Tier Management</span>
@@ -813,12 +862,15 @@
 const WORKER = LVOAuth.WORKER;
 const THIS_DIVISION = 'Vindex';
 const MARKETING_SITE = 'https://vindex.wearelvo.com';
+const DOWN_PAGE = 'https://down.wearelvo.com/';
+const STATUS_POLL_MS = 20000; // re-check every 20s while the dashboard stays open, same as Alliance
 const TIER_LABELS={1:'Tier I — Principal',2:'Tier II — Associate',3:'Tier III — Partner',4:'Tier IV — Member'};
 
 /* ── STATE ── */
 let _U=null,_ann=[],_annFilter='all',_annTimer=null,_annSec=900,_activity=[];
 let _members=[];
 let _workOrders=[],_vendors=[],_inspections=[],_woFilter='all';
+let _statusPollTimer=null;
 
 /* ── UTILS ── */
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -840,6 +892,34 @@ function workerFetch(path, opts={}){
     .catch(e => ({ ok:false, status:e.status||500, json:async()=>e.data||{error:e.message}, text:async()=>e.message }));
 }
 function adminFetch(path, opts={}){ return workerFetch(path, opts); }
+
+/* Returns true (and redirects) if this division is marked down.
+   Fails OPEN on network errors so a blip never locks someone out.
+   Mirrors the Alliance dashboard's system-status check exactly. */
+async function checkSystemStatus(){
+  try{
+    const res = await workerFetch(`/system-status/${encodeURIComponent(THIS_DIVISION)}`);
+    if(!res.ok) return false;
+    const data = await res.json();
+    if(data.down){
+      const params = new URLSearchParams({ division: THIS_DIVISION, msg: data.message || '' });
+      window.location.replace(`${DOWN_PAGE}?${params.toString()}`);
+      return true;
+    }
+    return false;
+  }catch(e){
+    console.warn('system status check failed (failing open)', e);
+    return false;
+  }
+}
+
+function startStatusPolling(){
+  clearInterval(_statusPollTimer);
+  _statusPollTimer = setInterval(checkSystemStatus, STATUS_POLL_MS);
+  document.addEventListener('visibilitychange', () => {
+    if(!document.hidden) checkSystemStatus();
+  });
+}
 
 /* ── NAVIGATION ── */
 function goTo(id){
@@ -1387,11 +1467,31 @@ async function saveTier(uid,memberName){
   }catch(e){toast('Failed to save','err');}
 }
 
+/* ── ADMIN: CREATE MEMBER (invite-only, same pattern as Alliance) ── */
+async function createMember(){
+  const firstName=document.getElementById('newMemberFirst')?.value?.trim();
+  const lastName=document.getElementById('newMemberLast')?.value?.trim();
+  const username=document.getElementById('newMemberUsername')?.value?.trim();
+  const email=document.getElementById('newMemberEmail')?.value?.trim();
+  const tier=parseInt(document.getElementById('newMemberTier')?.value)||4;
+  const role=document.getElementById('newMemberRole')?.value||'member';
+  if(!firstName||!lastName||!username||!email){toast('First name, last name, username, and email are required','err');return;}
+  try{
+    const res=await adminFetch('/members',{method:'POST',body:JSON.stringify({firstName,lastName,username,email,tier,role})});
+    if(!res.ok){const d=await res.json();throw new Error(d.error||`HTTP ${res.status}`);}
+    toast(`Account created for ${firstName} ${lastName} — credentials emailed`,'ok');
+    logAct(`Created account: ${firstName} ${lastName}`,true);
+    ['newMemberFirst','newMemberLast','newMemberUsername','newMemberEmail'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    await loadAdminMembers();
+  }catch(e){toast('Failed: '+e.message,'err');}
+}
+
 /* ── INIT ── */
 window.addEventListener('load',async()=>{
   setLoad('Checking session…');
   document.getElementById('tbSignOut').addEventListener('click',async()=>{
     clearInterval(_annTimer);
+    clearInterval(_statusPollTimer);
     await LVOAuth.logout();
     window.location.href=MARKETING_SITE;
   });
@@ -1420,6 +1520,10 @@ window.addEventListener('load',async()=>{
     return;
   }
 
+  setLoad('Checking system status…');
+  const isDown = await checkSystemStatus();
+  if(isDown) return; // already redirected to down.html
+
   setLoad('Loading your profile…');
   await populateDash(user);
 
@@ -1428,7 +1532,9 @@ window.addEventListener('load',async()=>{
   const ls=document.getElementById('loadScreen');if(ls){ls.classList.add('out');setTimeout(()=>ls.remove(),700);}
 
   await fetchAnn();await fetchFieldOps();
-  startCountdown();logAct(`Signed in · ${_U.name}`);
+  startCountdown();
+  startStatusPolling();
+  logAct(`Signed in · ${_U.name}`);
   setSbStatus(true,'Connected · Live');
 });
 </script>
